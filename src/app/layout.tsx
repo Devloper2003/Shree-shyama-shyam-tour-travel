@@ -14,34 +14,36 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Shree Shyama Shyam Tour and Travels | Private Cab Service All Over India",
+  title: "Shree Shyama Shyam Tour and Travels | Sacred Braj Yatra & Pilgrimage Tours",
   description:
-    "Shree Shyama Shyam Tour and Travels offers reliable private cab services across all over India. Book Sedan, SUV, Innova, Tempo Traveller for outstation, local, airport transfers. 24x7 verified drivers, transparent pricing.",
+    "Shree Shyama Shyam Tour and Travels offers sacred Braj Yatra pilgrimage tours covering Mathura, Vrindavan, Gokul, Barsana, Nandgaon, Govardhan and the complete 84-kosa Braj Mandala. Same-day, 2-day, 3-day packages with verified drivers and local Braj guides.",
   keywords: [
-    "private cab service India",
-    "outstation taxi",
-    "Shree Shyama Shyam Tour and Travels",
-    "Innova on rent",
-    "Tempo Traveller booking",
-    "airport taxi India",
-    "intercity cab",
-    "India cab service",
+    "Braj Yatra",
+    "Brij Yatra",
+    "Mathura Vrindavan tour",
+    "Krishna Janmabhoomi darshan",
+    "Banke Bihari temple",
+    "Govardhan Parikrama",
+    "Barsana Nandgaon yatra",
+    "Braj Mandala pilgrimage",
+    "Shree Shyama Shyam",
+    "Radha Krishna pilgrimage",
   ],
   authors: [{ name: "Shree Shyama Shyam Tour and Travels" }],
   icons: {
     icon: "/logo.svg",
   },
   openGraph: {
-    title: "Shree Shyama Shyam Tour and Travels | Private Cab Service All Over India",
+    title: "Shree Shyama Shyam Tour and Travels | Sacred Braj Yatra",
     description:
-      "Reliable private cab services across India. Sedan, SUV, Innova, Tempo Traveller. 24x7 service, verified drivers, transparent pricing.",
+      "Sacred Braj Yatra pilgrimage tours — Mathura, Vrindavan, Gokul, Barsana, Nandgaon, Govardhan. Same-day to 3-day packages with verified drivers and local guides.",
     siteName: "Shree Shyama Shyam Tour and Travels",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Shree Shyama Shyam Tour and Travels",
-    description: "Private Cab Service All Over India — 24x7 verified drivers, transparent pricing.",
+    description: "Sacred Braj Yatra pilgrimage tours across the holy Braj Mandala.",
   },
 };
 

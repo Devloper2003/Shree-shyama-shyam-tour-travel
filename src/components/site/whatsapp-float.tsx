@@ -16,7 +16,7 @@ export function WhatsAppFloat() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const defaultMessage = `Hello ${siteConfig.shortName}, I would like to enquire about a cab booking.\n\nPickup: \nDrop: \nDate: \nVehicle: `;
+  const defaultMessage = `Radhe Radhe ${siteConfig.shortName}! I would like to book a Braj Yatra.\n\nPickup: \nDrop (Braj site): \nDate: \nYatra Package: \nPilgrims: `;
 
   return (
     <div
@@ -42,8 +42,9 @@ export function WhatsAppFloat() {
           </div>
           <div className="p-4 bg-muted/40">
             <div className="bg-background rounded-lg p-3 text-sm text-foreground shadow-sm">
-              Hi there! 👋 Need a cab anywhere in India? Send us a message on WhatsApp with your
-              pickup, drop, and travel date — we&apos;ll confirm your booking right away.
+              Radhe Radhe! 🙏 Need to book a Braj Yatra? Send us a WhatsApp message with your
+              pickup, preferred Braj site, and travel date — we&apos;ll confirm your sacred
+              yatra right away.
             </div>
             <a
               href={buildWhatsAppLink(defaultMessage)}

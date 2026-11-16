@@ -22,6 +22,7 @@ model Enquiry {
   // Trip details
   pickup      String
   drop        String
+  yatraPackage String?
   vehicleType String?
   tripType    String? // one-way, round-trip, local, airport, tour-package
   pickupDate  String?

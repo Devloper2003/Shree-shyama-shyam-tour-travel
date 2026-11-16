@@ -29,14 +29,15 @@ export function Faq() {
       <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
           <Badge variant="secondary" className="mb-3">
-            <HelpCircle className="w-3 h-3 mr-1" /> FAQ
+            <HelpCircle className="w-3 h-3 mr-1" /> Pilgrimage FAQ
           </Badge>
           <h2 id="faq-heading" className="text-3xl sm:text-4xl font-bold text-foreground">
-            Frequently Asked Questions
+            Your Braj Yatra Questions Answered
           </h2>
           <p className="mt-4 text-muted-foreground text-base sm:text-lg">
-            Browse by category to find what matters most to you. Can&apos;t find your question?
-            Just reach out — we are happy to help.
+            Everything you need to know before embarking on your sacred Braj pilgrimage. Browse
+            by category to find what matters most to you. Can&apos;t find your question? Just
+            reach out — we are happy to help.
           </p>
         </div>
 

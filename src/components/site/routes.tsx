@@ -44,14 +44,15 @@ export function Routes() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-10">
           <Badge variant="secondary" className="mb-3">
-            Popular Routes
+            Popular Braj Routes
           </Badge>
           <h2 id="routes-heading" className="text-3xl sm:text-4xl font-bold text-foreground">
-            Most Booked Intercity Routes
+            Most Booked Braj Pilgrimage Routes
           </h2>
           <p className="mt-4 text-muted-foreground text-base sm:text-lg">
-            A glimpse of the routes our travellers book most often. Prices shown are starting
-            fares for a sedan on a one-way trip — final fare depends on vehicle and trip type.
+            A glimpse of the Braj routes our pilgrims book most often — from Delhi to Mathura,
+            within the Braj circuit, and to specific sacred sites. Prices shown are starting
+            fares for a sedan one-way.
           </p>
         </div>
 
@@ -60,11 +61,11 @@ export function Routes() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
           <Input
             type="search"
-            placeholder="Search city or route (e.g. Delhi, Jaipur, Mumbai)"
+            placeholder="Search city or Braj site (e.g. Mathura, Vrindavan, Govardhan)"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="pl-9"
-            aria-label="Search routes"
+            aria-label="Search Braj routes"
           />
         </div>
 
@@ -114,17 +115,17 @@ export function Routes() {
 
         {filtered.length === 0 && (
           <div className="text-center text-muted-foreground py-12">
-            No routes found for &quot;{query}&quot;. Try another city, or{" "}
+            No routes found for &quot;{query}&quot;. Try another Braj site, or{" "}
             <a href="#contact" className="text-primary font-semibold underline-offset-4 hover:underline">
-              request a custom route quote
+              request a custom Braj route
             </a>
             .
           </div>
         )}
 
         <p className="mt-8 text-center text-sm text-muted-foreground">
-          Don&apos;t see your route? We cover <strong className="text-foreground">all over India</strong> —
-          just tell us your pickup and drop in the booking form.
+          Don&apos;t see your route? We cover <strong className="text-foreground">all 84-kosa of Braj</strong> and
+          every major city in India — just tell us your pickup and Braj destination in the booking form.
         </p>
       </div>
     </section>

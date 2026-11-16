@@ -4,6 +4,8 @@ import { Marquee } from "@/components/site/marquee";
 import { HowItWorks } from "@/components/site/how-it-works";
 import { Services } from "@/components/site/services";
 import { WhyChooseUs } from "@/components/site/why-choose-us";
+import { SacredSites } from "@/components/site/sacred-sites";
+import { AuspiciousDates } from "@/components/site/auspicious-dates";
 import { Fleet } from "@/components/site/fleet";
 import { Coverage } from "@/components/site/coverage";
 import { Routes } from "@/components/site/routes";
@@ -25,8 +27,9 @@ export default function Home() {
         <HowItWorks />
         <Services />
         <WhyChooseUs />
-        <Fleet />
+        <SacredSites />
         <Coverage />
+        <AuspiciousDates />
         <Routes />
         <FareCalculator />
         <Testimonials />

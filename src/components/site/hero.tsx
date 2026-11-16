@@ -6,52 +6,58 @@ import { Phone, MessageCircle, Star, ShieldCheck, MapPin, Clock } from "lucide-r
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CountUp } from "@/components/site/count-up";
+import { OmIcon } from "@/components/site/om-icon";
 import { siteConfig, buildTelLink, buildWhatsAppLink } from "@/lib/site-config";
 
 const trustBadges = [
-  { icon: ShieldCheck, label: "Verified Drivers" },
-  { icon: Clock, label: "24x7 Service" },
+  { icon: ShieldCheck, label: "Braj-Born Guides" },
+  { icon: Clock, label: "24x7 Yatra Support" },
   { icon: Star, label: "4.9 / 5 Rated" },
-  { icon: MapPin, label: "Pan India" },
+  { icon: MapPin, label: "84 Sacred Sites" },
 ];
 
-// Stats with numeric targets for the animated counter
 const stats = [
-  { target: 15000, suffix: "+", label: "Happy Travellers" },
-  { target: 250, suffix: "+", label: "Cities Covered" },
-  { target: 80, suffix: "+", label: "Vehicles in Fleet" },
-  { target: 99, suffix: "%", label: "On-Time Pickup" },
+  { target: 25000, suffix: "+", label: "Blessed Pilgrims" },
+  { target: 84, suffix: "", label: "Sacred Sites Covered" },
+  { target: 10, suffix: "+", label: "Years of Seva" },
+  { target: 99, suffix: "%", label: "Yatra Completion" },
 ];
 
-// Pre-generated positions for floating particles (stable across renders)
-const particles = Array.from({ length: 14 }).map((_, i) => ({
+// Floating lotus/petal particles for the sacred ambience
+const particles = Array.from({ length: 16 }).map((_, i) => ({
   id: i,
-  left: `${(i * 7.3 + 5) % 95}%`,
+  left: `${(i * 6.5 + 4) % 96}%`,
   top: `${(i * 11.7 + 8) % 85}%`,
-  size: 4 + ((i * 3) % 7),
-  delay: (i * 0.4) % 4,
-  duration: 4 + ((i * 1.5) % 4),
+  size: 3 + ((i * 3) % 8),
+  delay: (i * 0.35) % 4,
+  duration: 4 + ((i * 1.4) % 4),
+  // alternate gold and saffron petals
+  color: i % 3 === 0 ? "bg-gold/40" : i % 3 === 1 ? "bg-saffron/30" : "bg-white/30",
 }));
 
 export function Hero() {
   return (
     <section
       id="home"
-      className="relative bg-navy-gradient text-white overflow-hidden"
+      className="relative bg-braj-gradient text-white overflow-hidden"
       aria-labelledby="hero-heading"
     >
       {/* Decorative gradient blobs */}
       <div className="absolute inset-0 opacity-30 pointer-events-none" aria-hidden="true">
         <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-gold/20 blur-3xl" />
-        <div className="absolute bottom-0 left-1/4 w-72 h-72 rounded-full bg-white/10 blur-3xl" />
+        <div className="absolute bottom-0 left-1/4 w-72 h-72 rounded-full bg-saffron/20 blur-3xl" />
+        <div className="absolute top-1/3 left-1/2 w-64 h-64 rounded-full bg-white/10 blur-3xl" />
       </div>
 
-      {/* Floating particles */}
+      {/* Diya (lamp) pattern strip at top */}
+      <div className="braj-pattern-border" aria-hidden="true" />
+
+      {/* Floating particles (petals) */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         {particles.map((p) => (
           <motion.span
             key={p.id}
-            className="absolute rounded-full bg-gold/40"
+            className={`absolute rounded-full ${p.color}`}
             style={{
               left: p.left,
               top: p.top,
@@ -61,7 +67,7 @@ export function Hero() {
             animate={{
               y: [0, -22, 0],
               opacity: [0.2, 0.7, 0.2],
-              scale: [1, 1.3, 1],
+              scale: [1, 1.4, 1],
             }}
             transition={{
               duration: p.duration,
@@ -81,56 +87,68 @@ export function Hero() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
+              className="flex items-center justify-center lg:justify-start gap-3 mb-4"
             >
-              <Badge className="bg-gold text-accent-foreground hover:bg-gold mb-4">
-                Trusted Since {siteConfig.establishedYear}
+              <Badge className="bg-gold text-accent-foreground hover:bg-gold">
+                <OmIcon className="w-3 h-3 mr-1" /> Braj Mandala Since {siteConfig.establishedYear}
               </Badge>
             </motion.div>
+
+            {/* Sanskrit tagline */}
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-gold text-lg sm:text-xl font-medium mb-2"
+            >
+              {siteConfig.sanskritTagline}
+            </motion.p>
 
             <motion.h1
               id="hero-heading"
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.05 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
               className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight"
             >
-              Private Cab Service
+              Sacred Braj Yatra
               <motion.span
                 className="block text-gold mt-2"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
               >
-                All Over India
+                with Shree Shyama Shyam
               </motion.span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15 }}
+              transition={{ duration: 0.6, delay: 0.25 }}
               className="mt-5 text-base sm:text-lg text-white/85 max-w-xl mx-auto lg:mx-0"
             >
-              From airport drops to multi-day tours — book verified, sanitized cabs with
-              transparent all-inclusive pricing. Sedan, SUV, Innova, Tempo Traveller & luxury
-              coaches available 24x7 across 250+ cities.
+              Walk in the divine footsteps of Shri Krishna through the 84-kosa Braj Mandala —
+              Mathura, Vrindavan, Gokul, Barsana, Nandgaon & Govardhan. Same-day to 3-day
+              pilgrimage packages with Braj-born guides, verified vegetarian drivers, and
+              local pandit arrangements.
             </motion.p>
 
             {/* CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.25 }}
+              transition={{ duration: 0.6, delay: 0.35 }}
               className="mt-8 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start"
             >
               <Link href="#contact">
                 <Button size="lg" className="w-full sm:w-auto bg-gold text-accent-foreground hover:bg-gold/90">
-                  Book a Cab Now
+                  Book Your Yatra
                 </Button>
               </Link>
               <a
                 href={buildWhatsAppLink(
-                  `Hello ${siteConfig.shortName}, I would like to enquire about a cab booking. Pickup: , Drop: , Date: `
+                  `Radhe Radhe! I would like to book a Braj Yatra. Preferred package: , Dates: , Group size: `
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -140,7 +158,7 @@ export function Hero() {
                   variant="outline"
                   className="w-full sm:w-auto bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white gap-2"
                 >
-                  <MessageCircle className="w-5 h-5" /> WhatsApp Us
+                  <MessageCircle className="w-5 h-5" /> WhatsApp
                 </Button>
               </a>
               <a href={buildTelLink()}>
@@ -158,7 +176,7 @@ export function Hero() {
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35 }}
+              transition={{ duration: 0.6, delay: 0.45 }}
               className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-xl mx-auto lg:mx-0"
             >
               {trustBadges.map((b) => (
@@ -180,17 +198,15 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="hidden lg:block"
           >
-            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
-              {/* Animated gradient border accent */}
-              <div className="absolute -inset-px rounded-2xl pointer-events-none opacity-60" aria-hidden="true">
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-gold/0 via-gold/30 to-gold/0 animate-pulse" />
-              </div>
+            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 shadow-2xl relative overflow-hidden animate-sacred-glow">
+              {/* Om symbol watermark */}
+              <OmIcon className="absolute -top-4 -right-4 w-32 h-32 text-gold/10 pointer-events-none" aria-hidden="true" />
 
               <p className="relative text-gold text-sm font-semibold uppercase tracking-wider">
-                Why travellers choose us
+                Why devotees choose us
               </p>
               <h2 className="relative text-2xl font-bold mt-2 mb-6">
-                India&apos;s trusted private cab partner
+                Braj&apos;s most trusted yatra partner
               </h2>
               <div className="relative grid grid-cols-2 gap-4">
                 {stats.map((s, i) => (
@@ -214,7 +230,7 @@ export function Hero() {
                     <Star key={i} className="w-4 h-4 fill-gold text-gold" />
                   ))}
                 </div>
-                <span>Rated 4.9/5 by 15,000+ travellers</span>
+                <span>Blessed by 25,000+ pilgrims across India</span>
               </div>
             </div>
           </motion.div>
@@ -224,7 +240,7 @@ export function Hero() {
       {/* Wave divider */}
       <div className="relative" aria-hidden="true">
         <svg viewBox="0 0 1440 60" preserveAspectRatio="none" className="w-full h-[40px] sm:h-[60px]">
-          <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="oklch(1 0 0)" />
+          <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="oklch(0.985 0.008 80)" />
         </svg>
       </div>
     </section>

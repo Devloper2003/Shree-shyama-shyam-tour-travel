@@ -3,26 +3,27 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
-import { Check, Star, Users, Wind, Briefcase, ArrowRight, Wallet, Crown, Users2 } from "lucide-react";
+import { Check, Star, Clock, MapPin, Users, ArrowRight, Calendar, Route, Crown, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { vehicles, type VehicleCategory } from "@/lib/site-data";
+import { yatraPackages, type YatraPackageCategory } from "@/lib/site-data";
 
-type TabKey = "all" | VehicleCategory;
+type TabKey = "all" | YatraPackageCategory;
 
-const tabs: { key: TabKey; label: string; icon: typeof Wallet; description: string }[] = [
-  { key: "all", label: "All Vehicles", icon: Star, description: "View our complete fleet" },
-  { key: "economy", label: "Economy", icon: Wallet, description: "Budget-friendly for everyday trips" },
-  { key: "premium", label: "Premium", icon: Crown, description: "Executive comfort for long journeys" },
-  { key: "group", label: "Group Travel", icon: Users2, description: "Spacious options for large parties" },
+const tabs: { key: TabKey; label: string; icon: typeof Star; description: string }[] = [
+  { key: "all", label: "All Packages", icon: Star, description: "View our complete yatra offerings" },
+  { key: "day-tour", label: "1-Day Yatra", icon: Clock, description: "Same-day pilgrimage — perfect for time-short devotees" },
+  { key: "short", label: "2-Day Circuit", icon: Route, description: "Comfortable pace covering Mathura, Gokul, Vrindavan & Govardhan" },
+  { key: "complete", label: "3-Day Complete", icon: Crown, description: "Full 84-kosa Braj Mandala with all 12 main sites" },
+  { key: "custom", label: "Custom Yatra", icon: Sparkles, description: "Tailored to your specific sankalp and group" },
 ];
 
 export function Services() {
   const [active, setActive] = useState<TabKey>("all");
 
   const filtered =
-    active === "all" ? vehicles : vehicles.filter((v) => v.tab === active);
+    active === "all" ? yatraPackages : yatraPackages.filter((p) => p.tab === active);
 
   return (
     <section id="services" className="py-16 sm:py-20 lg:py-24 bg-background" aria-labelledby="services-heading">
@@ -30,14 +31,15 @@ export function Services() {
         {/* Section header */}
         <div className="text-center max-w-3xl mx-auto mb-10">
           <Badge variant="secondary" className="mb-3">
-            Our Fleet
+            <MapPin className="w-3 h-3 mr-1" /> Yatra Packages
           </Badge>
           <h2 id="services-heading" className="text-3xl sm:text-4xl font-bold text-foreground">
-            Choose the Right Cab for Your Journey
+            Choose Your Sacred Braj Yatra
           </h2>
           <p className="mt-4 text-muted-foreground text-base sm:text-lg">
-            From budget sedans to luxury coaches — pick a category to explore. All prices are
-            per-kilometre and fully inclusive of fuel, driver allowance, and state taxes.
+            From a single day of darshan at Mathura-Vrindavan to the complete 3-day Braj
+            Mandala circuit — every package is led by Braj-born guides and includes AC cab,
+            driver-cum-guide, and all temple visits.
           </p>
         </div>
 
@@ -87,7 +89,7 @@ export function Services() {
           </motion.p>
         </AnimatePresence>
 
-        {/* Vehicle cards grid with animated transitions */}
+        {/* Package cards grid with animated transitions */}
         <AnimatePresence mode="wait">
           <motion.div
             key={active}
@@ -97,87 +99,111 @@ export function Services() {
             transition={{ duration: 0.35 }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            {filtered.map((v, i) => (
+            {filtered.map((p, i) => (
               <motion.div
-                key={v.id}
+                key={p.id}
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
               >
                 <Card
                   className={`relative h-full flex flex-col ${
-                    v.popular ? "border-gold ring-1 ring-gold/40" : ""
+                    p.popular ? "border-gold ring-1 ring-gold/40" : ""
                   } hover:shadow-lg hover:-translate-y-1 transition-all`}
                 >
-                  {v.popular && (
+                  {p.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
                       <Badge className="bg-gold text-accent-foreground hover:bg-gold gap-1">
-                        <Star className="w-3 h-3 fill-current" /> Popular
+                        <Star className="w-3 h-3 fill-current" /> Most Booked
                       </Badge>
                     </div>
                   )}
                   <CardHeader className="pb-3">
                     <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                      {v.category}
+                      {p.category}
                     </p>
-                    <h3 className="text-xl font-bold text-foreground">{v.name}</h3>
+                    <h3 className="text-xl font-bold text-foreground">{p.name}</h3>
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground mt-1">
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3 text-primary" /> {p.duration}
+                      </span>
+                      {p.days > 0 && (
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3 text-primary" /> {p.days} day{p.days > 1 ? "s" : ""}
+                        </span>
+                      )}
+                    </div>
                   </CardHeader>
 
                   <CardContent className="flex-1 space-y-4">
-                    <div className="grid grid-cols-3 gap-2 text-center">
-                      <div className="bg-muted rounded-md py-2 px-1">
-                        <Users className="w-4 h-4 mx-auto text-primary" />
-                        <p className="text-[11px] text-muted-foreground mt-1">Seating</p>
-                        <p className="text-xs font-semibold text-foreground">{v.seating}</p>
-                      </div>
-                      <div className="bg-muted rounded-md py-2 px-1">
-                        <Wind className="w-4 h-4 mx-auto text-primary" />
-                        <p className="text-[11px] text-muted-foreground mt-1">AC</p>
-                        <p className="text-xs font-semibold text-foreground">{v.ac ? "Yes" : "—"}</p>
-                      </div>
-                      <div className="bg-muted rounded-md py-2 px-1">
-                        <Briefcase className="w-4 h-4 mx-auto text-primary" />
-                        <p className="text-[11px] text-muted-foreground mt-1">Luggage</p>
-                        <p className="text-xs font-semibold text-foreground">{v.luggage}</p>
+                    {/* Temples visited */}
+                    <div>
+                      <p className="text-xs font-medium text-muted-foreground mb-2 flex items-center gap-1">
+                        <MapPin className="w-3 h-3 text-primary" /> Sites Covered
+                      </p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {p.temples.slice(0, 5).map((t) => (
+                          <Badge key={t} variant="outline" className="text-[11px] font-normal">
+                            {t}
+                          </Badge>
+                        ))}
+                        {p.temples.length > 5 && (
+                          <Badge variant="outline" className="text-[11px] font-normal">
+                            +{p.temples.length - 5} more
+                          </Badge>
+                        )}
                       </div>
                     </div>
 
-                    <p className="text-xs text-muted-foreground">
-                      Examples: <span className="text-foreground font-medium">{v.example}</span>
-                    </p>
-
+                    {/* Inclusions */}
                     <div>
-                      <p className="text-xs font-medium text-muted-foreground mb-2">Best for</p>
+                      <p className="text-xs font-medium text-muted-foreground mb-2">Inclusions</p>
+                      <ul className="space-y-1">
+                        {p.inclusions.slice(0, 4).map((inc) => (
+                          <li key={inc} className="text-xs text-foreground/80 flex items-start gap-1.5">
+                            <Check className="w-3 h-3 text-primary mt-0.5 shrink-0" />
+                            <span>{inc}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Best for */}
+                    <div>
+                      <p className="text-xs font-medium text-muted-foreground mb-2 flex items-center gap-1">
+                        <Users className="w-3 h-3 text-primary" /> Best For
+                      </p>
                       <div className="flex flex-wrap gap-1.5">
-                        {v.bestFor.map((b) => (
-                          <Badge key={b} variant="outline" className="text-[11px] font-normal">
+                        {p.bestFor.map((b) => (
+                          <Badge key={b} variant="secondary" className="text-[11px] font-normal">
                             {b}
                           </Badge>
                         ))}
                       </div>
                     </div>
 
-                    <div className="border-t border-border pt-3 space-y-1">
-                      <div className="flex items-baseline justify-between">
-                        <span className="text-sm text-muted-foreground">Per KM</span>
-                        <span className="text-lg font-bold text-foreground">
-                          ₹{v.perKmRate}
-                          <span className="text-xs text-muted-foreground font-normal">/km</span>
-                        </span>
-                      </div>
-                      <div className="flex items-baseline justify-between">
-                        <span className="text-sm text-muted-foreground">Starting from</span>
-                        <span className="text-base font-semibold text-primary">
-                          ₹{v.startingFrom.toLocaleString("en-IN")}
-                        </span>
-                      </div>
+                    {/* Pricing */}
+                    <div className="border-t border-border pt-3">
+                      {p.price > 0 ? (
+                        <div className="flex items-baseline justify-between">
+                          <span className="text-sm text-muted-foreground">Starting from</span>
+                          <span className="text-xl font-bold text-primary">
+                            ₹{p.price.toLocaleString("en-IN")}
+                            <span className="text-xs text-muted-foreground font-normal">/person</span>
+                          </span>
+                        </div>
+                      ) : (
+                        <p className="text-sm text-primary font-medium">
+                          Custom quote — based on your sankalp
+                        </p>
+                      )}
                     </div>
                   </CardContent>
 
                   <CardFooter className="pt-0">
                     <Link href="#contact" className="w-full">
                       <Button className="w-full gap-2">
-                        Book {v.name} <ArrowRight className="w-4 h-4" />
+                        Book This Yatra <ArrowRight className="w-4 h-4" />
                       </Button>
                     </Link>
                   </CardFooter>
@@ -190,14 +216,14 @@ export function Services() {
         <div className="mt-10 text-center text-sm text-muted-foreground max-w-3xl mx-auto">
           <p className="flex items-center justify-center gap-2 flex-wrap">
             <Check className="w-4 h-4 text-primary" />
-            All prices include fuel, driver allowance, and state taxes.
+            All packages include AC cab, driver-cum-guide, fuel, toll, parking, and temple visits.
           </p>
           <p className="mt-2">
-            Need a custom package or a vehicle not listed above?{" "}
+            Need a custom yatra for your sankalp or group?{" "}
             <Link href="#contact" className="text-primary font-semibold underline-offset-4 hover:underline">
-              Contact us
+              Tell us your requirement
             </Link>{" "}
-            for a tailored quote.
+            and we&apos;ll craft a tailored itinerary.
           </p>
         </div>
       </div>

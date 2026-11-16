@@ -7,18 +7,30 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { testimonials, type Testimonial } from "@/lib/site-data";
 
-type FilterKey = "all" | "outstation" | "airport" | "local" | "group";
+type FilterKey = "all" | "complete" | "day-tour" | "airport" | "custom";
 
 const filters: { key: FilterKey; label: string; match: (t: Testimonial) => boolean }[] = [
   { key: "all", label: "All Reviews", match: () => true },
   {
-    key: "outstation",
-    label: "Outstation",
-    match: (t) => /→|Round Trip|One-way/i.test(t.trip) && !/Airport|Group/i.test(t.trip),
+    key: "complete",
+    label: "Multi-Day Yatra",
+    match: (t) => /3-Day|2-Day|Complete/i.test(t.trip),
   },
-  { key: "airport", label: "Airport", match: (t) => /Airport/i.test(t.trip) },
-  { key: "local", label: "Local", match: (t) => /Local/i.test(t.trip) },
-  { key: "group", label: "Group", match: (t) => /Group/i.test(t.trip) },
+  {
+    key: "day-tour",
+    label: "Same-Day Yatra",
+    match: (t) => /Same Day|Govardhan|Barsana/i.test(t.trip),
+  },
+  {
+    key: "airport",
+    label: "Airport Transfer",
+    match: (t) => /Airport/i.test(t.trip),
+  },
+  {
+    key: "custom",
+    label: "Custom Yatra",
+    match: (t) => /Custom/i.test(t.trip),
+  },
 ];
 
 export function Testimonials() {
@@ -36,14 +48,14 @@ export function Testimonials() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-10">
           <Badge variant="secondary" className="mb-3">
-            Testimonials
+            Pilgrim Experiences
           </Badge>
           <h2 id="testimonials-heading" className="text-3xl sm:text-4xl font-bold text-foreground">
-            What Our Travellers Say
+            What Our Pilgrims Say
           </h2>
           <p className="mt-4 text-muted-foreground text-base sm:text-lg">
-            Real reviews from real travellers. Filter by trip type to see stories similar to
-            your planned journey.
+            Real experiences from devotees who walked Braj&apos;s sacred grounds with us. Filter
+            by yatra type to read stories similar to the journey you&apos;re planning.
           </p>
         </div>
 
@@ -124,7 +136,7 @@ export function Testimonials() {
               ))
             ) : (
               <div className="col-span-full text-center text-muted-foreground py-10">
-                No reviews in this category yet. Be the first to share your experience!
+                No pilgrim reviews in this category yet. Be the first to share your Braj experience!
               </div>
             )}
           </motion.div>

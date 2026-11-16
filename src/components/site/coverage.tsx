@@ -1,36 +1,36 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MapPin, Zap } from "lucide-react";
+import { MapPin } from "lucide-react";
+import { OmIcon } from "@/components/site/om-icon";
 import { Badge } from "@/components/ui/badge";
 import { CountUp } from "@/components/site/count-up";
 
-type CityDot = { name: string; x: number; y: number; size: number; delay: number };
+type BrajSite = { name: string; sanskrit?: string; x: number; y: number; size: number; delay: number; significance: string };
 
-// Stylized city dots positioned on a stylized India map background.
-// Coordinates are percentage-based within the SVG viewBox (0-100 x, 0-100 y).
-const cities: CityDot[] = [
-  { name: "Delhi", x: 35, y: 22, size: 7, delay: 0 },
-  { name: "Mumbai", x: 22, y: 60, size: 7, delay: 0.3 },
-  { name: "Jaipur", x: 30, y: 28, size: 5, delay: 0.6 },
-  { name: "Bangalore", x: 38, y: 78, size: 6, delay: 0.9 },
-  { name: "Chennai", x: 50, y: 80, size: 6, delay: 1.2 },
-  { name: "Kolkata", x: 65, y: 38, size: 6, delay: 1.5 },
-  { name: "Hyderabad", x: 42, y: 60, size: 5, delay: 1.8 },
-  { name: "Ahmedabad", x: 22, y: 42, size: 5, delay: 2.1 },
-  { name: "Pune", x: 26, y: 62, size: 5, delay: 2.4 },
-  { name: "Mathura", x: 36, y: 24, size: 4, delay: 2.7 },
-  { name: "Varanasi", x: 50, y: 32, size: 4, delay: 3.0 },
-  { name: "Amritsar", x: 33, y: 14, size: 4, delay: 3.3 },
-  { name: "Goa", x: 30, y: 72, size: 4, delay: 3.6 },
-  { name: "Rishikesh", x: 36, y: 18, size: 4, delay: 3.9 },
+// Sites plotted on a stylized Braj Mandala circular map.
+// Mathura is the central anchor; other sites arranged around it on the
+// 84-kosa Braj parikrama circuit.
+const brajSites: BrajSite[] = [
+  { name: "Mathura", sanskrit: "मथुरा", x: 50, y: 50, size: 8, delay: 0, significance: "Krishna's birthplace — the heart of Braj" },
+  { name: "Vrindavan", sanskrit: "वृन्दावन", x: 38, y: 38, size: 7, delay: 0.3, significance: "Krishna's childhood & Ras Leela forests" },
+  { name: "Gokul", sanskrit: "गोकुल", x: 60, y: 38, size: 6, delay: 0.6, significance: "Where Yashoda raised baby Krishna" },
+  { name: "Mahavan", sanskrit: "महावन", x: 65, y: 50, size: 5, delay: 0.9, significance: "Nand's first home in Braj" },
+  { name: "Govardhan", sanskrit: "गोवर्धन", x: 30, y: 60, size: 7, delay: 1.2, significance: "The hill Krishna lifted on His finger" },
+  { name: "Radha Kund", sanskrit: "राधाकुंड", x: 24, y: 64, size: 5, delay: 1.5, significance: "Most sacred pond in Braj" },
+  { name: "Barsana", sanskrit: "बरसाना", x: 70, y: 70, size: 6, delay: 1.8, significance: "Radha Rani's eternal abode" },
+  { name: "Nandgaon", sanskrit: "नंदगांव", x: 60, y: 76, size: 5, delay: 2.1, significance: "Nanda Maharaj's village" },
+  { name: "Kusum Sarovar", sanskrit: "कुसुम सरोवर", x: 22, y: 50, size: 4, delay: 2.4, significance: "Where Radha picked flowers" },
+  { name: "Bhandiravan", sanskrit: "भांडीरवन", x: 76, y: 60, size: 4, delay: 2.7, significance: "Where Krishna & Radha married" },
+  { name: "Uncha Gaon", sanskrit: "ऊँचा गांव", x: 82, y: 70, size: 4, delay: 3.0, significance: "Sri Vrishbhanu's residence" },
+  { name: "Kokilavan", sanskrit: "कोकिलावन", x: 40, y: 80, size: 4, delay: 3.3, significance: "Where Krishna became a cuckoo" },
 ];
 
 const statCards = [
-  { target: 250, suffix: "+", label: "Cities Covered" },
-  { target: 28, suffix: "+", label: "States & UTs" },
-  { target: 5000, suffix: "+", label: "Routes Serviced" },
-  { target: 24, suffix: "x7", label: "Available Hours" },
+  { target: 84, suffix: "", label: "Kosa Braj Circuit" },
+  { target: 12, suffix: "", label: "Main Sacred Sites" },
+  { target: 300, suffix: " km", label: "Total Parikrama Route" },
+  { target: 5000, suffix: "+ years", label: "Of Divine Heritage" },
 ];
 
 export function Coverage() {
@@ -45,16 +45,17 @@ export function Coverage() {
           {/* Left: text + stats */}
           <div>
             <Badge variant="secondary" className="mb-3">
-              <MapPin className="w-3 h-3 mr-1" /> Pan India Coverage
+              <MapPin className="w-3 h-3 mr-1" /> Braj Mandala
             </Badge>
             <h2 id="coverage-heading" className="text-3xl sm:text-4xl font-bold text-foreground">
-              One Cab Service,{" "}
-              <span className="text-primary">Every Corner of India</span>
+              The 84-Kosa Sacred Circuit of{" "}
+              <span className="text-primary">Braj Bhoomi</span>
             </h2>
             <p className="mt-4 text-muted-foreground text-base sm:text-lg">
-              From the Himalayan foothills to Kanyakumari, from metropolitan hubs to pilgrimage
-              towns — our verified drivers and clean cabs are available wherever your journey
-              takes you.
+              The Braj Mandala is the 84-kosa (approximately 300 km) sacred land where Lord
+              Krishna appeared 5,000 years ago and performed His divine pastimes. Mathura is at
+              its heart, surrounded by the 12 main sites — each a chapter in Krishna&apos;s
+              eternal leela.
             </p>
 
             <div className="mt-8 grid grid-cols-2 gap-4">
@@ -76,15 +77,16 @@ export function Coverage() {
             </div>
 
             <div className="mt-6 flex items-start gap-3 text-sm text-muted-foreground">
-              <Zap className="w-4 h-4 text-gold shrink-0 mt-0.5" />
+              <OmIcon className="w-5 h-5 text-gold shrink-0 mt-0.5" />
               <p>
-                Even if you don&apos;t see your city listed, just tell us your pickup and drop —
-                we cover every route that has a road.
+                Devotees traditionally complete the 84-kosa Braj parikrama over 40 days on
+                foot. We facilitate shorter versions by vehicle for elderly devotees and
+                time-constrained pilgrims, with the same spiritual merit.
               </p>
             </div>
           </div>
 
-          {/* Right: animated stylized India map */}
+          {/* Right: animated Braj Mandala circular map */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -92,72 +94,100 @@ export function Coverage() {
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="bg-navy-gradient text-white rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+            <div className="bg-braj-gradient text-white rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-20 pointer-events-none" aria-hidden="true">
                 <div className="absolute top-0 right-0 w-40 h-40 bg-gold/20 rounded-full blur-3xl" />
               </div>
               <p className="relative text-gold text-xs font-semibold uppercase tracking-wider mb-4">
-                Major Service Hubs
+                Braj Mandala — 84 Kosa Parikrama
               </p>
 
-              <svg viewBox="0 0 100 100" className="relative w-full h-auto" role="img" aria-label="Map of India with major service hubs">
-                {/* Stylized India silhouette (simplified) */}
-                <path
-                  d="M40 8 L48 10 L55 14 L62 12 L70 18 L78 25 L82 35 L80 45 L75 55 L72 65 L68 75 L60 85 L50 90 L42 88 L35 82 L28 75 L22 65 L18 55 L20 45 L25 35 L30 25 L35 15 Z"
-                  fill="oklch(1 0 0 / 8%)"
-                  stroke="oklch(0.78 0.13 85)"
-                  strokeWidth="0.5"
-                  strokeDasharray="2 1"
-                  className="opacity-70"
+              <svg viewBox="0 0 100 100" className="relative w-full h-auto" role="img" aria-label="Braj Mandala map showing 12 main sacred sites">
+                {/* Outer parikrama circle (84-kosa route) */}
+                <motion.circle
+                  cx="50"
+                  cy="50"
+                  r="42"
+                  fill="none"
+                  stroke="oklch(0.78 0.14 85 / 0.3)"
+                  strokeWidth="0.4"
+                  strokeDasharray="1.5 1.5"
+                  initial={{ pathLength: 0 }}
+                  whileInView={{ pathLength: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 2, ease: "easeInOut" }}
+                />
+                {/* Inner circle (Mathura's heart) */}
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="22"
+                  fill="oklch(1 0 0 / 5%)"
+                  stroke="oklch(0.78 0.14 85 / 0.2)"
+                  strokeWidth="0.3"
+                  strokeDasharray="0.8 0.8"
                 />
 
-                {/* Pulsing city dots */}
-                {cities.map((c) => (
-                  <g key={c.name}>
+                {/* Pulsing sacred sites */}
+                {brajSites.map((site) => (
+                  <g key={site.name}>
                     {/* Pulse ring */}
                     <motion.circle
-                      cx={c.x}
-                      cy={c.y}
-                      r={c.size / 2}
-                      fill="oklch(0.78 0.13 85)"
-                      initial={{ opacity: 0.6, scale: 1 }}
+                      cx={site.x}
+                      cy={site.y}
+                      r={site.size / 2.5}
+                      fill="oklch(0.78 0.14 85)"
+                      initial={{ opacity: 0.5, scale: 1 }}
                       animate={{ opacity: 0, scale: 3 }}
                       transition={{
-                        duration: 2,
+                        duration: 2.5,
                         repeat: Infinity,
-                        delay: c.delay,
+                        delay: site.delay,
                         ease: "easeOut",
                       }}
-                      style={{ transformOrigin: `${c.x}px ${c.y}px` }}
+                      style={{ transformOrigin: `${site.x}px ${site.y}px` }}
                     />
                     {/* Solid dot */}
                     <circle
-                      cx={c.x}
-                      cy={c.y}
-                      r={c.size / 5}
-                      fill="oklch(0.78 0.13 85)"
+                      cx={site.x}
+                      cy={site.y}
+                      r={site.size / 5}
+                      fill="oklch(0.78 0.14 85)"
                     />
                     {/* Label */}
                     <text
-                      x={c.x + 1.5}
-                      y={c.y + 0.8}
-                      fontSize="2"
+                      x={site.x + 1.5}
+                      y={site.y + 0.8}
+                      fontSize="2.2"
                       fill="white"
                       className="font-semibold"
                       style={{ paintOrder: "stroke", stroke: "rgba(0,0,0,0.4)", strokeWidth: 0.3 }}
                     >
-                      {c.name}
+                      {site.name}
                     </text>
                   </g>
                 ))}
+
+                {/* Central Om symbol */}
+                <text
+                  x="50"
+                  y="52"
+                  fontSize="3"
+                  fill="oklch(0.78 0.14 85)"
+                  textAnchor="middle"
+                  className="font-bold"
+                  style={{ paintOrder: "stroke", stroke: "rgba(0,0,0,0.4)", strokeWidth: 0.2 }}
+                >
+                  ॐ
+                </text>
               </svg>
 
               <div className="relative mt-4 flex items-center justify-between text-xs text-white/70">
                 <span className="flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
-                  Active service hubs
+                  12 main sacred sites
                 </span>
-                <span>+ many more across India</span>
+                <span>+ 72 sites across the parikrama</span>
               </div>
             </div>
           </motion.div>

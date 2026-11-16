@@ -101,14 +101,15 @@ export function Fleet() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-12">
           <Badge variant="secondary" className="mb-3">
-            Our Fleet
+            Pilgrimage Fleet
           </Badge>
           <h2 id="fleet-heading" className="text-3xl sm:text-4xl font-bold text-foreground">
-            A Vehicle for Every Journey
+            A Vehicle for Every Pilgrim Group
           </h2>
           <p className="mt-4 text-muted-foreground text-base sm:text-lg">
-            Our 80+ strong fleet is regularly serviced, deep-cleaned, and rotated to ensure you
-            always get a fresh, roadworthy cab. Here is a snapshot of what we operate.
+            From a small family sedan for a same-day Mathura darshan to a 45-seater coach for
+            your bhajan mandali&apos;s Braj tour — our fleet is deep-cleaned, AC-equipped, and
+            driven by vegetarian drivers who know Braj&apos;s every lane.
           </p>
         </div>
 

@@ -1,40 +1,43 @@
 "use client";
 
 import Link from "next/link";
-import { Phone, Mail, MessageCircle, MapPin, Clock, Car, Facebook, Instagram, Youtube, Twitter } from "lucide-react";
+import { Phone, Mail, MessageCircle, MapPin, Clock, Facebook, Instagram, Youtube, Twitter } from "lucide-react";
+import { OmIcon } from "@/components/site/om-icon";
 import { siteConfig, buildTelLink, buildWhatsAppLink } from "@/lib/site-config";
 
 const quickLinks = [
   { label: "Home", href: "#home" },
-  { label: "Services", href: "#services" },
-  { label: "Why Choose Us", href: "#why-us" },
-  { label: "Fleet Gallery", href: "#fleet" },
+  { label: "How It Works", href: "#how-it-works" },
+  { label: "Yatra Packages", href: "#services" },
+  { label: "Sacred Sites", href: "#sacred-sites" },
+  { label: "Braj Mandala Map", href: "#coverage" },
+  { label: "Festival Calendar", href: "#auspicious-dates" },
   { label: "Popular Routes", href: "#routes" },
-  { label: "Fare Calculator", href: "#fare-calculator" },
   { label: "About Us", href: "#about" },
   { label: "FAQ", href: "#faq" },
-  { label: "Book a Cab", href: "#contact" },
+  { label: "Book Your Yatra", href: "#contact" },
 ];
 
 export function Footer() {
   return (
-    <footer className="bg-navy-deep text-white mt-auto">
+    <footer className="bg-braj-deep text-white mt-auto">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-md bg-white/10 flex items-center justify-center text-gold">
-                <Car className="w-6 h-6" />
+              <div className="w-10 h-10 rounded-md bg-white/10 flex items-center justify-center text-gold animate-sacred-glow">
+                <OmIcon className="w-6 h-6" />
               </div>
               <div>
                 <p className="text-sm font-bold leading-tight">Shree Shyama Shyam</p>
-                <p className="text-xs text-white/60 leading-tight">Tour and Travels</p>
+                <p className="text-xs text-white/60 leading-tight">Braj Yatra & Pilgrimage</p>
               </div>
             </div>
             <p className="text-sm text-white/70 leading-relaxed">
-              India&apos;s trusted private cab service since {siteConfig.establishedYear}.
-              Verified drivers, sanitized cabs, transparent pricing — across 250+ cities.
+              India&apos;s trusted Braj Yatra pilgrimage partner since {siteConfig.establishedYear}.
+              Braj-born guides, verified vegetarian drivers, local pandit arrangements — across
+              all 84-kosa of the sacred Braj Mandala.
             </p>
             <p className="text-xs text-gold mt-4 font-medium">{siteConfig.businessHours}</p>
           </div>
@@ -158,7 +161,7 @@ export function Footer() {
             </div>
             <Link href="#contact">
               <button className="w-full px-4 py-2.5 rounded-md bg-gold text-accent-foreground text-sm font-semibold hover:opacity-90 transition-opacity">
-                Book a Cab Now
+                Book Your Yatra
               </button>
             </Link>
           </div>
@@ -170,7 +173,7 @@ export function Footer() {
             &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>
           <p>
-            Private Cab Service • All Over India • {siteConfig.businessHours}
+            राधे राधे • Sacred Braj Yatra • {siteConfig.businessHours}
           </p>
         </div>
       </div>

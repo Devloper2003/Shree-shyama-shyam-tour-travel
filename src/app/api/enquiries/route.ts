@@ -5,17 +5,17 @@ import { siteConfig, buildWhatsAppLink, buildTelLink, buildMailtoLink } from "@/
 /**
  * POST /api/enquiries
  *
- * Receives a booking/enquiry submission from the website's contact form,
- * the popular-route "Book this route" buttons, or the fare calculator's
- * "Book this fare" button. Persists the enquiry to the SQLite database so
- * the business always has a record, then returns three deep links so the
- * customer can also push the same enquiry to WhatsApp, Email, or Phone in
- * one click — guaranteeing the enquiry actually reaches the business even
- * if email delivery is delayed.
+ * Receives a Braj Yatra booking/enquiry submission from the website's contact
+ * form, the popular-route "Book this route" buttons, or the fare calculator's
+ * "Book this fare" button. Persists the enquiry to the SQLite database so the
+ * business always has a record, then returns three deep links so the customer
+ * can also push the same enquiry to WhatsApp, Email, or Phone in one click —
+ * guaranteeing the enquiry actually reaches the business even if email
+ * delivery is delayed.
  *
  * Request body (JSON):
- *   name, phone, email?, pickup, drop, vehicleType?, tripType?,
- *   pickupDate?, pickupTime?, passengers?, notes?, source?
+ *   name, phone, email?, pickup, drop, yatraPackage?, vehicleType?,
+ *   tripType?, pickupDate?, pickupTime?, passengers?, notes?, source?
  */
 export async function POST(req: NextRequest) {
   try {
@@ -40,6 +40,7 @@ export async function POST(req: NextRequest) {
         email: body.email ? String(body.email).trim().slice(0, 160) : null,
         pickup: String(body.pickup).trim().slice(0, 200),
         drop: String(body.drop).trim().slice(0, 200),
+        yatraPackage: body.yatraPackage ? String(body.yatraPackage).slice(0, 100) : null,
         vehicleType: body.vehicleType ? String(body.vehicleType).slice(0, 60) : null,
         tripType: body.tripType ? String(body.tripType).slice(0, 40) : null,
         pickupDate: body.pickupDate ? String(body.pickupDate).slice(0, 20) : null,
@@ -53,7 +54,7 @@ export async function POST(req: NextRequest) {
     // Compose the message that will be sent via WhatsApp / email so the
     // business owner instantly sees every detail of the enquiry.
     const lines = [
-      `*New Cab Enquiry — ${siteConfig.shortName}*`,
+      `*Radhe Radhe! New Yatra Enquiry — ${siteConfig.shortName}*`,
       ``,
       `Name: ${enquiry.name}`,
       `Phone: ${enquiry.phone}`,
@@ -61,12 +62,13 @@ export async function POST(req: NextRequest) {
       ``,
       `Pickup: ${enquiry.pickup}`,
       `Drop: ${enquiry.drop}`,
+      enquiry.yatraPackage ? `Yatra Package: ${enquiry.yatraPackage}` : null,
       enquiry.vehicleType ? `Vehicle: ${enquiry.vehicleType}` : null,
-      enquiry.tripType ? `Trip Type: ${enquiry.tripType}` : null,
+      enquiry.tripType ? `Yatra Type: ${enquiry.tripType}` : null,
       enquiry.pickupDate ? `Date: ${enquiry.pickupDate}` : null,
       enquiry.pickupTime ? `Time: ${enquiry.pickupTime}` : null,
-      enquiry.passengers ? `Passengers: ${enquiry.passengers}` : null,
-      enquiry.notes ? `Notes: ${enquiry.notes}` : null,
+      enquiry.passengers ? `Pilgrims: ${enquiry.passengers}` : null,
+      enquiry.notes ? `Sankalp/Notes: ${enquiry.notes}` : null,
       ``,
       `Source: ${enquiry.source}`,
       `Enquiry ID: ${enquiry.id}`,
@@ -80,7 +82,7 @@ export async function POST(req: NextRequest) {
       // Deep links the frontend can offer to the user right after submit:
       whatsapp: buildWhatsAppLink(messageText),
       phone: buildTelLink(),
-      email: buildMailtoLink(`New Cab Enquiry — ${enquiry.name}`, messageText),
+      email: buildMailtoLink(`New Braj Yatra Enquiry — ${enquiry.name}`, messageText),
       messagePreview: messageText,
     });
   } catch (err) {

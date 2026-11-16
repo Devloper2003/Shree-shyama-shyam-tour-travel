@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { siteConfig, buildTelLink, buildWhatsAppLink, buildMailtoLink } from "@/lib/site-config";
-import { vehicles } from "@/lib/site-data";
+import { yatraPackages, vehicles } from "@/lib/site-data";
 
 type PrefillDetail = {
   pickup?: string;
@@ -73,8 +73,9 @@ export function Contact() {
     email: "",
     pickup: "",
     drop: "",
+    yatraPackage: "",
     vehicleType: "",
-    tripType: "one-way",
+    tripType: "same-day",
     pickupDate: "",
     pickupTime: "",
     passengers: "1",
@@ -190,8 +191,9 @@ export function Contact() {
       email: "",
       pickup: "",
       drop: "",
+      yatraPackage: "",
       vehicleType: "",
-      tripType: "one-way",
+      tripType: "same-day",
       pickupDate: "",
       pickupTime: "",
       passengers: "1",
@@ -208,15 +210,15 @@ export function Contact() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-10">
           <Badge variant="secondary" className="mb-3">
-            Book a Cab
+            Book Your Yatra
           </Badge>
           <h2 id="contact-heading" className="text-3xl sm:text-4xl font-bold text-foreground">
-            Book Your Cab in 3 Easy Steps
+            Begin Your Sacred Braj Yatra in 3 Steps
           </h2>
           <p className="mt-4 text-muted-foreground text-base sm:text-lg">
-            Fill the form below and our team will call you back within 15 minutes to confirm.
-            For instant confirmation, use WhatsApp or Call — your enquiry details go straight to
-            us.
+            Share your sankalp and our Braj team will call you back within 15 minutes to confirm
+            your yatra. For instant confirmation, use WhatsApp or Call — your yatra details go
+            straight to us with a warm &ldquo;Radhe Radhe&rdquo;.
           </p>
         </div>
 
@@ -229,8 +231,8 @@ export function Contact() {
             transition={{ duration: 0.5 }}
             className="space-y-4 order-2 lg:order-1"
           >
-            <div className="bg-navy-gradient text-white rounded-xl p-6">
-              <h3 className="text-lg font-bold mb-4">Reach Us Directly</h3>
+            <div className="bg-braj-gradient text-white rounded-xl p-6">
+              <h3 className="text-lg font-bold mb-4">Reach Us Directly — Radhe Radhe</h3>
               <div className="space-y-4 text-sm">
                 <a href={buildTelLink()} className="flex items-start gap-3 hover:text-gold transition-colors">
                   <Phone className="w-5 h-5 text-gold shrink-0 mt-0.5" />
@@ -388,7 +390,7 @@ export function Contact() {
                           required
                           value={form.pickup}
                           onChange={(e) => update("pickup", e.target.value)}
-                          placeholder="City / address / airport"
+                          placeholder="City / address / airport (e.g. Delhi)"
                         />
                       </div>
                       <div className="space-y-2">
@@ -398,8 +400,27 @@ export function Contact() {
                           required
                           value={form.drop}
                           onChange={(e) => update("drop", e.target.value)}
-                          placeholder="City / address / airport"
+                          placeholder="Braj site (e.g. Mathura, Vrindavan)"
                         />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="yatraPackage">Yatra Package</Label>
+                        <Select
+                          value={form.yatraPackage}
+                          onValueChange={(v) => update("yatraPackage", v)}
+                        >
+                          <SelectTrigger id="yatraPackage">
+                            <SelectValue placeholder="Select yatra package" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {yatraPackages.map((p) => (
+                              <SelectItem key={p.id} value={p.name}>
+                                {p.name} ({p.duration})
+                              </SelectItem>
+                            ))}
+                            <SelectItem value="Not sure">Not sure — please suggest</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="vehicleType">Vehicle Type</Label>
@@ -421,20 +442,21 @@ export function Contact() {
                         </Select>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="tripType">Trip Type</Label>
+                        <Label htmlFor="tripType">Yatra Type</Label>
                         <Select
                           value={form.tripType}
                           onValueChange={(v) => update("tripType", v)}
                         >
                           <SelectTrigger id="tripType">
-                            <SelectValue placeholder="Select trip type" />
+                            <SelectValue placeholder="Select yatra type" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="one-way">One-way</SelectItem>
-                            <SelectItem value="round-trip">Round-trip</SelectItem>
-                            <SelectItem value="local">Local / hourly</SelectItem>
-                            <SelectItem value="airport">Airport transfer</SelectItem>
-                            <SelectItem value="tour-package">Tour package</SelectItem>
+                            <SelectItem value="same-day">Same-day darshan</SelectItem>
+                            <SelectItem value="multi-day">Multi-day yatra</SelectItem>
+                            <SelectItem value="govardhan-parikrama">Govardhan Parikrama</SelectItem>
+                            <SelectItem value="festival-yatra">Festival yatra</SelectItem>
+                            <SelectItem value="custom-sankalp">Custom sankalp</SelectItem>
+                            <SelectItem value="airport-transfer">Airport transfer</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -519,7 +541,7 @@ export function Contact() {
                           rows={4}
                           value={form.notes}
                           onChange={(e) => update("notes", e.target.value)}
-                          placeholder="Any special request — child seat, stops, flight number, luggage, etc."
+                          placeholder="Any special sankalp — pandit arrangement, abhishek, specific temples, elderly devotees, etc."
                         />
                       </div>
                     </motion.div>
@@ -537,16 +559,17 @@ export function Contact() {
                     >
                       <div className="bg-muted/50 rounded-lg p-5 space-y-3">
                         <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">
-                          Trip Details
+                          Yatra Details
                         </h3>
                         <ReviewRow label="Pickup" value={form.pickup || "—"} />
                         <ReviewRow label="Drop" value={form.drop || "—"} />
+                        <ReviewRow label="Yatra Package" value={form.yatraPackage || "Not specified"} />
                         <ReviewRow label="Vehicle" value={form.vehicleType || "Not specified"} />
-                        <ReviewRow label="Trip Type" value={form.tripType} />
+                        <ReviewRow label="Yatra Type" value={form.tripType} />
                         <ReviewRow label="Date & Time" value={
                           [form.pickupDate, form.pickupTime].filter(Boolean).join(" at ") || "Not specified"
                         } />
-                        <ReviewRow label="Passengers" value={form.passengers} />
+                        <ReviewRow label="Pilgrims" value={form.passengers} />
                       </div>
                       <div className="bg-muted/50 rounded-lg p-5 space-y-3">
                         <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">

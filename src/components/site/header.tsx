@@ -2,21 +2,22 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, Phone, Car } from "lucide-react";
+import { Menu, X, Phone } from "lucide-react";
+import { OmIcon } from "@/components/site/om-icon";
 import { Button } from "@/components/ui/button";
 import { siteConfig, buildTelLink } from "@/lib/site-config";
 
 const navItems = [
   { label: "Home", href: "#home" },
   { label: "How It Works", href: "#how-it-works" },
-  { label: "Services", href: "#services" },
-  { label: "Why Us", href: "#why-us" },
-  { label: "Coverage", href: "#coverage" },
+  { label: "Yatra Packages", href: "#services" },
+  { label: "Sacred Sites", href: "#sacred-sites" },
+  { label: "Braj Map", href: "#coverage" },
+  { label: "Festivals", href: "#auspicious-dates" },
   { label: "Routes", href: "#routes" },
-  { label: "Fare Calculator", href: "#fare-calculator" },
   { label: "About", href: "#about" },
   { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "#contact" },
+  { label: "Book Yatra", href: "#contact" },
 ];
 
 export function Header() {
@@ -50,15 +51,15 @@ export function Header() {
         <div className="flex h-16 sm:h-20 items-center justify-between gap-4">
           {/* Logo */}
           <Link href="#home" className="flex items-center gap-3 shrink-0" aria-label={siteConfig.name}>
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-md bg-navy-deep flex items-center justify-center text-gold">
-              <Car className="w-6 h-6 sm:w-7 sm:h-7" />
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-md bg-braj-deep flex items-center justify-center text-gold animate-sacred-glow">
+              <OmIcon className="w-6 h-6 sm:w-7 sm:h-7" />
             </div>
             <div className="hidden xs:block sm:block">
               <p className="text-sm sm:text-base font-bold leading-tight text-foreground">
                 Shree Shyama Shyam
               </p>
               <p className="text-[10px] sm:text-xs text-muted-foreground leading-tight">
-                Tour and Travels
+                Braj Yatra & Pilgrimage Tours
               </p>
             </div>
           </Link>

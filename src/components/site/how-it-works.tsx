@@ -1,38 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ClipboardList, Car, CheckCircle2, Route } from "lucide-react";
+import { Heart, MapPin, CheckCircle2, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { yatraSteps } from "@/lib/site-data";
 
-const steps = [
-  {
-    icon: ClipboardList,
-    title: "1. Tell Us Your Trip",
-    description:
-      "Fill the booking form or message us on WhatsApp with your pickup, drop, date, and vehicle preference. Takes less than a minute.",
-    color: "from-blue-500 to-blue-600",
-  },
-  {
-    icon: Car,
-    title: "2. Choose Your Cab",
-    description:
-      "We suggest the best vehicle for your route, group size, and budget. Pick from Sedan, SUV, Innova, Tempo Traveller or luxury options.",
-    color: "from-emerald-500 to-emerald-600",
-  },
-  {
-    icon: CheckCircle2,
-    title: "3. We Confirm & Dispatch",
-    description:
-      "Receive driver name, photo, and vehicle number 30 minutes before pickup. Track your cab and stay in touch with the driver.",
-    color: "from-amber-500 to-amber-600",
-  },
-  {
-    icon: Route,
-    title: "4. Enjoy Your Journey",
-    description:
-      "A verified, experienced driver takes you safely to your destination. Pay after the trip by UPI, card, or cash — as per your convenience.",
-    color: "from-rose-500 to-rose-600",
-  },
+const stepIcons = [Heart, MapPin, CheckCircle2, Sparkles];
+const stepColors = [
+  "from-rose-500 to-rose-600",
+  "from-amber-500 to-amber-600",
+  "from-emerald-500 to-emerald-600",
+  "from-purple-500 to-purple-600",
 ];
 
 export function HowItWorks() {
@@ -45,14 +23,14 @@ export function HowItWorks() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-14">
           <Badge variant="secondary" className="mb-3">
-            How It Works
+            How Your Yatra Unfolds
           </Badge>
           <h2 id="how-heading" className="text-3xl sm:text-4xl font-bold text-foreground">
-            Book in 4 Simple Steps
+            From Sankalp to Darshan — In 4 Sacred Steps
           </h2>
           <p className="mt-4 text-muted-foreground text-base sm:text-lg">
-            From enquiry to destination — our streamlined process ensures a smooth, reliable
-            experience every single time.
+            We make your Braj Yatra as smooth as it is spiritual — from the first &ldquo;Radhe
+            Radhe&rdquo; to the final darshan, every detail is handled with devotion.
           </p>
         </div>
 
@@ -64,13 +42,13 @@ export function HowItWorks() {
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1.2, ease: "easeInOut" }}
-            style={{ originX: 0, background: "linear-gradient(90deg, transparent, oklch(0.78 0.13 85), transparent)" }}
+            style={{ originX: 0, background: "linear-gradient(90deg, transparent, oklch(0.78 0.14 85), transparent)" }}
             aria-hidden="true"
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
-            {steps.map((step, i) => {
-              const Icon = step.icon;
+            {yatraSteps.map((step, i) => {
+              const Icon = stepIcons[i] || Heart;
               return (
                 <motion.div
                   key={step.title}
@@ -80,10 +58,10 @@ export function HowItWorks() {
                   transition={{ duration: 0.5, delay: i * 0.15 }}
                   className="text-center relative"
                 >
-                  {/* Icon circle with animated gradient */}
+                  {/* Icon circle with animated gradient pulse */}
                   <div className="relative mx-auto mb-5 w-24 h-24">
                     <motion.div
-                      className={`absolute inset-0 rounded-full bg-gradient-to-br ${step.color} opacity-20`}
+                      className={`absolute inset-0 rounded-full bg-gradient-to-br ${stepColors[i]} opacity-20`}
                       animate={{ scale: [1, 1.1, 1] }}
                       transition={{ duration: 3, repeat: Infinity, delay: i * 0.5 }}
                     />

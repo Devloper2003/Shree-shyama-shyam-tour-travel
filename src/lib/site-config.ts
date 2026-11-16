@@ -13,25 +13,24 @@ export const siteConfig = {
   // ---- Business identity ----
   name: "Shree Shyama Shyam Tour and Travels",
   shortName: "Shree Shyama Shyam",
-  tagline: "Private Cab Service — All Over India",
+  tagline: "Sacred Braj Yatra & Pilgrimage Tours",
+  sanskritTagline: "श्री श्यामा श्याम ब्रज यात्रा",
   establishedYear: 2015,
   experienceYears: 10,
 
   // ---- Contact details (REPLACE THESE PLACEHOLDERS) ----
-  // Phone number in international format without + for WhatsApp link (e.g. 919876543210)
   phoneDisplay: "+91 98765 43210",
   phoneRaw: "919876543210",
 
   whatsappDisplay: "+91 98765 43210",
   whatsappRaw: "919876543210",
 
-  // Email where enquiries will be received
-  email: "bookings@shreeshyamshyamtravels.com",
+  email: "bookings@shreeshyamshyambrajyatra.com",
 
-  // Office address
+  // Office address — Mathura (heart of Braj)
   address: {
-    line1: "Main Branch Office",
-    line2: "Near Bus Stand, City Center",
+    line1: "Shree Shyama Shyam Yatra Bhawan",
+    line2: "Near Krishna Janmabhoomi, Krishna Nagar",
     city: "Mathura",
     state: "Uttar Pradesh",
     pincode: "281001",
@@ -39,7 +38,7 @@ export const siteConfig = {
   },
 
   // ---- Business hours ----
-  businessHours: "Open 24x7, 365 Days",
+  businessHours: "Open 24x7 — Braj never sleeps",
 
   // ---- Social links (leave empty string "" to hide) ----
   social: {
@@ -51,10 +50,10 @@ export const siteConfig = {
 
   // ---- Quick stats shown on hero / about ----
   stats: {
-    happyClients: "15,000+",
-    citiesCovered: "250+",
-    fleetSize: "80+",
-    onTimeRate: "99%",
+    happyPilgrims: "25,000+",
+    sacredSites: "84",
+    yatraYears: "10+",
+    onCompleteRate: "99%",
   },
 } as const;
 

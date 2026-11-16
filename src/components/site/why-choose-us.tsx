@@ -8,6 +8,7 @@ import {
   Sparkles,
   MapPin,
   Timer,
+  HandPlatter,
   type LucideIcon,
 } from "lucide-react";
 import { whyChooseUs } from "@/lib/site-data";
@@ -19,6 +20,7 @@ const iconMap: Record<string, LucideIcon> = {
   sparkles: Sparkles,
   "map-pin": MapPin,
   timer: Timer,
+  "hand-platter": HandPlatter,
 };
 
 export function WhyChooseUs() {

@@ -82,15 +82,15 @@ export function FareCalculator() {
       <div className="container mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-10">
           <Badge variant="secondary" className="mb-3">
-            <Calculator className="w-3 h-3 mr-1" /> Fare Calculator
+            <Calculator className="w-3 h-3 mr-1" /> Yatra Fare Estimator
           </Badge>
           <h2 id="fare-heading" className="text-3xl sm:text-4xl font-bold text-foreground">
-            Estimate Your Trip Fare Instantly
+            Estimate Your Braj Yatra Fare
           </h2>
           <p className="mt-4 text-muted-foreground text-base sm:text-lg">
-            Pick your vehicle, enter the route and approximate distance, and get a transparent
-            estimated fare. The final confirmed fare may vary slightly based on exact route,
-            tolls, and stopovers.
+            Pick your vehicle, enter your pickup and Braj destination, and get a transparent
+            estimated fare. Final fare may vary based on tolls, stops, and yatra package
+            inclusions.
           </p>
         </div>
 
@@ -118,11 +118,11 @@ export function FareCalculator() {
             {/* Drop */}
             <div className="space-y-2">
               <Label htmlFor="calc-drop" className="flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-primary" /> Drop City / Location
+                <MapPin className="w-3.5 h-3.5 text-primary" /> Braj Destination
               </Label>
               <Input
                 id="calc-drop"
-                placeholder="e.g. Jaipur"
+                placeholder="e.g. Mathura / Vrindavan"
                 value={drop}
                 onChange={(e) => setDrop(e.target.value)}
               />
@@ -194,7 +194,7 @@ export function FareCalculator() {
           </div>
 
           {/* Result */}
-          <div className="mt-6 bg-navy-deep text-white rounded-xl p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="mt-6 bg-braj-deep text-white rounded-xl p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <p className="text-sm text-white/70">Estimated Total Fare</p>
               <p className="text-3xl sm:text-4xl font-bold text-gold mt-1">
@@ -218,7 +218,7 @@ export function FareCalculator() {
               onClick={handleBookFare}
               disabled={!pickup || !drop}
             >
-              Book This Fare
+              Book This Yatra
             </Button>
           </div>
 
