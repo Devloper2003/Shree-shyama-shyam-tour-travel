@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Booking enquiries submitted through the website's contact/booking form.
+// Each row is one customer enquiry — saved here so the business has a record
+// even if the email/WhatsApp notification is missed.
+model Enquiry {
+  id          String   @id @default(cuid())
+  // Customer info
+  name        String
+  phone       String
+  email       String?
+  // Trip details
+  pickup      String
+  drop        String
+  vehicleType String?
+  tripType    String? // one-way, round-trip, local, airport, tour-package
+  pickupDate  String?
+  pickupTime  String?
+  passengers  String?
+  notes       String?
+  // Source so we can later differentiate home form vs route card vs fare calc
+  source      String   @default("contact-form")
+  // Status workflow: new -> contacted -> confirmed -> closed
+  status      String   @default("new")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}

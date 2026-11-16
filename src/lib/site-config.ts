@@ -1,0 +1,77 @@
+/**
+ * ============================================================================
+ *  SITE CONFIG — EDIT THIS FILE TO UPDATE YOUR CONTACT DETAILS
+ * ============================================================================
+ *  Replace the placeholder values below with your real business information.
+ *  Everything on the website (header, footer, WhatsApp button, booking form,
+ *  email enquiries) reads from this single file, so one update propagates
+ *  everywhere automatically.
+ * ============================================================================
+ */
+
+export const siteConfig = {
+  // ---- Business identity ----
+  name: "Shree Shyama Shyam Tour and Travels",
+  shortName: "Shree Shyama Shyam",
+  tagline: "Private Cab Service — All Over India",
+  establishedYear: 2015,
+  experienceYears: 10,
+
+  // ---- Contact details (REPLACE THESE PLACEHOLDERS) ----
+  // Phone number in international format without + for WhatsApp link (e.g. 919876543210)
+  phoneDisplay: "+91 98765 43210",
+  phoneRaw: "919876543210",
+
+  whatsappDisplay: "+91 98765 43210",
+  whatsappRaw: "919876543210",
+
+  // Email where enquiries will be received
+  email: "bookings@shreeshyamshyamtravels.com",
+
+  // Office address
+  address: {
+    line1: "Main Branch Office",
+    line2: "Near Bus Stand, City Center",
+    city: "Mathura",
+    state: "Uttar Pradesh",
+    pincode: "281001",
+    country: "India",
+  },
+
+  // ---- Business hours ----
+  businessHours: "Open 24x7, 365 Days",
+
+  // ---- Social links (leave empty string "" to hide) ----
+  social: {
+    facebook: "https://facebook.com/",
+    instagram: "https://instagram.com/",
+    youtube: "https://youtube.com/",
+    twitter: "",
+  },
+
+  // ---- Quick stats shown on hero / about ----
+  stats: {
+    happyClients: "15,000+",
+    citiesCovered: "250+",
+    fleetSize: "80+",
+    onTimeRate: "99%",
+  },
+} as const;
+
+// Helper: build a WhatsApp deep link with a pre-filled message
+export function buildWhatsAppLink(message: string): string {
+  const encoded = encodeURIComponent(message);
+  return `https://wa.me/${siteConfig.whatsappRaw}?text=${encoded}`;
+}
+
+// Helper: build a tel: link
+export function buildTelLink(): string {
+  return `tel:+${siteConfig.phoneRaw}`;
+}
+
+// Helper: build a mailto: link with subject + body
+export function buildMailtoLink(subject: string, body: string): string {
+  return `mailto:${siteConfig.email}?subject=${encodeURIComponent(
+    subject
+  )}&body=${encodeURIComponent(body)}`;
+}
