@@ -41,78 +41,100 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  /* Braj brand colors registered as Tailwind utilities:
+     enables text-gold, bg-gold, fill-gold, border-gold,
+     text-saffron, bg-saffron, fill-saffron, border-saffron,
+     bg-braj-deep, text-braj-deep, etc. */
+  --color-gold: var(--gold);
+  --color-saffron: var(--saffron);
+  --color-braj-deep: var(--braj-deep);
 }
 
 :root {
   --radius: 0.625rem;
-  /* Braj Yatra theme: Saffron + Maroon + Gold + Warm cream */
-  --background: oklch(0.985 0.008 80);          /* warm cream */
-  --foreground: oklch(0.22 0.04 30);            /* deep maroon-brown */
+  /* ============================================================================
+     CLEAR & TRUSTED BRAJ THEME
+     - Pure clean white background (not cream) for clarity
+     - Deep warm charcoal foreground for strong readability
+     - Refined deep saffron primary (good contrast on white)
+     - Gold accent tuned to work on both light & dark surfaces
+     - Balanced chroma/lightness across the palette
+     ============================================================================ */
+  --background: oklch(1 0 0);                  /* pure clean white */
+  --foreground: oklch(0.20 0.025 40);          /* deep warm charcoal — strong contrast */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.22 0.04 30);
+  --card-foreground: oklch(0.20 0.025 40);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.22 0.04 30);
-  /* Primary: deep saffron */
-  --primary: oklch(0.55 0.17 50);
-  --primary-foreground: oklch(0.99 0.005 80);
-  --secondary: oklch(0.95 0.02 60);
-  --secondary-foreground: oklch(0.35 0.08 30);
-  --muted: oklch(0.96 0.012 70);
-  --muted-foreground: oklch(0.45 0.04 40);
-  /* Accent: gold */
-  --accent: oklch(0.78 0.14 85);
-  --accent-foreground: oklch(0.25 0.06 50);
+  --popover-foreground: oklch(0.20 0.025 40);
+  /* Primary: refined deep saffron — clearly readable on white, premium feel */
+  --primary: oklch(0.50 0.16 45);
+  --primary-foreground: oklch(0.99 0.005 80);  /* warm white text on saffron */
+  --secondary: oklch(0.97 0.018 60);           /* very subtle warm gray */
+  --secondary-foreground: oklch(0.30 0.04 35);
+  --muted: oklch(0.965 0.012 65);              /* subtle warm gray for alt sections */
+  --muted-foreground: oklch(0.46 0.025 50);    /* readable medium gray */
+  /* Accent: deep gold — works on both light & dark surfaces */
+  --accent: oklch(0.68 0.13 75);
+  --accent-foreground: oklch(0.20 0.04 50);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.90 0.02 60);
-  --input: oklch(0.90 0.02 60);
-  --ring: oklch(0.55 0.17 50);
-  --chart-1: oklch(0.55 0.17 50);   /* saffron */
-  --chart-2: oklch(0.78 0.14 85);   /* gold */
-  --chart-3: oklch(0.40 0.13 25);   /* maroon */
-  --chart-4: oklch(0.65 0.18 70);   /* turmeric */
-  --chart-5: oklch(0.45 0.10 15);   /* deep red */
-  --sidebar: oklch(0.98 0.008 75);
-  --sidebar-foreground: oklch(0.22 0.04 30);
-  --sidebar-primary: oklch(0.55 0.17 50);
+  --border: oklch(0.91 0.015 60);              /* light warm border */
+  --input: oklch(0.91 0.015 60);
+  --ring: oklch(0.50 0.16 45);                 /* matches primary */
+  --chart-1: oklch(0.50 0.16 45);              /* saffron */
+  --chart-2: oklch(0.68 0.13 75);              /* gold */
+  --chart-3: oklch(0.38 0.11 30);              /* maroon */
+  --chart-4: oklch(0.60 0.16 65);              /* turmeric */
+  --chart-5: oklch(0.42 0.09 20);              /* deep red-brown */
+  --sidebar: oklch(0.985 0.008 70);
+  --sidebar-foreground: oklch(0.20 0.025 40);
+  --sidebar-primary: oklch(0.50 0.16 45);
   --sidebar-primary-foreground: oklch(0.99 0.005 80);
-  --sidebar-accent: oklch(0.95 0.02 60);
-  --sidebar-accent-foreground: oklch(0.35 0.08 30);
-  --sidebar-border: oklch(0.90 0.02 60);
-  --sidebar-ring: oklch(0.55 0.17 50);
+  --sidebar-accent: oklch(0.97 0.018 60);
+  --sidebar-accent-foreground: oklch(0.30 0.04 35);
+  --sidebar-border: oklch(0.91 0.015 60);
+  --sidebar-ring: oklch(0.50 0.16 45);
+
+  /* Braj brand color tokens */
+  --gold: oklch(0.68 0.13 75);                 /* medium gold — readable everywhere */
+  --saffron: oklch(0.50 0.16 45);              /* deep saffron — primary brand */
+  --braj-deep: oklch(0.22 0.05 30);            /* deep clean brown for dark surfaces */
 }
 
 .dark {
-  --background: oklch(0.18 0.04 30);
-  --foreground: oklch(0.96 0.01 70);
-  --card: oklch(0.24 0.06 30);
-  --card-foreground: oklch(0.96 0.01 70);
-  --popover: oklch(0.24 0.06 30);
-  --popover-foreground: oklch(0.96 0.01 70);
-  --primary: oklch(0.72 0.16 55);
-  --primary-foreground: oklch(0.18 0.04 30);
-  --secondary: oklch(0.32 0.06 30);
-  --secondary-foreground: oklch(0.96 0.01 70);
-  --muted: oklch(0.32 0.06 30);
-  --muted-foreground: oklch(0.72 0.03 60);
-  --accent: oklch(0.78 0.14 85);
-  --accent-foreground: oklch(0.25 0.06 50);
+  --background: oklch(0.16 0.02 35);
+  --foreground: oklch(0.96 0.008 65);
+  --card: oklch(0.21 0.03 35);
+  --card-foreground: oklch(0.96 0.008 65);
+  --popover: oklch(0.21 0.03 35);
+  --popover-foreground: oklch(0.96 0.008 65);
+  --primary: oklch(0.70 0.16 50);
+  --primary-foreground: oklch(0.16 0.02 35);
+  --secondary: oklch(0.28 0.03 35);
+  --secondary-foreground: oklch(0.96 0.008 65);
+  --muted: oklch(0.28 0.03 35);
+  --muted-foreground: oklch(0.72 0.02 60);
+  --accent: oklch(0.72 0.13 75);
+  --accent-foreground: oklch(0.20 0.04 50);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.72 0.16 55);
-  --chart-1: oklch(0.72 0.16 55);
-  --chart-2: oklch(0.78 0.14 85);
-  --chart-3: oklch(0.55 0.15 25);
-  --chart-4: oklch(0.70 0.18 70);
-  --chart-5: oklch(0.60 0.12 15);
-  --sidebar: oklch(0.24 0.06 30);
-  --sidebar-foreground: oklch(0.96 0.01 70);
-  --sidebar-primary: oklch(0.72 0.16 55);
-  --sidebar-primary-foreground: oklch(0.96 0.01 70);
-  --sidebar-accent: oklch(0.32 0.06 30);
-  --sidebar-accent-foreground: oklch(0.96 0.01 70);
+  --ring: oklch(0.70 0.16 50);
+  --chart-1: oklch(0.70 0.16 50);
+  --chart-2: oklch(0.72 0.13 75);
+  --chart-3: oklch(0.55 0.13 25);
+  --chart-4: oklch(0.65 0.16 65);
+  --chart-5: oklch(0.55 0.10 15);
+  --sidebar: oklch(0.21 0.03 35);
+  --sidebar-foreground: oklch(0.96 0.008 65);
+  --sidebar-primary: oklch(0.70 0.16 50);
+  --sidebar-primary-foreground: oklch(0.96 0.008 65);
+  --sidebar-accent: oklch(0.28 0.03 35);
+  --sidebar-accent-foreground: oklch(0.96 0.008 65);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.72 0.16 55);
+  --sidebar-ring: oklch(0.70 0.16 50);
+  --gold: oklch(0.75 0.13 78);
+  --saffron: oklch(0.70 0.16 50);
+  --braj-deep: oklch(0.18 0.04 25);
 }
 
 @layer base {
@@ -121,54 +143,53 @@
   }
   body {
     @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
-/* Braj-themed gradient backgrounds (replacing navy) */
-.bg-braj-gradient {
-  background-image: linear-gradient(135deg, oklch(0.32 0.10 25) 0%, oklch(0.42 0.13 35) 50%, oklch(0.38 0.12 30) 100%);
-}
+/* ============================================================================
+   BRAJ GRADIENTS — refined for clarity & trust
+   Dark surfaces use a clean, deep saffron-to-maroon gradient (not muddy)
+   ============================================================================ */
 
-.bg-braj-deep {
-  background-color: oklch(0.25 0.08 20);
+.bg-braj-gradient {
+  /* Clean deep saffron-brown → refined maroon. Lightness 0.28→0.38 keeps
+     white text crisp without feeling heavy. */
+  background-image: linear-gradient(
+    135deg,
+    oklch(0.28 0.07 35) 0%,
+    oklch(0.36 0.10 40) 50%,
+    oklch(0.32 0.09 35) 100%
+  );
 }
 
 .bg-saffron-gradient {
-  background-image: linear-gradient(135deg, oklch(0.55 0.17 50) 0%, oklch(0.65 0.18 55) 100%);
-}
-
-.text-gold {
-  color: oklch(0.78 0.14 85);
-}
-
-.bg-gold {
-  background-color: oklch(0.78 0.14 85);
-}
-
-.border-gold {
-  border-color: oklch(0.78 0.14 85);
-}
-
-.text-saffron {
-  color: oklch(0.55 0.17 50);
-}
-
-.bg-saffron {
-  background-color: oklch(0.55 0.17 50);
-}
-
-.border-saffron {
-  border-color: oklch(0.55 0.17 50);
+  /* Bright saffron gradient for accent strips */
+  background-image: linear-gradient(
+    135deg,
+    oklch(0.50 0.16 45) 0%,
+    oklch(0.60 0.17 50) 100%
+  );
 }
 
 /* Decorative diya (lamp) pattern border */
 .braj-pattern-border {
   background-image:
-    repeating-linear-gradient(90deg, oklch(0.78 0.14 85) 0, oklch(0.78 0.14 85) 8px, transparent 8px, transparent 16px);
+    repeating-linear-gradient(
+      90deg,
+      oklch(0.68 0.13 75) 0,
+      oklch(0.68 0.13 75) 8px,
+      transparent 8px,
+      transparent 16px
+    );
   height: 3px;
 }
 
-/* Smooth section reveal */
+/* ============================================================================
+   ANIMATIONS
+   ============================================================================ */
+
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -184,18 +205,18 @@
   animation: fadeUp 0.6s ease-out both;
 }
 
-/* Glow animation for sacred elements */
+/* Subtle glow for sacred/premium elements */
 @keyframes sacredGlow {
   0%, 100% {
-    box-shadow: 0 0 20px oklch(0.78 0.14 85 / 0.3);
+    box-shadow: 0 0 16px oklch(0.68 0.13 75 / 0.2);
   }
   50% {
-    box-shadow: 0 0 40px oklch(0.78 0.14 85 / 0.5);
+    box-shadow: 0 0 28px oklch(0.68 0.13 75 / 0.35);
   }
 }
 
 .animate-sacred-glow {
-  animation: sacredGlow 3s ease-in-out infinite;
+  animation: sacredGlow 3.5s ease-in-out infinite;
 }
 
 /* Hide scrollbar but keep scroll */

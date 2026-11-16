@@ -33,7 +33,7 @@ export function About() {
               {siteConfig.name}
             </h2>
             <p className="mt-2 text-primary font-medium">{siteConfig.tagline}</p>
-            <p className="mt-1 text-sm text-gold">{siteConfig.sanskritTagline}</p>
+            <p className="mt-1 text-sm text-saffron font-medium">{siteConfig.sanskritTagline}</p>
 
             <div className="mt-6 space-y-5">
               {aboutPoints.map((p, i) => (

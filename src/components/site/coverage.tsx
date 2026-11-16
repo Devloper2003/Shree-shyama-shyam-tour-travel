@@ -77,7 +77,7 @@ export function Coverage() {
             </div>
 
             <div className="mt-6 flex items-start gap-3 text-sm text-muted-foreground">
-              <OmIcon className="w-5 h-5 text-gold shrink-0 mt-0.5" />
+              <OmIcon className="w-5 h-5 text-saffron shrink-0 mt-0.5" />
               <p>
                 Devotees traditionally complete the 84-kosa Braj parikrama over 40 days on
                 foot. We facilitate shorter versions by vehicle for elderly devotees and
