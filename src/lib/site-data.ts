@@ -5,6 +5,8 @@
  * ============================================================================
  */
 
+export type VehicleCategory = "economy" | "premium" | "group";
+
 export type Vehicle = {
   id: string;
   name: string;
@@ -17,6 +19,7 @@ export type Vehicle = {
   startingFrom: number; // one-day minimum fare (INR)
   bestFor: string[];
   popular?: boolean;
+  tab: VehicleCategory; // for the animated services tabs
 };
 
 export const vehicles: Vehicle[] = [
@@ -32,6 +35,7 @@ export const vehicles: Vehicle[] = [
     startingFrom: 2200,
     bestFor: ["City rides", "Small family", "Airport drop"],
     popular: true,
+    tab: "economy",
   },
   {
     id: "suv",
@@ -44,6 +48,7 @@ export const vehicles: Vehicle[] = [
     perKmRate: 14,
     startingFrom: 2800,
     bestFor: ["Hills trips", "Family of 6", "Comfort rides"],
+    tab: "economy",
   },
   {
     id: "innova",
@@ -57,6 +62,7 @@ export const vehicles: Vehicle[] = [
     startingFrom: 3600,
     bestFor: ["Long outstation", "Corporate travel", "Premium comfort"],
     popular: true,
+    tab: "premium",
   },
   {
     id: "tempo",
@@ -69,6 +75,7 @@ export const vehicles: Vehicle[] = [
     perKmRate: 22,
     startingFrom: 4500,
     bestFor: ["Group tours", "Wedding groups", "Pilgrimage"],
+    tab: "group",
   },
   {
     id: "luxury",
@@ -81,6 +88,7 @@ export const vehicles: Vehicle[] = [
     perKmRate: 28,
     startingFrom: 5500,
     bestFor: ["VIP pickup", "Business meetings", "Wedding car"],
+    tab: "premium",
   },
   {
     id: "bus",
@@ -93,6 +101,7 @@ export const vehicles: Vehicle[] = [
     perKmRate: 35,
     startingFrom: 8500,
     bestFor: ["Corporate outings", "School trips", "Large tour groups"],
+    tab: "group",
   },
 ];
 
@@ -180,44 +189,63 @@ export const testimonials: Testimonial[] = [
   },
 ];
 
+export type FaqCategory = "booking" | "pricing" | "service" | "policy";
+
 export type FaqItem = {
   q: string;
   a: string;
+  category: FaqCategory;
 };
 
 export const faqs: FaqItem[] = [
   {
     q: "Which cities and states do you cover?",
     a: "We provide private cab services all over India. Whether you need a cab in Delhi NCR, Mumbai, Jaipur, Bangalore, Chennai, Kolkata, or for an outstation trip between any two cities — we have a verified driver and clean vehicle ready for you. Our 250+ city network covers every major route.",
+    category: "service",
   },
   {
     q: "How do I book a cab?",
     a: "You can book in three ways: (1) Fill the booking form on this website and our team will call you back within 15 minutes, (2) Message us directly on WhatsApp with your pickup, drop, date and vehicle preference, or (3) Call us on the number listed above. We confirm every booking personally before dispatch.",
+    category: "booking",
   },
   {
     q: "What are your fare and pricing rules?",
     a: "Pricing is per-kilometre and depends on the vehicle you choose. The fare includes driver allowance, fuel, and state taxes for the booked route. For one-way outstation trips, we charge for the return kilometres as per industry standard. There are no hidden charges — what we quote is what you pay.",
+    category: "pricing",
   },
   {
     q: "Are your drivers verified and cabs sanitized?",
     a: "Yes. Every driver is police-verified, holds a valid commercial license, and has at least 3 years of experience. Each cab is sanitized before every trip, has a working AC, first-aid kit, and clean interiors. We share the driver's name, photo, and vehicle number with you 30 minutes before pickup.",
+    category: "service",
   },
   {
     q: "What is your cancellation and refund policy?",
     a: "Cancellations made 6 hours before pickup are fully refundable with no charge. Cancellations within 6 hours may attract a small driver allowance fee. No charge if the cab has not been dispatched. Rescheduling is always free of cost.",
+    category: "policy",
   },
   {
     q: "Do you offer airport pickup and drop?",
     a: "Yes. We offer on-time airport transfers to and from all major Indian airports including Delhi (DEL), Mumbai (BOM), Bangalore (BLR), Chennai (MAA), Hyderabad (HYD), Kolkata (CCU) and Jaipur (JAI). We track your flight status so the driver is there even if your flight is delayed.",
+    category: "service",
   },
   {
     q: "Can I book a cab for multiple days or a tour package?",
     a: "Absolutely. We offer multi-day packages, pilgrimage tours (Char Dham, Vaishno Devi, Shirdi, Tirupati), Rajasthan tours, Golden Triangle tours and customized itineraries. The cab stays with you for the entire duration. Contact us with your plan and we will share a fixed package price.",
+    category: "booking",
   },
   {
     q: "What payment methods do you accept?",
     a: "We accept UPI (PhonePe, Google Pay, Paytm), bank transfer, credit/debit cards, and cash. For online bookings, a 25% advance confirms the booking and the balance is paid to the driver after the trip.",
+    category: "pricing",
   },
+];
+
+export const faqCategories: { key: FaqCategory | "all"; label: string }[] = [
+  { key: "all", label: "All Questions" },
+  { key: "booking", label: "Booking" },
+  { key: "pricing", label: "Pricing & Payment" },
+  { key: "service", label: "Service & Fleet" },
+  { key: "policy", label: "Policies" },
 ];
 
 export const whyChooseUs = [

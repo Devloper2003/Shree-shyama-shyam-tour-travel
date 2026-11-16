@@ -1,8 +1,11 @@
 import { Header } from "@/components/site/header";
 import { Hero } from "@/components/site/hero";
+import { Marquee } from "@/components/site/marquee";
+import { HowItWorks } from "@/components/site/how-it-works";
 import { Services } from "@/components/site/services";
 import { WhyChooseUs } from "@/components/site/why-choose-us";
 import { Fleet } from "@/components/site/fleet";
+import { Coverage } from "@/components/site/coverage";
 import { Routes } from "@/components/site/routes";
 import { FareCalculator } from "@/components/site/fare-calculator";
 import { Testimonials } from "@/components/site/testimonials";
@@ -18,9 +21,12 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <Hero />
+        <Marquee />
+        <HowItWorks />
         <Services />
         <WhyChooseUs />
         <Fleet />
+        <Coverage />
         <Routes />
         <FareCalculator />
         <Testimonials />

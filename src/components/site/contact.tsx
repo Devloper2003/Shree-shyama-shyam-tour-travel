@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Phone,
   Mail,
@@ -12,6 +12,12 @@ import {
   CheckCircle2,
   Loader2,
   ExternalLink,
+  ArrowRight,
+  ArrowLeft,
+  Check,
+  Route as RouteIcon,
+  User,
+  ClipboardCheck,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -48,13 +54,19 @@ type ApiResponse = {
   error?: string;
 };
 
+const steps = [
+  { id: 1, label: "Trip Details", icon: RouteIcon },
+  { id: 2, label: "Your Info", icon: User },
+  { id: 3, label: "Review", icon: ClipboardCheck },
+];
+
 export function Contact() {
   const { toast } = useToast();
+  const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<ApiResponse | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
-  // Form state
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -84,9 +96,9 @@ export function Contact() {
         notes: detail.notes ?? prev.notes,
       }));
       setSource(detail.source ?? "contact-form");
-      // If the success screen from a previous enquiry is currently showing,
-      // dismiss it so the freshly pre-filled form becomes visible again.
+      // Dismiss any success screen and jump to step 1 so user sees prefilled fields
       setResult(null);
+      setStep(1);
       toast({
         title: "Details pre-filled",
         description: "We have filled the route details. Please complete the rest.",
@@ -99,15 +111,40 @@ export function Contact() {
   const update = (key: keyof typeof form, value: string) =>
     setForm((prev) => ({ ...prev, [key]: value }));
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (submitting) return;
+  // Step validation
+  const step1Valid =
+    form.pickup.trim().length > 0 && form.drop.trim().length > 0;
+  const step2Valid =
+    form.name.trim().length > 0 &&
+    form.phone.trim().length >= 10;
 
-    // Basic client-side validation
-    if (!form.name.trim() || !form.phone.trim() || !form.pickup.trim() || !form.drop.trim()) {
+  const goNext = () => {
+    if (step === 1 && !step1Valid) {
       toast({
-        title: "Missing details",
-        description: "Please fill your name, phone, pickup, and drop.",
+        title: "Missing trip details",
+        description: "Please fill pickup and drop locations to continue.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (step === 2 && !step2Valid) {
+      toast({
+        title: "Missing your info",
+        description: "Please enter your name and a valid phone number.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setStep((s) => Math.min(s + 1, 3));
+  };
+  const goBack = () => setStep((s) => Math.max(s - 1, 1));
+
+  const handleSubmit = async () => {
+    if (submitting) return;
+    if (!step1Valid || !step2Valid) {
+      toast({
+        title: "Incomplete form",
+        description: "Please complete all required fields.",
         variant: "destructive",
       });
       return;
@@ -131,7 +168,6 @@ export function Contact() {
         title: "Enquiry submitted!",
         description: "We have received your details. Use WhatsApp or Call below for instant confirmation.",
       });
-      // Reset the source back to default for the next manual submission
       setSource("contact-form");
     } catch (err) {
       const message = err instanceof Error ? err.message : "Something went wrong";
@@ -147,6 +183,7 @@ export function Contact() {
 
   const handleReset = () => {
     setResult(null);
+    setStep(1);
     setForm({
       name: "",
       phone: "",
@@ -160,7 +197,6 @@ export function Contact() {
       passengers: "1",
       notes: "",
     });
-    formRef.current?.reset();
   };
 
   return (
@@ -175,7 +211,7 @@ export function Contact() {
             Book a Cab
           </Badge>
           <h2 id="contact-heading" className="text-3xl sm:text-4xl font-bold text-foreground">
-            Book Your Cab in 60 Seconds
+            Book Your Cab in 3 Easy Steps
           </h2>
           <p className="mt-4 text-muted-foreground text-base sm:text-lg">
             Fill the form below and our team will call you back within 15 minutes to confirm.
@@ -185,7 +221,7 @@ export function Contact() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left: contact info cards (1 col) */}
+          {/* Left: contact info cards */}
           <motion.div
             initial={{ opacity: 0, x: -16 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -246,7 +282,6 @@ export function Contact() {
               </div>
             </div>
 
-            {/* Quick action buttons */}
             <div className="grid grid-cols-2 gap-3">
               <a href={buildTelLink()}>
                 <Button variant="outline" className="w-full gap-2">
@@ -278,166 +313,291 @@ export function Contact() {
             {!result ? (
               <form
                 ref={formRef}
-                onSubmit={handleSubmit}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (step < 3) goNext();
+                  else handleSubmit();
+                }}
                 className="bg-background border border-border rounded-xl p-6 sm:p-8 shadow-sm"
-                aria-label="Booking enquiry form"
+                aria-label="Multi-step booking enquiry form"
               >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Full Name *</Label>
-                    <Input
-                      id="name"
-                      required
-                      value={form.name}
-                      onChange={(e) => update("name", e.target.value)}
-                      placeholder="Your name"
+                {/* Animated progress indicator */}
+                <div className="mb-8">
+                  <div className="flex items-center justify-between relative">
+                    {/* Background line */}
+                    <div className="absolute left-0 right-0 top-5 h-0.5 bg-muted" aria-hidden="true" />
+                    {/* Animated progress line */}
+                    <motion.div
+                      className="absolute left-0 top-5 h-0.5 bg-primary"
+                      initial={{ width: "0%" }}
+                      animate={{ width: `${((step - 1) / (steps.length - 1)) * 100}%` }}
+                      transition={{ duration: 0.4, ease: "easeInOut" }}
+                      aria-hidden="true"
                     />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number *</Label>
-                    <Input
-                      id="phone"
-                      required
-                      type="tel"
-                      value={form.phone}
-                      onChange={(e) => update("phone", e.target.value)}
-                      placeholder="+91 ..."
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email (optional)</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={form.email}
-                      onChange={(e) => update("email", e.target.value)}
-                      placeholder="you@example.com"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="passengers">Passengers</Label>
-                    <Input
-                      id="passengers"
-                      type="number"
-                      min="1"
-                      value={form.passengers}
-                      onChange={(e) => update("passengers", e.target.value)}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="pickup">Pickup Location *</Label>
-                    <Input
-                      id="pickup"
-                      required
-                      value={form.pickup}
-                      onChange={(e) => update("pickup", e.target.value)}
-                      placeholder="City / address / airport"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="drop">Drop Location *</Label>
-                    <Input
-                      id="drop"
-                      required
-                      value={form.drop}
-                      onChange={(e) => update("drop", e.target.value)}
-                      placeholder="City / address / airport"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="vehicleType">Vehicle Type</Label>
-                    <Select
-                      value={form.vehicleType}
-                      onValueChange={(v) => update("vehicleType", v)}
-                    >
-                      <SelectTrigger id="vehicleType">
-                        <SelectValue placeholder="Select vehicle" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {vehicles.map((v) => (
-                          <SelectItem key={v.id} value={v.name}>
-                            {v.name} ({v.seating})
-                          </SelectItem>
-                        ))}
-                        <SelectItem value="Not sure">Not sure — please suggest</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="tripType">Trip Type</Label>
-                    <Select
-                      value={form.tripType}
-                      onValueChange={(v) => update("tripType", v)}
-                    >
-                      <SelectTrigger id="tripType">
-                        <SelectValue placeholder="Select trip type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="one-way">One-way</SelectItem>
-                        <SelectItem value="round-trip">Round-trip</SelectItem>
-                        <SelectItem value="local">Local / hourly</SelectItem>
-                        <SelectItem value="airport">Airport transfer</SelectItem>
-                        <SelectItem value="tour-package">Tour package</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="pickupDate">Pickup Date</Label>
-                    <Input
-                      id="pickupDate"
-                      type="date"
-                      value={form.pickupDate}
-                      onChange={(e) => update("pickupDate", e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="pickupTime">Pickup Time</Label>
-                    <Input
-                      id="pickupTime"
-                      type="time"
-                      value={form.pickupTime}
-                      onChange={(e) => update("pickupTime", e.target.value)}
-                    />
-                  </div>
-
-                  <div className="sm:col-span-2 space-y-2">
-                    <Label htmlFor="notes">Notes (optional)</Label>
-                    <Textarea
-                      id="notes"
-                      rows={3}
-                      value={form.notes}
-                      onChange={(e) => update("notes", e.target.value)}
-                      placeholder="Any special request — child seat, stops, flight number, luggage, etc."
-                    />
+                    {steps.map((s) => {
+                      const Icon = s.icon;
+                      const isDone = step > s.id;
+                      const isCurrent = step === s.id;
+                      return (
+                        <div key={s.id} className="relative flex flex-col items-center z-10">
+                          <motion.div
+                            className={`w-10 h-10 rounded-full flex items-center justify-center border-2 ${
+                              isDone
+                                ? "bg-primary border-primary text-primary-foreground"
+                                : isCurrent
+                                ? "bg-background border-primary text-primary"
+                                : "bg-background border-muted text-muted-foreground"
+                            }`}
+                            animate={isCurrent ? { scale: [1, 1.1, 1] } : { scale: 1 }}
+                            transition={{ duration: 0.4 }}
+                          >
+                            {isDone ? (
+                              <Check className="w-5 h-5" />
+                            ) : (
+                              <Icon className="w-5 h-5" />
+                            )}
+                          </motion.div>
+                          <span
+                            className={`mt-2 text-xs font-medium ${
+                              isCurrent || isDone ? "text-foreground" : "text-muted-foreground"
+                            }`}
+                          >
+                            {s.label}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
-                <div className="mt-6 flex flex-col sm:flex-row items-center gap-3">
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="w-full sm:w-auto gap-2"
-                    disabled={submitting}
-                  >
-                    {submitting ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" /> Submitting...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4" /> Submit Enquiry
-                      </>
-                    )}
-                  </Button>
-                  <p className="text-xs text-muted-foreground text-center sm:text-left">
-                    By submitting, you agree to be contacted about your enquiry. We never share
-                    your details.
-                  </p>
+                <AnimatePresence mode="wait">
+                  {/* STEP 1 — Trip Details */}
+                  {step === 1 && (
+                    <motion.div
+                      key="step-1"
+                      initial={{ opacity: 0, x: 30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -30 }}
+                      transition={{ duration: 0.3 }}
+                      className="grid grid-cols-1 sm:grid-cols-2 gap-5"
+                    >
+                      <div className="space-y-2">
+                        <Label htmlFor="pickup">Pickup Location *</Label>
+                        <Input
+                          id="pickup"
+                          required
+                          value={form.pickup}
+                          onChange={(e) => update("pickup", e.target.value)}
+                          placeholder="City / address / airport"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="drop">Drop Location *</Label>
+                        <Input
+                          id="drop"
+                          required
+                          value={form.drop}
+                          onChange={(e) => update("drop", e.target.value)}
+                          placeholder="City / address / airport"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="vehicleType">Vehicle Type</Label>
+                        <Select
+                          value={form.vehicleType}
+                          onValueChange={(v) => update("vehicleType", v)}
+                        >
+                          <SelectTrigger id="vehicleType">
+                            <SelectValue placeholder="Select vehicle" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {vehicles.map((v) => (
+                              <SelectItem key={v.id} value={v.name}>
+                                {v.name} ({v.seating})
+                              </SelectItem>
+                            ))}
+                            <SelectItem value="Not sure">Not sure — please suggest</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="tripType">Trip Type</Label>
+                        <Select
+                          value={form.tripType}
+                          onValueChange={(v) => update("tripType", v)}
+                        >
+                          <SelectTrigger id="tripType">
+                            <SelectValue placeholder="Select trip type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="one-way">One-way</SelectItem>
+                            <SelectItem value="round-trip">Round-trip</SelectItem>
+                            <SelectItem value="local">Local / hourly</SelectItem>
+                            <SelectItem value="airport">Airport transfer</SelectItem>
+                            <SelectItem value="tour-package">Tour package</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="pickupDate">Pickup Date</Label>
+                        <Input
+                          id="pickupDate"
+                          type="date"
+                          value={form.pickupDate}
+                          onChange={(e) => update("pickupDate", e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="pickupTime">Pickup Time</Label>
+                        <Input
+                          id="pickupTime"
+                          type="time"
+                          value={form.pickupTime}
+                          onChange={(e) => update("pickupTime", e.target.value)}
+                        />
+                      </div>
+                      <div className="sm:col-span-2 space-y-2">
+                        <Label htmlFor="passengers">Passengers</Label>
+                        <Input
+                          id="passengers"
+                          type="number"
+                          min="1"
+                          value={form.passengers}
+                          onChange={(e) => update("passengers", e.target.value)}
+                        />
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* STEP 2 — Your Info */}
+                  {step === 2 && (
+                    <motion.div
+                      key="step-2"
+                      initial={{ opacity: 0, x: 30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -30 }}
+                      transition={{ duration: 0.3 }}
+                      className="space-y-5"
+                    >
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div className="space-y-2">
+                          <Label htmlFor="name">Full Name *</Label>
+                          <Input
+                            id="name"
+                            required
+                            value={form.name}
+                            onChange={(e) => update("name", e.target.value)}
+                            placeholder="Your name"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="phone">Phone Number *</Label>
+                          <Input
+                            id="phone"
+                            required
+                            type="tel"
+                            value={form.phone}
+                            onChange={(e) => update("phone", e.target.value)}
+                            placeholder="+91 ..."
+                          />
+                        </div>
+                        <div className="sm:col-span-2 space-y-2">
+                          <Label htmlFor="email">Email (optional)</Label>
+                          <Input
+                            id="email"
+                            type="email"
+                            value={form.email}
+                            onChange={(e) => update("email", e.target.value)}
+                            placeholder="you@example.com"
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="notes">Notes (optional)</Label>
+                        <Textarea
+                          id="notes"
+                          rows={4}
+                          value={form.notes}
+                          onChange={(e) => update("notes", e.target.value)}
+                          placeholder="Any special request — child seat, stops, flight number, luggage, etc."
+                        />
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* STEP 3 — Review */}
+                  {step === 3 && (
+                    <motion.div
+                      key="step-3"
+                      initial={{ opacity: 0, x: 30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -30 }}
+                      transition={{ duration: 0.3 }}
+                      className="space-y-4"
+                    >
+                      <div className="bg-muted/50 rounded-lg p-5 space-y-3">
+                        <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">
+                          Trip Details
+                        </h3>
+                        <ReviewRow label="Pickup" value={form.pickup || "—"} />
+                        <ReviewRow label="Drop" value={form.drop || "—"} />
+                        <ReviewRow label="Vehicle" value={form.vehicleType || "Not specified"} />
+                        <ReviewRow label="Trip Type" value={form.tripType} />
+                        <ReviewRow label="Date & Time" value={
+                          [form.pickupDate, form.pickupTime].filter(Boolean).join(" at ") || "Not specified"
+                        } />
+                        <ReviewRow label="Passengers" value={form.passengers} />
+                      </div>
+                      <div className="bg-muted/50 rounded-lg p-5 space-y-3">
+                        <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">
+                          Your Information
+                        </h3>
+                        <ReviewRow label="Name" value={form.name} />
+                        <ReviewRow label="Phone" value={form.phone} />
+                        <ReviewRow label="Email" value={form.email || "—"} />
+                        {form.notes && <ReviewRow label="Notes" value={form.notes} />}
+                      </div>
+                      <p className="text-xs text-muted-foreground text-center">
+                        By submitting, you agree to be contacted about your enquiry. We never
+                        share your details with third parties.
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Navigation buttons */}
+                <div className="mt-6 flex items-center justify-between gap-3">
+                  {step > 1 ? (
+                    <Button type="button" variant="outline" onClick={goBack} className="gap-2">
+                      <ArrowLeft className="w-4 h-4" /> Back
+                    </Button>
+                  ) : (
+                    <span />
+                  )}
+
+                  {step < 3 ? (
+                    <Button type="button" onClick={goNext} className="gap-2">
+                      Continue <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  ) : (
+                    <Button
+                      type="button"
+                      onClick={handleSubmit}
+                      size="lg"
+                      className="gap-2"
+                      disabled={submitting}
+                    >
+                      {submitting ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" /> Submitting...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4" /> Submit Enquiry
+                        </>
+                      )}
+                    </Button>
+                  )}
                 </div>
               </form>
             ) : (
@@ -447,9 +607,14 @@ export function Contact() {
                 transition={{ duration: 0.4 }}
                 className="bg-background border border-border rounded-xl p-8 shadow-sm text-center"
               >
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 12, delay: 0.1 }}
+                  className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4"
+                >
                   <CheckCircle2 className="w-9 h-9 text-primary" />
-                </div>
+                </motion.div>
                 <h3 className="text-2xl font-bold text-foreground">Enquiry Received!</h3>
                 <p className="mt-2 text-muted-foreground max-w-md mx-auto">
                   Thank you, <strong className="text-foreground">{form.name}</strong>. Your
@@ -509,5 +674,14 @@ export function Contact() {
         </div>
       </div>
     </section>
+  );
+}
+
+function ReviewRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex justify-between items-start gap-4 text-sm">
+      <span className="text-muted-foreground shrink-0">{label}</span>
+      <span className="text-foreground font-medium text-right break-words">{value}</span>
+    </div>
   );
 }

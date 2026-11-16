@@ -5,12 +5,13 @@ import { Award, Users, MapPinned, Car } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { aboutPoints } from "@/lib/site-data";
 import { siteConfig } from "@/lib/site-config";
+import { CountUp } from "@/components/site/count-up";
 
 const statCards = [
-  { icon: Users, value: siteConfig.stats.happyClients, label: "Happy Travellers" },
-  { icon: MapPinned, value: siteConfig.stats.citiesCovered, label: "Cities Covered" },
-  { icon: Car, value: siteConfig.stats.fleetSize, label: "Vehicles in Fleet" },
-  { icon: Award, value: `${siteConfig.experienceYears}+`, label: "Years of Service" },
+  { icon: Users, target: 15000, suffix: "+", label: "Happy Travellers" },
+  { icon: MapPinned, target: 250, suffix: "+", label: "Cities Covered" },
+  { icon: Car, target: 80, suffix: "+", label: "Vehicles in Fleet" },
+  { icon: Award, target: siteConfig.experienceYears, suffix: "+", label: "Years of Service" },
 ];
 
 export function About() {
@@ -66,7 +67,9 @@ export function About() {
               {statCards.map((s) => (
                 <div key={s.label} className="bg-white/10 rounded-xl p-5 text-center">
                   <s.icon className="w-6 h-6 text-gold mx-auto" />
-                  <p className="text-3xl font-bold text-white mt-2">{s.value}</p>
+                  <p className="text-3xl font-bold text-white mt-2">
+                    <CountUp target={s.target} suffix={s.suffix} />
+                  </p>
                   <p className="text-xs text-white/85 mt-1">{s.label}</p>
                 </div>
               ))}

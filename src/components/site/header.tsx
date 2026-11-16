@@ -8,9 +8,10 @@ import { siteConfig, buildTelLink } from "@/lib/site-config";
 
 const navItems = [
   { label: "Home", href: "#home" },
+  { label: "How It Works", href: "#how-it-works" },
   { label: "Services", href: "#services" },
   { label: "Why Us", href: "#why-us" },
-  { label: "Fleet", href: "#fleet" },
+  { label: "Coverage", href: "#coverage" },
   { label: "Routes", href: "#routes" },
   { label: "Fare Calculator", href: "#fare-calculator" },
   { label: "About", href: "#about" },
