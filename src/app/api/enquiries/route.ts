@@ -54,7 +54,8 @@ export async function POST(req: NextRequest) {
     // Compose the message that will be sent via WhatsApp / email so the
     // business owner instantly sees every detail of the enquiry.
     const lines = [
-      `*Radhe Radhe! New Yatra Enquiry — ${siteConfig.shortName}*`,
+      `*Radhe Radhe! New Yatra Enquiry — Shri Shyam Travels*`,
+      `*(Coordinator: ${siteConfig.contactPerson})*`,
       ``,
       `Name: ${enquiry.name}`,
       `Phone: ${enquiry.phone}`,
@@ -79,7 +80,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       ok: true,
       enquiryId: enquiry.id,
-      // Deep links the frontend can offer to the user right after submit:
       whatsapp: buildWhatsAppLink(messageText),
       phone: buildTelLink(),
       email: buildMailtoLink(`New Braj Yatra Enquiry — ${enquiry.name}`, messageText),

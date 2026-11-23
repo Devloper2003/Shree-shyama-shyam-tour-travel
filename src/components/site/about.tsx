@@ -81,8 +81,8 @@ export function About() {
             <p className="relative mt-6 text-sm text-white/80 leading-relaxed">
               Founded in {siteConfig.establishedYear} in the heart of Braj — Mathura — we started
               with a single sedan and a devotee&apos;s love for sharing Krishna&apos;s sacred land.
-              Today, our network covers all 84-kosa of the Braj Mandala, but our family-run seva
-              and devotion remain unchanged.
+              Today, our network covers all 84-kosa of the Braj Mandala, with {siteConfig.contactPerson}
+              and our team coordinating every yatra with the same family-run seva and devotion.
             </p>
           </motion.div>
         </div>

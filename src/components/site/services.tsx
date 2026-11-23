@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
-import { Check, Star, Clock, MapPin, Users, ArrowRight, Calendar, Route, Crown, Sparkles } from "lucide-react";
+import { Check, Star, Clock, MapPin, Users, ArrowRight, Calendar, Route, Crown, Sparkles, MapPinned } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -12,11 +12,12 @@ import { yatraPackages, type YatraPackageCategory } from "@/lib/site-data";
 type TabKey = "all" | YatraPackageCategory;
 
 const tabs: { key: TabKey; label: string; icon: typeof Star; description: string }[] = [
-  { key: "all", label: "All Packages", icon: Star, description: "View our complete yatra offerings" },
+  { key: "all", label: "All Packages", icon: Star, description: "View our complete yatra offerings — same-day to 7-day grand tours" },
   { key: "day-tour", label: "1-Day Yatra", icon: Clock, description: "Same-day pilgrimage — perfect for time-short devotees" },
   { key: "short", label: "2-Day Circuit", icon: Route, description: "Comfortable pace covering Mathura, Gokul, Vrindavan & Govardhan" },
   { key: "complete", label: "3-Day Complete", icon: Crown, description: "Full 84-kosa Braj Mandala with all 12 main sites" },
-  { key: "custom", label: "Custom Yatra", icon: Sparkles, description: "Tailored to your specific sankalp and group" },
+  { key: "multicity", label: "Multi-City Tours", icon: MapPinned, description: "2N/3D to 6N/7D — Braj + Agra + Jaipur + Khajuraho combinations" },
+  { key: "custom", label: "Custom Yatra", icon: Sparkles, description: "Tailored to your specific sankalp and group — fully customizable" },
 ];
 
 export function Services() {
@@ -226,6 +227,22 @@ export function Services() {
             and we&apos;ll craft a tailored itinerary.
           </p>
         </div>
+
+        {/* Customization callout — from client's audio message */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mt-8 max-w-3xl mx-auto bg-saffron-gradient text-white rounded-xl p-6 text-center"
+        >
+          <p className="text-lg font-bold mb-1">Customization Available for Every Yatra</p>
+          <p className="text-sm text-white/90">
+            We customize packages as per your demand — 2N/3D, 4N/5D with Agra, 6N/7D with
+            Jaipur &amp; Khajuraho, or any combination you desire. Share your sankalp and we
+            craft the perfect itinerary for you.
+          </p>
+        </motion.div>
       </div>
     </section>
   );

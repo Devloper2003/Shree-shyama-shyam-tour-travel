@@ -16,7 +16,7 @@ export function WhatsAppFloat() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const defaultMessage = `Radhe Radhe ${siteConfig.shortName}! I would like to book a Braj Yatra.\n\nPickup: \nDrop (Braj site): \nDate: \nYatra Package: \nPilgrims: `;
+  const defaultMessage = `Radhe Radhe Shri Shyam Travels! I would like to book a Braj Yatra.\n\nPickup: \nDrop (Braj site): \nDate: \nYatra Package: \nPilgrims: `;
 
   return (
     <div

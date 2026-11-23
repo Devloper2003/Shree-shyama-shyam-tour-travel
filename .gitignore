@@ -38,6 +38,9 @@ yarn-error.log*
 db/*.db
 db/*.db-journal
 
+# user uploads (client audio/image files — not part of the website code)
+/upload/
+
 # vercel
 .vercel
 

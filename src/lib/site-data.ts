@@ -9,7 +9,7 @@
 //  YATRA PACKAGES — replaces the old cab "services" data
 // ============================================================================
 
-export type YatraPackageCategory = "day-tour" | "short" | "complete" | "custom";
+export type YatraPackageCategory = "day-tour" | "short" | "complete" | "multicity" | "custom";
 
 export type YatraItineraryDay = {
   day: number;
@@ -170,6 +170,69 @@ export const yatraPackages: YatraPackage[] = [
         title: "Tell us your sankalp",
         sites: ["Share your preferred sites, dates, and group size — we craft your perfect yatra"],
       },
+    ],
+  },
+  {
+    id: "2n3d-braj-extended",
+    name: "2N / 3D Braj Extended Yatra",
+    category: "2 Nights / 3 Days — Extended",
+    duration: "3 Days, 2 Nights",
+    days: 3,
+    price: 14500,
+    startingFrom: 14500,
+    temples: ["Mathura", "Vrindavan", "Gokul", "Mahavan", "Govardhan", "Barsana", "Nandgaon", "Radha Kund"],
+    inclusions: ["AC Innova/SUV for 3 days", "Dedicated Braj guide", "2-night stay at premium Dharamshala", "All temple visits", "Govardhan Parikrama support", "Evening aartis", "Morning boat ride at Vishram Ghat"],
+    bestFor: ["Comprehensive Braj experience", "Family groups", "First-time Braj visitors"],
+    popular: true,
+    tab: "multicity",
+    itinerary: [
+      { day: 1, title: "Mathura & Gokul", sites: ["Krishna Janmabhoomi", "Vishram Ghat (boat ride)", "Gokulnath Temple", "Raman Reti", "Mahavan"] },
+      { day: 2, title: "Vrindavan Deep Darshan", sites: ["Banke Bihari", "Prem Mandir", "ISKCON", "Seva Kunj", "Kesi Ghat aarti"] },
+      { day: 3, title: "Barsana, Nandgaon & Govardhan", sites: ["Radha Rani Temple", "Nand Bhavan", "Govardhan Parikrama", "Radha Kund"] },
+    ],
+  },
+  {
+    id: "4n5d-braj-agra",
+    name: "4N / 5D Braj + Agra Package",
+    category: "4 Nights / 5 Days — Braj + Agra",
+    duration: "5 Days, 4 Nights",
+    days: 5,
+    price: 24500,
+    startingFrom: 24500,
+    temples: ["Complete Braj Mandala", "Agra (Taj Mahal)", "Fatehpur Sikri"],
+    inclusions: ["AC Innova for 5 days", "Dedicated guide", "4-night stay at hotels", "All temple visits", "Taj Mahal visit", "Fatehpur Sikri excursion", "Govardhan Parikrama", "Boat ride at Yamuna"],
+    bestFor: ["Braj + heritage combo", "International tourists", "Family with elders"],
+    popular: true,
+    tab: "multicity",
+    itinerary: [
+      { day: 1, title: "Arrival & Mathura", sites: ["Krishna Janmabhoomi", "Vishram Ghat", "Gokul"] },
+      { day: 2, title: "Vrindavan Full Day", sites: ["Banke Bihari", "Prem Mandir", "ISKCON", "Seva Kunj"] },
+      { day: 3, title: "Govardhan & Barsana", sites: ["Govardhan Parikrama", "Radha Kund", "Barsana", "Nandgaon"] },
+      { day: 4, title: "Agra Excursion", sites: ["Taj Mahal", "Agra Fort", "Fatehpur Sikri"] },
+      { day: 5, title: "Final Darshan & Departure", sites: ["Morning aarti", "Local Braj markets", "Drop"] },
+    ],
+  },
+  {
+    id: "6n7d-braj-jaipur-khajuraho",
+    name: "6N / 7D Braj + Jaipur + Khajuraho",
+    category: "6 Nights / 7 Days — Grand Spiritual Tour",
+    duration: "7 Days, 6 Nights",
+    days: 7,
+    price: 38500,
+    startingFrom: 38500,
+    temples: ["Complete Braj Mandala", "Jaipur temples", "Khajuraho temples"],
+    inclusions: ["AC SUV/Tempo for 7 days", "Dedicated guide", "6-night stay at premium hotels", "All temple visits", "Govardhan Parikrama", "Jaipur sightseeing", "Khajuraho temple tour", "All tolls & parking"],
+    bestFor: ["Grand spiritual circuit", "NRIs & international groups", "Once-in-a-lifetime yatra"],
+    popular: true,
+    tab: "multicity",
+    itinerary: [
+      { day: 1, title: "Mathura Arrival", sites: ["Krishna Janmabhoomi", "Vishram Ghat"] },
+      { day: 2, title: "Vrindavan & Gokul", sites: ["Banke Bihari", "Prem Mandir", "ISKCON", "Gokul"] },
+      { day: 3, title: "Govardhan & Barsana", sites: ["Govardhan Parikrama", "Radha Kund", "Barsana", "Nandgaon"] },
+      { day: 4, title: "Drive to Jaipur", sites: ["Jaipur arrival", "Govind Dev Ji Temple", "Birla Mandir"] },
+      { day: 5, title: "Jaipur Temples & Sights", sites: ["Amber Fort", "City Palace", "Galta Ji (Monkey Temple)", "Hawa Mahal"] },
+      { day: 6, title: "Drive to Khajuraho", sites: ["Khajuraho arrival", "Light & sound show"] },
+      { day: 7, title: "Khajuraho Temples & Departure", sites: ["Western group of temples", "Eastern group", "Drop"] },
     ],
   },
 ];

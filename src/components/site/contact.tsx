@@ -234,6 +234,17 @@ export function Contact() {
             <div className="bg-braj-gradient text-white rounded-xl p-6">
               <h3 className="text-lg font-bold mb-4">Reach Us Directly — Radhe Radhe</h3>
               <div className="space-y-4 text-sm">
+                {/* Contact person */}
+                <div className="flex items-start gap-3 pb-4 border-b border-white/15">
+                  <div className="w-10 h-10 rounded-full bg-gold text-accent-foreground flex items-center justify-center font-bold text-sm shrink-0">
+                    {siteConfig.contactPerson.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="text-white/70 text-xs">Your Yatra Coordinator</p>
+                    <p className="font-semibold">{siteConfig.contactPerson}</p>
+                    <p className="text-xs text-white/70 mt-0.5">{siteConfig.contactPersonRole}</p>
+                  </div>
+                </div>
                 <a href={buildTelLink()} className="flex items-start gap-3 hover:text-gold transition-colors">
                   <Phone className="w-5 h-5 text-gold shrink-0 mt-0.5" />
                   <div>

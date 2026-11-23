@@ -56,10 +56,10 @@ export function Header() {
             </div>
             <div className="hidden xs:block sm:block">
               <p className="text-sm sm:text-base font-bold leading-tight text-foreground">
-                Shree Shyama Shyam
+                Shri Shyam Travels
               </p>
               <p className="text-[10px] sm:text-xs text-muted-foreground leading-tight">
-                Braj Yatra & Pilgrimage Tours
+                Mathura • Vrindavan • Braj Yatra
               </p>
             </div>
           </Link>

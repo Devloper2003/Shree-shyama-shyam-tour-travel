@@ -30,14 +30,14 @@ export function Footer() {
                 <OmIcon className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-sm font-bold leading-tight">Shree Shyama Shyam</p>
-                <p className="text-xs text-white/60 leading-tight">Braj Yatra & Pilgrimage</p>
+                <p className="text-sm font-bold leading-tight">Shri Shyam Travels</p>
+                <p className="text-xs text-white/60 leading-tight">Mathura • Vrindavan • Braj Yatra</p>
               </div>
             </div>
             <p className="text-sm text-white/70 leading-relaxed">
-              India&apos;s trusted Braj Yatra pilgrimage partner since {siteConfig.establishedYear}.
+              Mathura-Vrindavan&apos;s trusted Braj Yatra pilgrimage partner since {siteConfig.establishedYear}.
               Braj-born guides, verified vegetarian drivers, local pandit arrangements — across
-              all 84-kosa of the sacred Braj Mandala.
+              all 84-kosa of the sacred Braj Mandala. Coordinated by {siteConfig.contactPerson}.
             </p>
             <p className="text-xs text-gold mt-4 font-medium">{siteConfig.businessHours}</p>
           </div>
@@ -170,10 +170,10 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/60">
           <p>
-            &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
+            &copy; {new Date().getFullYear()} {siteConfig.legalName}. All rights reserved.
           </p>
           <p>
-            राधे राधे • Sacred Braj Yatra • {siteConfig.businessHours}
+            राधे राधे • Coordinated by {siteConfig.contactPerson} • {siteConfig.phoneDisplay}
           </p>
         </div>
       </div>

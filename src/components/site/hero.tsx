@@ -90,7 +90,7 @@ export function Hero() {
               className="flex items-center justify-center lg:justify-start gap-3 mb-4"
             >
               <Badge className="bg-gold text-accent-foreground hover:bg-gold">
-                <OmIcon className="w-3 h-3 mr-1" /> Braj Mandala Since {siteConfig.establishedYear}
+                <OmIcon className="w-3 h-3 mr-1" /> Mathura • Vrindavan • Since {siteConfig.establishedYear}
               </Badge>
             </motion.div>
 
@@ -118,7 +118,7 @@ export function Hero() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
-                with Shree Shyama Shyam
+                with Shri Shyam Travels
               </motion.span>
             </motion.h1>
 
