@@ -1,23 +1,20 @@
 "use client";
 
-import Link from "next/link";
 import { Phone, Mail, MessageCircle, MapPin, Clock, Facebook, Instagram, Youtube, Twitter } from "lucide-react";
 import { siteConfig, buildTelLink, buildWhatsAppLink } from "@/lib/site-config";
+import { usePageStore, type PageName } from "@/lib/page-store";
 
-const quickLinks = [
-  { label: "Home", href: "#home" },
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "Yatra Packages", href: "#services" },
-  { label: "Sacred Sites", href: "#sacred-sites" },
-  { label: "Braj Mandala Map", href: "#coverage" },
-  { label: "Festival Calendar", href: "#auspicious-dates" },
-  { label: "Popular Routes", href: "#routes" },
-  { label: "About Us", href: "#about" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Book Your Yatra", href: "#contact" },
+const quickLinks: { label: string; page: PageName }[] = [
+  { label: "Home", page: "home" },
+  { label: "Yatra Packages", page: "package" },
+  { label: "Services", page: "services" },
+  { label: "Blogs", page: "blogs" },
+  { label: "About Us", page: "about" },
+  { label: "Contact", page: "contact" },
 ];
 
 export function Footer() {
+  const navigate = usePageStore((s) => s.navigate);
   return (
     <footer className="bg-braj-deep text-white mt-auto">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
@@ -44,13 +41,13 @@ export function Footer() {
             </h3>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {quickLinks.map((l) => (
-                <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    className="text-sm text-white/75 hover:text-gold transition-colors"
+                <li key={l.page}>
+                  <button
+                    onClick={() => navigate(l.page)}
+                    className="text-sm text-white/75 hover:text-gold transition-colors text-left"
                   >
                     {l.label}
-                  </Link>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -154,11 +151,12 @@ export function Footer() {
                 </a>
               )}
             </div>
-            <Link href="#contact">
-              <button className="w-full px-4 py-2.5 rounded-md bg-gold text-accent-foreground text-sm font-semibold hover:opacity-90 transition-opacity">
-                Book Your Yatra
-              </button>
-            </Link>
+            <button
+              onClick={() => navigate("contact")}
+              className="w-full px-4 py-2.5 rounded-md bg-gold text-accent-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
+            >
+              Book Your Yatra
+            </button>
           </div>
         </div>
 

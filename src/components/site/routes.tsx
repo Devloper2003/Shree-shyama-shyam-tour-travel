@@ -7,10 +7,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { popularRoutes } from "@/lib/site-data";
+import { usePageStore } from "@/lib/page-store";
 
 const ROUTES_PER_SLIDE = 6;
 
 export function Routes() {
+  const navigate = usePageStore((s) => s.navigate);
   const [query, setQuery] = useState("");
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -55,17 +57,11 @@ export function Routes() {
     setCurrentSlide(0);
   };
 
-  // When a "Book this route" button is clicked, scroll to contact and prefill
+  // When a "Book this route" button is clicked, navigate to Contact page with prefill
   const handleBookRoute = (from: string, to: string) => {
-    const contactSection = document.getElementById("contact");
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-    window.dispatchEvent(
-      new CustomEvent("prefill-booking", {
-        detail: { pickup: from, drop: to, source: "route-card" },
-      })
-    );
+    navigate("contact", {
+      contactPrefill: { pickup: from, drop: to, source: "route-card" },
+    });
   };
 
   const canGoLeft = safeSlide > 0;

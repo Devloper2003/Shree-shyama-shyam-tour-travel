@@ -15,8 +15,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { vehicles } from "@/lib/site-data";
+import { usePageStore } from "@/lib/page-store";
 
 export function FareCalculator() {
+  const navigate = usePageStore((s) => s.navigate);
   const [pickup, setPickup] = useState("");
   const [drop, setDrop] = useState("");
   const [vehicleId, setVehicleId] = useState<string>(vehicles[0].id);
@@ -55,22 +57,16 @@ export function FareCalculator() {
 
   const handleBookFare = () => {
     setSubmitted(true);
-    const contactSection = document.getElementById("contact");
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-    window.dispatchEvent(
-      new CustomEvent("prefill-booking", {
-        detail: {
-          pickup,
-          drop,
-          vehicleType: vehicle.name,
-          tripType,
-          notes: `Approx distance: ${km} km. Estimated fare: ₹${fare.toLocaleString("en-IN")}.`,
-          source: "fare-calculator",
-        },
-      })
-    );
+    navigate("contact", {
+      contactPrefill: {
+        pickup,
+        drop,
+        vehicleType: vehicle.name,
+        tripType,
+        notes: `Approx distance: ${km} km. Estimated fare: ₹${fare.toLocaleString("en-IN")}.`,
+        source: "fare-calculator",
+      },
+    });
   };
 
   return (

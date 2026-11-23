@@ -34,6 +34,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { siteConfig, buildTelLink, buildWhatsAppLink, buildMailtoLink } from "@/lib/site-config";
 import { yatraPackages, vehicles } from "@/lib/site-data";
+import { usePageStore } from "@/lib/page-store";
 
 type PrefillDetail = {
   pickup?: string;
@@ -67,23 +68,26 @@ export function Contact() {
   const [result, setResult] = useState<ApiResponse | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
+  // Read prefill from Zustand page store (set when navigating from Package page etc.)
+  const contactPrefill = usePageStore((s) => s.contactPrefill);
+
   const [form, setForm] = useState({
     name: "",
     phone: "",
     email: "",
-    pickup: "",
-    drop: "",
-    yatraPackage: "",
-    vehicleType: "",
-    tripType: "same-day",
+    pickup: contactPrefill?.pickup ?? "",
+    drop: contactPrefill?.drop ?? "",
+    yatraPackage: contactPrefill?.yatraPackage ?? "",
+    vehicleType: contactPrefill?.vehicleType ?? "",
+    tripType: contactPrefill?.tripType ?? "same-day",
     pickupDate: "",
     pickupTime: "",
     passengers: "1",
-    notes: "",
+    notes: contactPrefill?.notes ?? "",
   });
-  const [source, setSource] = useState("contact-form");
+  const [source, setSource] = useState(contactPrefill?.source ?? "contact-form");
 
-  // Listen for prefill events from Routes / Fare Calculator
+  // Listen for prefill events from Routes / Fare Calculator (legacy event-based)
   useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent<PrefillDetail>).detail;
@@ -92,22 +96,33 @@ export function Contact() {
         ...prev,
         pickup: detail.pickup ?? prev.pickup,
         drop: detail.drop ?? prev.drop,
+        yatraPackage: detail.yatraPackage ?? prev.yatraPackage,
         vehicleType: detail.vehicleType ?? prev.vehicleType,
         tripType: detail.tripType ?? prev.tripType,
         notes: detail.notes ?? prev.notes,
       }));
       setSource(detail.source ?? "contact-form");
-      // Dismiss any success screen and jump to step 1 so user sees prefilled fields
       setResult(null);
       setStep(1);
       toast({
         title: "Details pre-filled",
-        description: "We have filled the route details. Please complete the rest.",
+        description: "We have filled the details. Please complete the rest.",
       });
     };
     window.addEventListener("prefill-booking", handler);
     return () => window.removeEventListener("prefill-booking", handler);
   }, [toast]);
+
+  // Show toast when prefill data is present (form state is initialized directly)
+  useEffect(() => {
+    if (!contactPrefill) return;
+    toast({
+      title: "Details pre-filled",
+      description: contactPrefill.yatraPackage
+        ? `We've filled "${contactPrefill.yatraPackage}" for you. Please complete the rest.`
+        : "We have filled the details. Please complete the rest.",
+    });
+  }, [contactPrefill, toast]);
 
   const update = (key: keyof typeof form, value: string) =>
     setForm((prev) => ({ ...prev, [key]: value }));

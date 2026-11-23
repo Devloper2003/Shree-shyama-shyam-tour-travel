@@ -3,13 +3,14 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Sparkles, MapPin, ArrowRight, Star, ChevronLeft, ChevronRight } from "lucide-react";
-import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { auspiciousDates } from "@/lib/site-data";
+import { usePageStore } from "@/lib/page-store";
 
 export function AuspiciousDates() {
+  const navigate = usePageStore((s) => s.navigate);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -157,11 +158,24 @@ export function AuspiciousDates() {
                       </div>
                     </div>
 
-                    <Link href="#contact" className="block mt-4">
-                      <Button variant="outline" size="sm" className="w-full gap-1.5">
+                    <div className="block mt-4">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full gap-1.5"
+                        onClick={() =>
+                          navigate("contact", {
+                            contactPrefill: {
+                              yatraPackage: d.recommendedPackage,
+                              notes: `Planning yatra for ${d.festival}. Best yatra site: ${d.bestYatra}.`,
+                              source: "auspicious-dates",
+                            },
+                          })
+                        }
+                      >
                         Book for {d.festival.split(" ")[0]} <ArrowRight className="w-3.5 h-3.5" />
                       </Button>
-                    </Link>
+                    </div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -171,9 +185,12 @@ export function AuspiciousDates() {
 
         <p className="mt-8 text-center text-sm text-muted-foreground">
           Festival dates vary each year based on the Hindu panchang.{" "}
-          <Link href="#contact" className="text-primary font-semibold underline-offset-4 hover:underline">
+          <button
+            onClick={() => navigate("contact")}
+            className="text-primary font-semibold underline-offset-4 hover:underline"
+          >
             Contact us
-          </Link>{" "}
+          </button>{" "}
           to confirm exact dates for your planned yatra.
         </p>
       </div>

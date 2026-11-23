@@ -1,27 +1,25 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { siteConfig, buildTelLink } from "@/lib/site-config";
+import { usePageStore, type PageName } from "@/lib/page-store";
 
-const navItems = [
-  { label: "Home", href: "#home" },
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "Yatra Packages", href: "#services" },
-  { label: "Sacred Sites", href: "#sacred-sites" },
-  { label: "Braj Map", href: "#coverage" },
-  { label: "Festivals", href: "#auspicious-dates" },
-  { label: "Routes", href: "#routes" },
-  { label: "About", href: "#about" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Book Yatra", href: "#contact" },
+const navItems: { label: string; page: PageName }[] = [
+  { label: "Home", page: "home" },
+  { label: "Package", page: "package" },
+  { label: "Services", page: "services" },
+  { label: "Blogs", page: "blogs" },
+  { label: "Contact", page: "contact" },
+  { label: "About", page: "about" },
 ];
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const currentPage = usePageStore((s) => s.currentPage);
+  const navigate = usePageStore((s) => s.navigate);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -30,13 +28,17 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll when mobile menu open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  const handleNav = (page: PageName) => {
+    navigate(page);
+    setOpen(false);
+  };
 
   return (
     <header
@@ -49,8 +51,11 @@ export function Header() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 sm:h-20 items-center justify-between gap-4">
           {/* Logo */}
-          <Link href="#home" className="flex items-center gap-3 shrink-0" aria-label={siteConfig.name}>
-            {/* Next.js Image would be ideal here but plain img avoids extra config */}
+          <button
+            onClick={() => handleNav("home")}
+            className="flex items-center gap-3 shrink-0"
+            aria-label={siteConfig.name}
+          >
             <img
               src="/logo.png"
               alt="Shri Shyama Shyam Tour & Travels logo"
@@ -66,19 +71,26 @@ export function Header() {
                 Tour & Travels • Mathura Vrindavan
               </p>
             </div>
-          </Link>
+          </button>
 
-          {/* Desktop nav */}
+          {/* Desktop nav — only 6 tabs */}
           <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-muted rounded-md transition-colors"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive = currentPage === item.page;
+              return (
+                <button
+                  key={item.page}
+                  onClick={() => handleNav(item.page)}
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                    isActive
+                      ? "text-primary bg-primary/10 font-semibold"
+                      : "text-foreground/80 hover:text-primary hover:bg-muted"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
           </nav>
 
           {/* Right actions */}
@@ -89,11 +101,13 @@ export function Header() {
                 <span className="hidden md:inline">Call Now</span>
               </Button>
             </a>
-            <Link href="#contact" className="hidden sm:block">
-              <Button size="sm" className="gap-2">
-                Book a Cab
-              </Button>
-            </Link>
+            <Button
+              size="sm"
+              className="gap-2"
+              onClick={() => handleNav("contact")}
+            >
+              Book Yatra
+            </Button>
 
             {/* Mobile menu button */}
             <Button
@@ -126,16 +140,22 @@ export function Header() {
               </Button>
             </div>
             <nav className="flex flex-col p-2 overflow-y-auto" aria-label="Mobile navigation">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="px-4 py-3 text-sm font-medium text-foreground/90 hover:bg-muted hover:text-primary rounded-md transition-colors"
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navItems.map((item) => {
+                const isActive = currentPage === item.page;
+                return (
+                  <button
+                    key={item.page}
+                    onClick={() => handleNav(item.page)}
+                    className={`px-4 py-3 text-sm font-medium rounded-md transition-colors text-left ${
+                      isActive
+                        ? "text-primary bg-primary/10 font-semibold"
+                        : "text-foreground/90 hover:bg-muted hover:text-primary"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
             </nav>
             <div className="mt-auto p-4 border-t border-border flex flex-col gap-2">
               <a href={buildTelLink()}>
@@ -143,9 +163,9 @@ export function Header() {
                   <Phone className="w-4 h-4" /> Call {siteConfig.phoneDisplay}
                 </Button>
               </a>
-              <Link href="#contact" onClick={() => setOpen(false)}>
-                <Button className="w-full">Book a Cab</Button>
-              </Link>
+              <Button className="w-full" onClick={() => handleNav("contact")}>
+                Book Your Yatra
+              </Button>
             </div>
           </div>
         </div>
