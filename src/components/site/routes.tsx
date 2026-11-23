@@ -226,9 +226,12 @@ export function Routes() {
         ) : (
           <div className="text-center text-muted-foreground py-12">
             No routes found for &quot;{query}&quot;. Try another Braj site, or{" "}
-            <a href="#contact" className="text-primary font-semibold underline-offset-4 hover:underline">
+            <button
+              onClick={() => navigate("contact")}
+              className="text-primary font-semibold underline-offset-4 hover:underline"
+            >
               request a custom Braj route
-            </a>
+            </button>
             .
           </div>
         )}

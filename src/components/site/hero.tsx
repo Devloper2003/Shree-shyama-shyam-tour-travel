@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { Phone, MessageCircle, Star, ShieldCheck, MapPin, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { CountUp } from "@/components/site/count-up";
 import { OmIcon } from "@/components/site/om-icon";
 import { siteConfig, buildTelLink, buildWhatsAppLink } from "@/lib/site-config";
+import { usePageStore } from "@/lib/page-store";
 
 const trustBadges = [
   { icon: ShieldCheck, label: "Braj-Born Guides" },
@@ -36,6 +36,7 @@ const particles = Array.from({ length: 16 }).map((_, i) => ({
 }));
 
 export function Hero() {
+  const navigate = usePageStore((s) => s.navigate);
   return (
     <section
       id="home"
@@ -152,11 +153,13 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.35 }}
               className="mt-8 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start"
             >
-              <Link href="#contact">
-                <Button size="lg" className="w-full sm:w-auto bg-gold text-accent-foreground hover:bg-gold/90">
-                  Book Your Yatra
-                </Button>
-              </Link>
+              <Button
+                size="lg"
+                className="w-full sm:w-auto bg-gold text-accent-foreground hover:bg-gold/90"
+                onClick={() => navigate("contact")}
+              >
+                Book Your Yatra
+              </Button>
               <a
                 href={buildWhatsAppLink(
                   `Radhe Radhe! I would like to book a Braj Yatra. Preferred package: , Dates: , Group size: `

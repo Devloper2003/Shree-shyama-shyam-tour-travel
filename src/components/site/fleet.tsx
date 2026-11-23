@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Users, Wind, Badge as BadgeIcon } from "lucide-react";
+import { Users, Wind, Badge as BadgeIcon, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { vehicles } from "@/lib/site-data";
@@ -123,8 +123,20 @@ export function Fleet() {
               transition={{ duration: 0.5, delay: i * 0.06 }}
             >
               <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full">
-                <div className="bg-gradient-to-br from-muted/60 to-muted h-36 flex items-center justify-center p-4">
-                  <VehicleSvg type={v.id} />
+                <div className="relative h-40 sm:h-44 bg-muted overflow-hidden">
+                  <img
+                    src={`/fleet/${v.id}.jpg`}
+                    alt={`${v.name} — ${v.example}`}
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                    loading="lazy"
+                  />
+                  {v.popular && (
+                    <div className="absolute top-2 right-2">
+                      <Badge className="bg-gold text-accent-foreground gap-1">
+                        <Star className="w-3 h-3 fill-current" /> Popular
+                      </Badge>
+                    </div>
+                  )}
                 </div>
                 <CardContent className="p-5">
                   <div className="flex items-start justify-between gap-2 mb-2">
@@ -144,7 +156,8 @@ export function Fleet() {
                       <Wind className="w-3.5 h-3.5 text-primary" /> AC
                     </span>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-3">
+                  <p className="text-xs text-muted-foreground mt-2">e.g. {v.example}</p>
+                  <p className="text-xs text-muted-foreground mt-2">
                     {v.bestFor.join(" • ")}
                   </p>
                 </CardContent>
