@@ -69,3 +69,9 @@ model Offer {
 
   @@index([active])
 }
+
+// Key-value settings store (admin password, etc.)
+model Setting {
+  key   String @id
+  value String
+}

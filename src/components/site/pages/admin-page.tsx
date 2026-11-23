@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { usePageStore } from "@/lib/page-store";
 import { staticBlogPosts } from "@/lib/blog-data";
-import { Lock, Plus, Trash2, Edit, Eye, EyeOff, Tag, FileText, LogOut, LockKeyhole, Upload, ImageIcon, X } from "lucide-react";
+import { Lock, Plus, Trash2, Edit, Eye, EyeOff, Tag, FileText, LogOut, LockKeyhole, Upload, ImageIcon, X, KeyRound, Check } from "lucide-react";
 
 const ADMIN_PASSWORD = "vithika2026";
 
@@ -29,7 +29,15 @@ export function AdminPage() {
   const [authed, setAuthed] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [tab, setTab] = useState<"blog" | "offers">("blog");
+  const [loggingIn, setLoggingIn] = useState(false);
+  const [tab, setTab] = useState<"blog" | "offers" | "settings">("blog");
+
+  // Change password state
+  const [showChangePwd, setShowChangePwd] = useState(false);
+  const [pwdForm, setPwdForm] = useState({ currentPassword: "", newPassword: "", confirmPassword: "" });
+  const [pwdError, setPwdError] = useState("");
+  const [pwdSuccess, setPwdSuccess] = useState(false);
+  const [changingPwd, setChangingPwd] = useState(false);
 
   // Blog state
   const [apiPosts, setApiPosts] = useState<ApiBlogPost[]>([]);
@@ -70,12 +78,76 @@ export function AdminPage() {
     return () => { cancelled = true; };
   }, [authed, refreshTrigger]);
 
-  const handleLogin = () => {
-    if (password === ADMIN_PASSWORD) {
-      setAuthed(true);
-      setError("");
-    } else {
-      setError("Incorrect password. Please try again.");
+  const handleLogin = async () => {
+    setLoggingIn(true);
+    setError("");
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+      const data = await res.json();
+      if (data.ok && data.match) {
+        setAuthed(true);
+        setPassword(""); // Clear password from state
+      } else {
+        setError("Incorrect password. Please try again.");
+      }
+    } catch (e) {
+      setError("Login failed. Please try again.");
+    } finally {
+      setLoggingIn(false);
+    }
+  };
+
+  // Change password handler
+  const handleChangePassword = async () => {
+    setPwdError("");
+    setPwdSuccess(false);
+
+    if (!pwdForm.currentPassword || !pwdForm.newPassword) {
+      setPwdError("Please fill in all fields.");
+      return;
+    }
+    if (pwdForm.newPassword.length < 6) {
+      setPwdError("New password must be at least 6 characters long.");
+      return;
+    }
+    if (pwdForm.newPassword !== pwdForm.confirmPassword) {
+      setPwdError("New password and confirmation do not match.");
+      return;
+    }
+    if (pwdForm.newPassword === pwdForm.currentPassword) {
+      setPwdError("New password must be different from the current password.");
+      return;
+    }
+
+    setChangingPwd(true);
+    try {
+      const res = await fetch("/api/admin/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          currentPassword: pwdForm.currentPassword,
+          newPassword: pwdForm.newPassword,
+        }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setPwdSuccess(true);
+        setPwdForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+        setTimeout(() => {
+          setShowChangePwd(false);
+          setPwdSuccess(false);
+        }, 2000);
+      } else {
+        setPwdError(data.error || "Failed to change password.");
+      }
+    } catch (e) {
+      setPwdError("Failed to change password. Please try again.");
+    } finally {
+      setChangingPwd(false);
     }
   };
 
@@ -244,11 +316,11 @@ export function AdminPage() {
               />
               {error && <p className="text-xs text-destructive">{error}</p>}
             </div>
-            <Button className="w-full" onClick={handleLogin}>
-              <Lock className="w-4 h-4 mr-2" /> Login
+            <Button className="w-full" onClick={handleLogin} disabled={loggingIn || !password}>
+              <Lock className="w-4 h-4 mr-2" /> {loggingIn ? "Verifying..." : "Login"}
             </Button>
             <p className="text-xs text-muted-foreground text-center">
-              Default password: <code className="bg-muted px-1.5 py-0.5 rounded">vithika2026</code>
+              Contact your administrator if you&apos;ve forgotten the password.
             </p>
             <Button variant="ghost" className="w-full" onClick={() => navigate("home")}>
               Back to Home
@@ -277,7 +349,7 @@ export function AdminPage() {
         </div>
 
         {/* Tab switcher */}
-        <div className="flex gap-2 mb-6">
+        <div className="flex gap-2 mb-6 flex-wrap">
           <Button
             variant={tab === "blog" ? "default" : "outline"}
             size="sm"
@@ -293,6 +365,14 @@ export function AdminPage() {
             className="gap-2"
           >
             <Tag className="w-4 h-4" /> Offers ({offers.length})
+          </Button>
+          <Button
+            variant={tab === "settings" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setTab("settings")}
+            className="gap-2"
+          >
+            <KeyRound className="w-4 h-4" /> Settings
           </Button>
         </div>
 
@@ -607,6 +687,91 @@ export function AdminPage() {
                   </Card>
                 ))
               )}
+            </div>
+          </div>
+        )}
+
+        {/* Settings Tab — Change Password */}
+        {tab === "settings" && (
+          <div className="max-w-lg mx-auto">
+            <Card>
+              <CardHeader>
+                <h2 className="text-lg font-bold flex items-center gap-2">
+                  <KeyRound className="w-5 h-5" /> Change Admin Password
+                </h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Change the password used to access this admin panel. The new password
+                  takes effect immediately.
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {pwdSuccess ? (
+                  <div className="flex items-center gap-2 p-4 bg-primary/10 rounded-lg">
+                    <Check className="w-5 h-5 text-primary" />
+                    <p className="text-sm font-medium text-primary">Password changed successfully!</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="space-y-2">
+                      <Label htmlFor="current-pwd">Current Password</Label>
+                      <Input
+                        id="current-pwd"
+                        type="password"
+                        value={pwdForm.currentPassword}
+                        onChange={(e) => setPwdForm({ ...pwdForm, currentPassword: e.target.value })}
+                        placeholder="Enter current password"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="new-pwd">New Password</Label>
+                      <Input
+                        id="new-pwd"
+                        type="password"
+                        value={pwdForm.newPassword}
+                        onChange={(e) => setPwdForm({ ...pwdForm, newPassword: e.target.value })}
+                        placeholder="Enter new password (min 6 characters)"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="confirm-pwd">Confirm New Password</Label>
+                      <Input
+                        id="confirm-pwd"
+                        type="password"
+                        value={pwdForm.confirmPassword}
+                        onChange={(e) => setPwdForm({ ...pwdForm, confirmPassword: e.target.value })}
+                        placeholder="Re-enter new password"
+                      />
+                    </div>
+                    {pwdError && (
+                      <p className="text-sm text-destructive">{pwdError}</p>
+                    )}
+                    <Button
+                      onClick={handleChangePassword}
+                      disabled={changingPwd || !pwdForm.currentPassword || !pwdForm.newPassword || !pwdForm.confirmPassword}
+                      className="gap-2"
+                    >
+                      <KeyRound className="w-4 h-4" /> {changingPwd ? "Changing..." : "Change Password"}
+                    </Button>
+                  </>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Password management info */}
+            <div className="mt-6 p-4 bg-muted/40 rounded-lg border border-border space-y-3">
+              <p className="text-sm font-semibold text-foreground">Password Management Guide</p>
+              <ul className="text-xs text-muted-foreground space-y-2">
+                <li><strong className="text-foreground">Change password:</strong> Use the form above. Enter your current password, then set a new one (minimum 6 characters). The new password is stored securely in the database.</li>
+                <li><strong className="text-foreground">Forgot password:</strong> If you forget the password, you can reset it by:
+                  <ol className="list-decimal pl-4 mt-1 space-y-0.5">
+                    <li>Accessing the database directly (via Prisma Studio or database tool)</li>
+                    <li>Deleting the <code className="bg-muted px-1 rounded">Setting</code> row with key <code className="bg-muted px-1 rounded">admin_password</code></li>
+                    <li>The system will then fall back to the default password</li>
+                  </ol>
+                </li>
+                <li><strong className="text-foreground">Default password:</strong> If no custom password is set in the database, the system uses the default password defined in the code.</li>
+                <li><strong className="text-foreground">For production:</strong> Consider upgrading to NextAuth.js for proper authentication with hashed passwords and session management.</li>
+              </ul>
             </div>
           </div>
         )}
