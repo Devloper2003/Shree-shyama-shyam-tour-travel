@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { Star, Quote } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollableTabs } from "@/components/site/scrollable-tabs";
@@ -36,50 +36,23 @@ const filters: { key: FilterKey; label: string; match: (t: Testimonial) => boole
 
 export function Testimonials() {
   const [active, setActive] = useState<FilterKey>("all");
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
 
   const filtered = testimonials.filter((t) =>
     filters.find((f) => f.key === active)?.match(t)
   );
 
-  const updateScrollButtons = useCallback(() => {
-    const el = carouselRef.current;
-    if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 8);
-    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 8);
-  }, []);
+  // Duplicate the list so the marquee loops seamlessly.
+  // Rendering the same cards twice means translating from 0 to -50%
+  // brings us back to the exact same visual position.
+  const loopCards = [...filtered, ...filtered];
 
-  useEffect(() => {
-    updateScrollButtons();
-    const el = carouselRef.current;
-    if (!el) return;
-    el.addEventListener("scroll", updateScrollButtons, { passive: true });
-    window.addEventListener("resize", updateScrollButtons);
-    return () => {
-      el.removeEventListener("scroll", updateScrollButtons);
-      window.removeEventListener("resize", updateScrollButtons);
-    };
-  }, [updateScrollButtons, active]);
-
-  useEffect(() => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollTo({ left: 0, behavior: "smooth" });
-    }
-  }, [active]);
-
-  const scrollCards = (direction: "left" | "right") => {
-    const el = carouselRef.current;
-    if (!el) return;
-    const amount = Math.min(el.clientWidth * 0.8, 400);
-    el.scrollBy({ left: direction === "left" ? -amount : amount, behavior: "smooth" });
-  };
+  // Speed scales with card count so reading time stays comfortable.
+  const animationDuration = `${Math.max(30, filtered.length * 12)}s`;
 
   return (
     <section
       id="testimonials"
-      className="py-16 sm:py-20 lg:py-24 bg-muted/40"
+      className="py-16 sm:py-20 lg:py-24 bg-muted/40 overflow-hidden"
       aria-labelledby="testimonials-heading"
     >
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -104,95 +77,63 @@ export function Testimonials() {
           layoutId="testimonials-tab"
         />
 
-        {/* Testimonials carousel — horizontal scroll with left/right buttons */}
+        {/* Auto-scrolling marquee — right to left, continuous loop, no buttons */}
         <div className="relative">
-          {/* Left scroll button */}
-          <button
-            type="button"
-            onClick={() => scrollCards("left")}
-            disabled={!canScrollLeft}
-            aria-label="Scroll testimonials left"
-            className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-background border border-border shadow-lg flex items-center justify-center transition-all ${
-              canScrollLeft
-                ? "opacity-100 hover:bg-primary hover:text-primary-foreground hover:border-primary cursor-pointer"
-                : "opacity-0 pointer-events-none"
-            }`}
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-
-          {/* Right scroll button */}
-          <button
-            type="button"
-            onClick={() => scrollCards("right")}
-            disabled={!canScrollRight}
-            aria-label="Scroll testimonials right"
-            className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-background border border-border shadow-lg flex items-center justify-center transition-all ${
-              canScrollRight
-                ? "opacity-100 hover:bg-primary hover:text-primary-foreground hover:border-primary cursor-pointer"
-                : "opacity-0 pointer-events-none"
-            }`}
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-
-          {/* Edge fades */}
-          {canScrollLeft && (
-            <div className="absolute left-0 top-0 bottom-0 w-12 z-10 pointer-events-none bg-gradient-to-r from-muted/40 to-transparent" aria-hidden="true" />
-          )}
-          {canScrollRight && (
-            <div className="absolute right-0 top-0 bottom-0 w-12 z-10 pointer-events-none bg-gradient-to-l from-muted/40 to-transparent" aria-hidden="true" />
-          )}
+          {/* Edge fades for visual polish */}
+          <div
+            className="absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none bg-gradient-to-r from-muted/60 to-transparent"
+            aria-hidden="true"
+          />
+          <div
+            className="absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none bg-gradient-to-l from-muted/60 to-transparent"
+            aria-hidden="true"
+          />
 
           <AnimatePresence mode="wait">
             <motion.div
               key={active}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.3 }}
-              ref={carouselRef}
-              className="flex gap-5 overflow-x-auto no-scrollbar pb-4 pt-2 px-1 scroll-smooth"
-              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
             >
               {filtered.length > 0 ? (
-                filtered.map((t, i) => (
-                  <motion.div
-                    key={t.name}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: i * 0.06 }}
-                    className="shrink-0 w-[300px] sm:w-[340px] lg:w-[360px]"
-                  >
-                    <Card className="h-full hover:shadow-md hover:-translate-y-1 transition-all">
-                      <CardContent className="p-6 flex flex-col h-full">
-                        <div className="flex items-center justify-between mb-3">
-                          <Quote className="w-8 h-8 text-primary/30" />
-                          <div className="flex" aria-label={`${t.rating} out of 5 stars`}>
-                            {Array.from({ length: 5 }).map((_, idx) => (
-                              <Star
-                                key={idx}
-                                className={`w-4 h-4 ${
-                                  idx < t.rating
-                                    ? "fill-gold text-gold"
-                                    : "text-muted-foreground/40"
-                                }`}
-                              />
-                            ))}
+                <div className="testimonial-marquee-track flex gap-5" style={{ animationDuration }}>
+                  {loopCards.map((t, i) => (
+                    <div
+                      key={`${t.name}-${i}`}
+                      className="shrink-0 w-[300px] sm:w-[340px] lg:w-[360px]"
+                    >
+                      <Card className="h-full hover:shadow-md transition-shadow">
+                        <CardContent className="p-6 flex flex-col h-full">
+                          <div className="flex items-center justify-between mb-3">
+                            <Quote className="w-8 h-8 text-primary/30" />
+                            <div className="flex" aria-label={`${t.rating} out of 5 stars`}>
+                              {Array.from({ length: 5 }).map((_, idx) => (
+                                <Star
+                                  key={idx}
+                                  className={`w-4 h-4 ${
+                                    idx < t.rating
+                                      ? "fill-gold text-gold"
+                                      : "text-muted-foreground/40"
+                                  }`}
+                                />
+                              ))}
+                            </div>
                           </div>
-                        </div>
-                        <p className="text-sm text-foreground/90 leading-relaxed flex-1">
-                          &ldquo;{t.text}&rdquo;
-                        </p>
-                        <div className="mt-4 pt-4 border-t border-border">
-                          <p className="font-semibold text-foreground">{t.name}</p>
-                          <p className="text-xs text-muted-foreground">{t.location}</p>
-                          <p className="text-xs text-primary mt-1">{t.trip}</p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))
+                          <p className="text-sm text-foreground/90 leading-relaxed flex-1">
+                            &ldquo;{t.text}&rdquo;
+                          </p>
+                          <div className="mt-4 pt-4 border-t border-border">
+                            <p className="font-semibold text-foreground">{t.name}</p>
+                            <p className="text-xs text-muted-foreground">{t.location}</p>
+                            <p className="text-xs text-primary mt-1">{t.trip}</p>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  ))}
+                </div>
               ) : (
                 <div className="w-full text-center text-muted-foreground py-10">
                   No pilgrim reviews in this category yet. Be the first to share your Braj experience!
@@ -202,6 +143,37 @@ export function Testimonials() {
           </AnimatePresence>
         </div>
       </div>
+
+      <style jsx>{`
+        .testimonial-marquee-track {
+          width: max-content;
+          animation-name: testimonial-scroll-left;
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
+          will-change: transform;
+        }
+        /* Pause on hover so users can read a review comfortably */
+        .testimonial-marquee-track:hover {
+          animation-play-state: paused;
+        }
+        @keyframes testimonial-scroll-left {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            /* Move left by exactly half the track width — since we duplicated
+               the card list, this brings us back to the same visual position
+               and the loop is seamless. */
+            transform: translateX(-50%);
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .testimonial-marquee-track {
+            animation: none;
+            overflow-x: auto;
+          }
+        }
+      `}</style>
     </section>
   );
 }
