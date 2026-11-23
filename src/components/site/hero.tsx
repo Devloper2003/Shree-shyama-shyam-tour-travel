@@ -118,7 +118,7 @@ export function Hero() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
-                with Shri Shyam Travels
+                with Shri Shyama Shyam
               </motion.span>
             </motion.h1>
 

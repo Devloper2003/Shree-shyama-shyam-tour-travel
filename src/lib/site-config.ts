@@ -11,11 +11,11 @@
 
 export const siteConfig = {
   // ---- Business identity ----
-  name: "Shri Shyam Tour & Travels",
-  legalName: "Shri Shyam Tour and Travels, Mathura Vrindavan",
-  shortName: "Shri Shyam Travels",
+  name: "Shri Shyama Shyam Tour & Travels",
+  legalName: "Shri Shyama Shyam Tour & Travels, Mathura Vrindavan",
+  shortName: "Shri Shyama Shyam",
   tagline: "Mathura Vrindavan Braj Yatra & Pilgrimage Tours",
-  sanskritTagline: "श्री श्याम टूर एंड ट्रैवल्स",
+  sanskritTagline: "श्री श्यामा श्याम टूर एंड ट्रैवल्स",
   establishedYear: 2015,
   experienceYears: 10,
 
@@ -30,11 +30,11 @@ export const siteConfig = {
   whatsappDisplay: "+91 83197 10872",
   whatsappRaw: "918319710872",
 
-  email: "bookings@shrishyamtravels.in",
+  email: "bookings@shrishyamashyamtravels.in",
 
   // Office address — Mathura/Vrindavan (heart of Braj)
   address: {
-    line1: "Shri Shyam Tour & Travels",
+    line1: "Shri Shyama Shyam Tour & Travels",
     line2: "Near Krishna Janmabhoomi, Krishna Nagar",
     city: "Mathura",
     state: "Uttar Pradesh",

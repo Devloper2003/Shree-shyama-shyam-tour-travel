@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
     // Compose the message that will be sent via WhatsApp / email so the
     // business owner instantly sees every detail of the enquiry.
     const lines = [
-      `*Radhe Radhe! New Yatra Enquiry — Shri Shyam Travels*`,
+      `*Radhe Radhe! New Yatra Enquiry — Shri Shyama Shyam Tour & Travels*`,
       `*(Coordinator: ${siteConfig.contactPerson})*`,
       ``,
       `Name: ${enquiry.name}`,

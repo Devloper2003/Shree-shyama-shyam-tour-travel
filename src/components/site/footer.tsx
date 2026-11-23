@@ -30,8 +30,8 @@ export function Footer() {
                 <OmIcon className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-sm font-bold leading-tight">Shri Shyam Travels</p>
-                <p className="text-xs text-white/60 leading-tight">Mathura • Vrindavan • Braj Yatra</p>
+                <p className="text-sm font-bold leading-tight">Shri Shyama Shyam</p>
+                <p className="text-xs text-white/60 leading-tight">Tour & Travels • Mathura Vrindavan</p>
               </div>
             </div>
             <p className="text-sm text-white/70 leading-relaxed">
