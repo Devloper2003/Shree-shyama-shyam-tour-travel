@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Star, Sparkles, Crown, Baby, Heart, Mountain, Waves } from "lucide-react";
+import { MapPin, Clock, Star, Sparkles, Crown, Baby, Heart, Mountain, Waves, ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollableTabs } from "@/components/site/scrollable-tabs";
@@ -22,9 +22,44 @@ const tabs: { key: TabKey; label: string; icon: typeof MapPin }[] = [
 
 export function SacredSites() {
   const [active, setActive] = useState<TabKey>("all");
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
 
   const filtered =
     active === "all" ? sacredSites : sacredSites.filter((s) => s.category === active);
+
+  const updateScrollButtons = useCallback(() => {
+    const el = carouselRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 8);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 8);
+  }, []);
+
+  useEffect(() => {
+    updateScrollButtons();
+    const el = carouselRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", updateScrollButtons, { passive: true });
+    window.addEventListener("resize", updateScrollButtons);
+    return () => {
+      el.removeEventListener("scroll", updateScrollButtons);
+      window.removeEventListener("resize", updateScrollButtons);
+    };
+  }, [updateScrollButtons, active]);
+
+  useEffect(() => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollTo({ left: 0, behavior: "smooth" });
+    }
+  }, [active]);
+
+  const scrollCards = (direction: "left" | "right") => {
+    const el = carouselRef.current;
+    if (!el) return;
+    const amount = Math.min(el.clientWidth * 0.8, 400);
+    el.scrollBy({ left: direction === "left" ? -amount : amount, behavior: "smooth" });
+  };
 
   return (
     <section
@@ -56,75 +91,118 @@ export function SacredSites() {
           tabWidth={170}
         />
 
-        {/* Sites grid */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={active}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        {/* Sites carousel — horizontal scroll with left/right buttons */}
+        <div className="relative">
+          {/* Left scroll button */}
+          <button
+            type="button"
+            onClick={() => scrollCards("left")}
+            disabled={!canScrollLeft}
+            aria-label="Scroll sites left"
+            className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-background border border-border shadow-lg flex items-center justify-center transition-all ${
+              canScrollLeft
+                ? "opacity-100 hover:bg-primary hover:text-primary-foreground hover:border-primary cursor-pointer"
+                : "opacity-0 pointer-events-none"
+            }`}
           >
-            {filtered.map((site, i) => (
-              <motion.div
-                key={site.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.06 }}
-              >
-                <Card className="h-full hover:shadow-lg hover:border-gold/50 transition-all overflow-hidden">
-                  {/* Real temple image */}
-                  <div className="relative h-48 overflow-hidden bg-muted">
-                    <img
-                      src={site.image}
-                      alt={`${site.name} — ${site.location}`}
-                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                      loading="lazy"
-                    />
-                    {/* Location badge overlay */}
-                    <div className="absolute top-2 right-2">
-                      <Badge variant="secondary" className="gap-1 bg-background/90 backdrop-blur-sm">
-                        <MapPin className="w-3 h-3 text-primary" /> {site.location}
-                      </Badge>
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+
+          {/* Right scroll button */}
+          <button
+            type="button"
+            onClick={() => scrollCards("right")}
+            disabled={!canScrollRight}
+            aria-label="Scroll sites right"
+            className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-background border border-border shadow-lg flex items-center justify-center transition-all ${
+              canScrollRight
+                ? "opacity-100 hover:bg-primary hover:text-primary-foreground hover:border-primary cursor-pointer"
+                : "opacity-0 pointer-events-none"
+            }`}
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+
+          {/* Edge fades */}
+          {canScrollLeft && (
+            <div className="absolute left-0 top-0 bottom-0 w-12 z-10 pointer-events-none bg-gradient-to-r from-background to-transparent" aria-hidden="true" />
+          )}
+          {canScrollRight && (
+            <div className="absolute right-0 top-0 bottom-0 w-12 z-10 pointer-events-none bg-gradient-to-l from-background to-transparent" aria-hidden="true" />
+          )}
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3 }}
+              ref={carouselRef}
+              className="flex gap-5 overflow-x-auto no-scrollbar pb-4 pt-2 px-1 scroll-smooth"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            >
+              {filtered.map((site, i) => (
+                <motion.div
+                  key={site.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: i * 0.06 }}
+                  className="shrink-0 w-[280px] sm:w-[310px] lg:w-[330px]"
+                >
+                  <Card className="h-full hover:shadow-lg hover:border-gold/50 transition-all overflow-hidden">
+                    {/* Real temple image */}
+                    <div className="relative h-44 overflow-hidden bg-muted">
+                      <img
+                        src={site.image}
+                        alt={`${site.name} — ${site.location}`}
+                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                        loading="lazy"
+                      />
+                      {/* Location badge overlay */}
+                      <div className="absolute top-2 right-2">
+                        <Badge variant="secondary" className="gap-1 bg-background/90 backdrop-blur-sm">
+                          <MapPin className="w-3 h-3 text-primary" /> {site.location}
+                        </Badge>
+                      </div>
+                      {/* Gradient overlay for text readability at bottom */}
+                      <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/60 to-transparent" aria-hidden="true" />
+                      {site.sanskritName && (
+                        <p className="absolute bottom-2 left-3 text-white text-sm font-medium drop-shadow-lg">
+                          {site.sanskritName}
+                        </p>
+                      )}
                     </div>
-                    {/* Gradient overlay for text readability at bottom */}
-                    <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/60 to-transparent" aria-hidden="true" />
-                    {site.sanskritName && (
-                      <p className="absolute bottom-2 left-3 text-white text-sm font-medium drop-shadow-lg">
-                        {site.sanskritName}
+                    <CardContent className="p-5">
+                      <h3 className="text-lg font-bold text-foreground leading-tight mb-3">{site.name}</h3>
+
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3">
+                        {site.significance}
                       </p>
-                    )}
-                  </div>
-                  <CardContent className="p-5">
-                    <h3 className="text-lg font-bold text-foreground leading-tight mb-3">{site.name}</h3>
 
-                    <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                      {site.significance}
-                    </p>
-
-                    <div className="space-y-2 text-xs">
-                      <div className="flex items-start gap-2">
-                        <Clock className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
-                        <div>
-                          <p className="font-medium text-foreground">Best Time</p>
-                          <p className="text-muted-foreground">{site.bestTime}</p>
+                      <div className="space-y-2 text-xs">
+                        <div className="flex items-start gap-2">
+                          <Clock className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+                          <div>
+                            <p className="font-medium text-foreground">Best Time</p>
+                            <p className="text-muted-foreground line-clamp-2">{site.bestTime}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <Star className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+                          <div>
+                            <p className="font-medium text-foreground">Must See</p>
+                            <p className="text-muted-foreground line-clamp-2">{site.mustSee}</p>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex items-start gap-2">
-                        <Star className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
-                        <div>
-                          <p className="font-medium text-foreground">Must See</p>
-                          <p className="text-muted-foreground">{site.mustSee}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
         <p className="mt-8 text-center text-sm text-muted-foreground">
           These 12 are the main sites — our yatra packages also cover the smaller sacred spots
