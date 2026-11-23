@@ -9,6 +9,8 @@ import { ServicesPage } from "@/components/site/pages/services-page";
 import { BlogsPage } from "@/components/site/pages/blogs-page";
 import { ContactPage } from "@/components/site/pages/contact-page";
 import { AboutPage } from "@/components/site/pages/about-page";
+import { PrivacyPage } from "@/components/site/pages/privacy-page";
+import { TermsPage } from "@/components/site/pages/terms-page";
 import { usePageStore } from "@/lib/page-store";
 
 export default function Home() {
@@ -24,6 +26,8 @@ export default function Home() {
         {currentPage === "blogs" && <BlogsPage />}
         {currentPage === "contact" && <ContactPage />}
         {currentPage === "about" && <AboutPage />}
+        {currentPage === "privacy" && <PrivacyPage />}
+        {currentPage === "terms" && <TermsPage />}
       </main>
       <Footer />
       <WhatsAppFloat />

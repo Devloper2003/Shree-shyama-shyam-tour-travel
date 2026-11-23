@@ -2,7 +2,7 @@
 
 import { create } from "zustand";
 
-export type PageName = "home" | "package" | "services" | "blogs" | "contact" | "about";
+export type PageName = "home" | "package" | "services" | "blogs" | "contact" | "about" | "privacy" | "terms";
 
 export type ContactPrefill = {
   pickup?: string;

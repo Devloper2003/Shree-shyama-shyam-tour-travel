@@ -4,6 +4,7 @@ import { Phone, Mail, MessageCircle, MapPin, Clock, Facebook, Instagram, Youtube
 import { siteConfig, buildTelLink, buildWhatsAppLink } from "@/lib/site-config";
 import { usePageStore, type PageName } from "@/lib/page-store";
 
+// Main page links — shown prominently in Quick Links column
 const quickLinks: { label: string; page: PageName }[] = [
   { label: "Home", page: "home" },
   { label: "Yatra Packages", page: "package" },
@@ -13,37 +14,72 @@ const quickLinks: { label: string; page: PageName }[] = [
   { label: "Contact", page: "contact" },
 ];
 
+// Important sub-section links — these live on the Services page
+const serviceLinks: { label: string }[] = [
+  { label: "Sacred Sites" },
+  { label: "Braj Mandala Map" },
+  { label: "Festival Calendar" },
+  { label: "Popular Routes" },
+  { label: "Fare Calculator" },
+  { label: "Pilgrimage Fleet" },
+];
+
+// Legal links
+const legalLinks: { label: string; page: PageName }[] = [
+  { label: "Privacy Policy", page: "privacy" },
+  { label: "Terms & Conditions", page: "terms" },
+];
+
 export function Footer() {
   const navigate = usePageStore((s) => s.navigate);
   return (
     <footer className="bg-braj-deep text-white mt-auto">
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand */}
-          <div>
+          <div className="lg:col-span-1">
             <img
               src="/logo.png"
               alt="Shri Shyama Shyam Tour & Travels logo"
-              className="h-24 w-auto object-contain mb-4 rounded-lg bg-white/95 p-1.5"
+              className="h-24 w-auto object-contain mb-4 rounded-lg bg-white/95 p-2"
             />
             <p className="text-sm text-white/70 leading-relaxed">
               Mathura-Vrindavan&apos;s trusted Braj Yatra pilgrimage partner since {siteConfig.establishedYear}.
-              Braj-born guides, verified vegetarian drivers, local pandit arrangements — across
-              all 84-kosa of the sacred Braj Mandala. Coordinated by {siteConfig.contactPerson}.
+              Braj-born guides, verified vegetarian drivers, local pandit arrangements.
+              Coordinated by {siteConfig.contactPerson}.
             </p>
-            <p className="text-xs text-gold mt-4 font-medium">{siteConfig.businessHours}</p>
+            <p className="text-sm text-gold mt-4 font-medium">{siteConfig.businessHours}</p>
           </div>
 
-          {/* Quick links */}
+          {/* Quick Links */}
           <nav aria-label="Footer navigation">
             <h3 className="text-sm font-semibold text-gold uppercase tracking-wider mb-4">
               Quick Links
             </h3>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <ul className="space-y-2.5">
               {quickLinks.map((l) => (
                 <li key={l.page}>
                   <button
                     onClick={() => navigate(l.page)}
+                    className="text-sm text-white/75 hover:text-gold transition-colors text-left"
+                  >
+                    {l.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Important Service Links */}
+          <nav aria-label="Service sections">
+            <h3 className="text-sm font-semibold text-gold uppercase tracking-wider mb-4">
+              Explore Braj
+            </h3>
+            <ul className="space-y-2.5">
+              {serviceLinks.map((l) => (
+                <li key={l.label}>
+                  <button
+                    onClick={() => navigate("services")}
                     className="text-sm text-white/75 hover:text-gold transition-colors text-left"
                   >
                     {l.label}
@@ -67,7 +103,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href={buildWhatsAppLink(`Hello ${siteConfig.shortName}, I'd like to book a cab.`)}
+                  href={buildWhatsAppLink(`Radhe Radhe! I'd like to book a Braj Yatra.`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-start gap-2 text-white/75 hover:text-gold"
@@ -88,9 +124,7 @@ export function Footer() {
               <li className="flex items-start gap-2 text-white/75">
                 <MapPin className="w-4 h-4 text-gold shrink-0 mt-0.5" />
                 <span>
-                  {siteConfig.address.line1}, {siteConfig.address.line2},{" "}
-                  {siteConfig.address.city}, {siteConfig.address.state} —{" "}
-                  {siteConfig.address.pincode}, {siteConfig.address.country}
+                  {siteConfig.address.line1}, {siteConfig.address.city}, {siteConfig.address.state} — {siteConfig.address.pincode}
                 </span>
               </li>
               <li className="flex items-start gap-2 text-white/75">
@@ -139,29 +173,33 @@ export function Footer() {
                   <Youtube className="w-4 h-4" />
                 </a>
               )}
-              {siteConfig.social.twitter && (
-                <a
-                  href={siteConfig.social.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Twitter"
-                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold hover:text-accent-foreground transition-colors"
-                >
-                  <Twitter className="w-4 h-4" />
-                </a>
-              )}
             </div>
             <button
               onClick={() => navigate("contact")}
-              className="w-full px-4 py-2.5 rounded-md bg-gold text-accent-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
+              className="w-full px-4 py-2.5 rounded-md bg-gold text-accent-foreground text-sm font-semibold hover:opacity-90 transition-opacity mb-3"
             >
               Book Your Yatra
             </button>
+            {/* Legal links */}
+            <div className="pt-3 border-t border-white/10">
+              <ul className="space-y-2">
+                {legalLinks.map((l) => (
+                  <li key={l.page}>
+                    <button
+                      onClick={() => navigate(l.page)}
+                      className="text-xs text-white/60 hover:text-gold transition-colors text-left"
+                    >
+                      {l.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/60">
+        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-white/60">
           <p>
             &copy; {new Date().getFullYear()} {siteConfig.legalName}. All rights reserved.
           </p>
