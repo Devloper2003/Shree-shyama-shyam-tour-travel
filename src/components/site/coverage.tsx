@@ -2,37 +2,36 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { MapPin } from "lucide-react";
+import { MapPin, ExternalLink, Navigation } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { CountUp } from "@/components/site/count-up";
 import { OmIcon } from "@/components/site/om-icon";
 
 type BrajSite = {
   name: string;
   sanskrit?: string;
-  x: number;
-  y: number;
-  size: number;
-  delay: number;
   significance: string;
   image?: string;
   location: string;
+  lat: number;
+  lng: number;
 };
 
-// Sites positioned on the Braj Mandala map with approximate geographic layout.
+// Sacred sites with real GPS coordinates for Google Maps links
 const brajSites: BrajSite[] = [
-  { name: "Mathura", sanskrit: "मथुरा", x: 50, y: 48, size: 10, delay: 0, significance: "Krishna's birthplace — heart of Braj", image: "/sites/janmabhoomi.jpg", location: "Central Braj" },
-  { name: "Vrindavan", sanskrit: "वृन्दावन", x: 34, y: 33, size: 9, delay: 0.3, significance: "Krishna's childhood & Ras Leela forests", image: "/sites/prem-mandir.jpg", location: "North of Mathura" },
-  { name: "Gokul", sanskrit: "गोकुल", x: 60, y: 33, size: 8, delay: 0.6, significance: "Where Yashoda raised baby Krishna", image: "/sites/gokulnath.jpg", location: "East of Mathura" },
-  { name: "Mahavan", sanskrit: "महावन", x: 66, y: 48, size: 7, delay: 0.9, significance: "Nand's first home in Braj", location: "East of Mathura" },
-  { name: "Govardhan", sanskrit: "गोवर्धन", x: 26, y: 56, size: 9, delay: 1.2, significance: "The hill Krishna lifted on His finger", image: "/sites/govardhan.jpg", location: "West of Mathura" },
-  { name: "Radha Kund", sanskrit: "राधाकुंड", x: 20, y: 62, size: 7, delay: 1.5, significance: "Most sacred pond in Braj", image: "/sites/radha-kund.jpg", location: "Near Govardhan" },
-  { name: "Barsana", sanskrit: "बरसाना", x: 74, y: 70, size: 8, delay: 1.8, significance: "Radha Rani's eternal abode", image: "/sites/radha-rani.jpg", location: "South-East of Mathura" },
-  { name: "Nandgaon", sanskrit: "नंदगांव", x: 58, y: 76, size: 7, delay: 2.1, significance: "Nanda Maharaj's village", image: "/sites/nand-bhavan.jpg", location: "Near Barsana" },
-  { name: "Kusum Sarovar", sanskrit: "कुसुम सरोवर", x: 18, y: 46, size: 6, delay: 2.4, significance: "Where Radha picked flowers", location: "Near Govardhan" },
-  { name: "Bhandiravan", sanskrit: "भांडीरवन", x: 82, y: 56, size: 6, delay: 2.7, significance: "Where Krishna & Radha married", location: "East of Braj" },
-  { name: "Uncha Gaon", sanskrit: "ऊँचा गांव", x: 88, y: 72, size: 6, delay: 3.0, significance: "Sri Vrishbhanu's residence", location: "Near Barsana" },
-  { name: "Kokilavan", sanskrit: "कोकिलावन", x: 38, y: 80, size: 6, delay: 3.3, significance: "Where Krishna became a cuckoo", location: "South of Braj" },
+  { name: "Mathura", sanskrit: "मथुरा", significance: "Krishna's birthplace — heart of Braj", image: "/sites/janmabhoomi.jpg", location: "Central Braj", lat: 27.4924, lng: 77.6737 },
+  { name: "Vrindavan", sanskrit: "वृन्दावन", significance: "Krishna's childhood & Ras Leela forests", image: "/sites/prem-mandir.jpg", location: "North of Mathura", lat: 27.5780, lng: 77.6980 },
+  { name: "Gokul", sanskrit: "गोकुल", significance: "Where Yashoda raised baby Krishna", image: "/sites/gokulnath.jpg", location: "East of Mathura", lat: 27.5350, lng: 77.7280 },
+  { name: "Govardhan", sanskrit: "गोवर्धन", significance: "The hill Krishna lifted on His finger", image: "/sites/govardhan.jpg", location: "West of Mathura", lat: 27.5120, lng: 77.4590 },
+  { name: "Radha Kund", sanskrit: "राधाकुंड", significance: "Most sacred pond in Braj", image: "/sites/radha-kund.jpg", location: "Near Govardhan", lat: 27.5070, lng: 77.4630 },
+  { name: "Barsana", sanskrit: "बरसाना", significance: "Radha Rani's eternal abode", image: "/sites/radha-rani.jpg", location: "South-East of Mathura", lat: 27.5860, lng: 77.3810 },
+  { name: "Nandgaon", sanskrit: "नंदगांव", significance: "Nanda Maharaj's village", image: "/sites/nand-bhavan.jpg", location: "Near Barsana", lat: 27.5720, lng: 77.4310 },
+  { name: "ISKCON Vrindavan", sanskrit: "इस्कॉन", significance: "Krishna-Balaram temple, international center", image: "/sites/iskcon.jpg", location: "Vrindavan", lat: 27.5713, lng: 77.6770 },
+  { name: "Banke Bihari", sanskrit: "बांके बिहारी", significance: "Self-manifested Krishna in tribhanga form", image: "/sites/banke-bihari.jpg", location: "Vrindavan", lat: 27.5730, lng: 77.6930 },
+  { name: "Vishram Ghat", sanskrit: "विश्राम घाट", significance: "Where Krishna rested after slaying Kansa", image: "/sites/vishram-ghat.jpg", location: "Mathura", lat: 27.4880, lng: 77.6780 },
+  { name: "Maan Mandir", sanskrit: "मान मंदिर", significance: "Where Radha went in divine loving anger", image: "/sites/maan-mandir.jpg", location: "Barsana", lat: 27.5880, lng: 77.3780 },
+  { name: "Seva Kunj", sanskrit: "सेवा कुंज", significance: "Where Krishna performs Maha-Ras every night", image: "/sites/seva-kunj.jpg", location: "Vrindavan", lat: 27.5740, lng: 77.6920 },
 ];
 
 const statCards = [
@@ -44,7 +43,22 @@ const statCards = [
 
 export function Coverage() {
   const [selectedSite, setSelectedSite] = useState<BrajSite | null>(null);
-  const [hoveredSite, setHoveredSite] = useState<BrajSite | null>(null);
+
+  // OpenStreetMap embed URL covering the Braj region (Mathura to Barsana to Govardhan)
+  // bbox format: min_lon,min_lat,max_lon,max_lat
+  const osmEmbedUrl =
+    "https://www.openstreetmap.org/export/embed.html?bbox=77.35%2C27.45%2C77.75%2C27.62&layer=mapnik&marker=27.4924%2C77.6737";
+
+  const handleSiteClick = (site: BrajSite) => {
+    setSelectedSite(site);
+  };
+
+  const openInGoogleMaps = (site: BrajSite) => {
+    window.open(
+      `https://www.google.com/maps/search/?api=1&query=${site.lat},${site.lng}`,
+      "_blank"
+    );
+  };
 
   return (
     <section
@@ -53,7 +67,7 @@ export function Coverage() {
       aria-labelledby="coverage-heading"
     >
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Left: text + stats */}
           <div>
             <Badge variant="secondary" className="mb-3">
@@ -98,253 +112,120 @@ export function Coverage() {
             </div>
           </div>
 
-          {/* Right: Enhanced interactive Braj map with temple image thumbnails */}
+          {/* Right: Real interactive map + site selector */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6 }}
-            className="relative"
+            className="lg:sticky lg:top-24"
           >
-            <div className="bg-braj-gradient text-white rounded-2xl p-4 sm:p-5 shadow-xl relative overflow-hidden">
-              <div className="absolute inset-0 opacity-20 pointer-events-none" aria-hidden="true">
-                <div className="absolute top-0 right-0 w-40 h-40 bg-gold/20 rounded-full blur-3xl" />
-                <div className="absolute bottom-0 left-0 w-32 h-32 bg-saffron/15 rounded-full blur-3xl" />
-              </div>
-              <p className="relative text-gold text-sm font-semibold uppercase tracking-wider mb-3">
-                Braj Mandala — Interactive Map
+            <div className="bg-background border border-border rounded-2xl shadow-lg overflow-hidden">
+              <p className="text-sm font-semibold uppercase tracking-wider text-primary px-4 pt-4 pb-2 flex items-center gap-2">
+                <MapPin className="w-4 h-4" /> Braj Mandala — Real Map
               </p>
 
-              {/* Enhanced SVG Map */}
-              <svg viewBox="0 0 100 100" className="relative w-full h-auto" role="img" aria-label="Interactive map of Braj Mandala showing 12 sacred sites with temple images">
-                <defs>
-                  {/* Terrain gradient for land */}
-                  <radialGradient id="brajTerrain" cx="50%" cy="48%" r="60%">
-                    <stop offset="0%" stopColor="oklch(0.35 0.06 50)" stopOpacity="0.4" />
-                    <stop offset="50%" stopColor="oklch(0.28 0.05 45)" stopOpacity="0.2" />
-                    <stop offset="100%" stopColor="oklch(0.20 0.04 40)" stopOpacity="0" />
-                  </radialGradient>
-                  {/* Clip path for circular image thumbnails */}
-                  {brajSites.map((site) => (
-                    <clipPath key={`clip-${site.name}`} id={`clip-${site.name}`}>
-                      <circle cx={site.x} cy={site.y} r={site.size / 2.2} />
-                    </clipPath>
-                  ))}
-                </defs>
-
-                {/* Background terrain */}
-                <rect x="0" y="0" width="100" height="100" fill="url(#brajTerrain)" />
-
-                {/* Outer parikrama circle (84-kosa route) — more prominent */}
-                <motion.circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  fill="none"
-                  stroke="oklch(0.72 0.13 80)"
-                  strokeWidth="0.6"
-                  strokeDasharray="2 1"
-                  opacity="0.5"
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  whileInView={{ pathLength: 1, opacity: 0.5 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 2, ease: "easeInOut" }}
+              {/* Real OpenStreetMap embed — no blue background, actual geography */}
+              <div className="relative w-full h-[300px] sm:h-[350px] bg-muted">
+                <iframe
+                  title="Braj Mandala Map — Mathura, Vrindavan, Govardhan region"
+                  src={osmEmbedUrl}
+                  className="w-full h-full border-0"
+                  loading="lazy"
+                  style={{ border: 0 }}
                 />
-
-                {/* Inner circle (Braj heart) */}
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="28"
-                  fill="oklch(1 0 0 / 3%)"
-                  stroke="oklch(0.72 0.13 80 / 0.15)"
-                  strokeWidth="0.3"
-                  strokeDasharray="0.8 0.8"
-                />
-
-                {/* Yamuna River — wider, more prominent with glow */}
-                <path
-                  d="M56 3 Q 60 18, 53 33 Q 46 48, 52 63 Q 58 78, 54 97"
-                  fill="none"
-                  stroke="oklch(0.65 0.12 220)"
-                  strokeWidth="2.5"
-                  opacity="0.25"
-                />
-                <path
-                  d="M56 3 Q 60 18, 53 33 Q 46 48, 52 63 Q 58 78, 54 97"
-                  fill="none"
-                  stroke="oklch(0.70 0.14 225)"
-                  strokeWidth="1.2"
-                  opacity="0.5"
-                />
-                <text x="62" y="12" fontSize="2.2" fill="oklch(0.70 0.14 225)" opacity="0.8" className="font-medium">
-                  यमुना
-                </text>
-                <text x="62" y="15" fontSize="1.8" fill="oklch(0.70 0.14 225)" opacity="0.6">
-                  Yamuna
-                </text>
-
-                {/* Connection lines from Mathura to each site (subtle) */}
-                {brajSites.filter(s => s.name !== "Mathura").map((site) => (
-                  <line
-                    key={`line-${site.name}`}
-                    x1="50"
-                    y1="48"
-                    x2={site.x}
-                    y2={site.y}
-                    stroke="oklch(0.72 0.13 80 / 0.1)"
-                    strokeWidth="0.25"
-                    strokeDasharray="0.4 0.6"
-                  />
-                ))}
-
-                {/* Sacred site markers with temple image thumbnails */}
-                {brajSites.map((site) => {
-                  const isSelected = selectedSite?.name === site.name;
-                  const isHovered = hoveredSite?.name === site.name;
-                  const r = isHovered || isSelected ? site.size / 1.8 : site.size / 2.2;
-                  return (
-                    <g
-                      key={site.name}
-                      onClick={() => setSelectedSite(site)}
-                      onMouseEnter={() => setHoveredSite(site)}
-                      onMouseLeave={() => setHoveredSite(null)}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {/* Pulse ring */}
-                      <motion.circle
-                        cx={site.x}
-                        cy={site.y}
-                        r={r}
-                        fill="oklch(0.72 0.13 80)"
-                        initial={{ opacity: 0.4, scale: 1 }}
-                        animate={{ opacity: 0, scale: 3.5 }}
-                        transition={{
-                          duration: 2.5,
-                          repeat: Infinity,
-                          delay: site.delay,
-                          ease: "easeOut",
-                        }}
-                        style={{ transformOrigin: `${site.x}px ${site.y}px` }}
-                      />
-
-                      {/* Temple image thumbnail (circular) */}
-                      {site.image && (
-                        <image
-                          href={site.image}
-                          x={site.x - r}
-                          y={site.y - r}
-                          width={r * 2}
-                          height={r * 2}
-                          clipPath={`url(#clip-${site.name})`}
-                          preserveAspectRatio="xMidYMid slice"
-                        />
-                      )}
-
-                      {/* Gold border ring around thumbnail */}
-                      <circle
-                        cx={site.x}
-                        cy={site.y}
-                        r={r}
-                        fill="none"
-                        stroke={isSelected ? "oklch(0.55 0.16 45)" : "oklch(0.72 0.13 80)"}
-                        strokeWidth={isSelected ? 1 : 0.6}
-                      />
-
-                      {/* Label below marker */}
-                      <text
-                        x={site.x}
-                        y={site.y + r + 2.5}
-                        fontSize="2.2"
-                        fill="white"
-                        textAnchor="middle"
-                        className="font-semibold pointer-events-none"
-                        style={{ paintOrder: "stroke", stroke: "rgba(0,0,0,0.6)", strokeWidth: 0.3 }}
-                      >
-                        {site.name}
-                      </text>
-                      {site.sanskrit && (isHovered || isSelected) && (
-                        <text
-                          x={site.x}
-                          y={site.y + r + 5}
-                          fontSize="1.8"
-                          fill="oklch(0.72 0.13 80)"
-                          textAnchor="middle"
-                          className="pointer-events-none"
-                        >
-                          {site.sanskrit}
-                        </text>
-                      )}
-                    </g>
-                  );
-                })}
-
-                {/* Central Om symbol */}
-                <text
-                  x="50"
-                  y="49.5"
-                  fontSize="5"
-                  fill="oklch(0.72 0.13 80)"
-                  textAnchor="middle"
-                  className="font-bold pointer-events-none"
-                  style={{ paintOrder: "stroke", stroke: "rgba(0,0,0,0.4)", strokeWidth: 0.3 }}
-                >
-                  ॐ
-                </text>
-
-                {/* Compass / North indicator */}
-                <g transform="translate(92, 8)" className="pointer-events-none">
-                  <circle cx="0" cy="0" r="3" fill="oklch(1 0 0 / 10%)" stroke="oklch(0.72 0.13 80 / 0.3)" strokeWidth="0.3" />
-                  <path d="M 0 -2 L 1 0 L 0 2 L -1 0 Z" fill="oklch(0.72 0.13 80)" opacity="0.6" />
-                  <text x="0" y="-3.5" fontSize="1.5" fill="oklch(0.72 0.13 80)" textAnchor="middle" opacity="0.6">N</text>
-                </g>
-              </svg>
-
-              {/* Legend */}
-              <div className="relative mt-3 flex items-center justify-between text-xs text-white/70 border-t border-white/10 pt-3">
-                <span className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-gold animate-pulse" />
-                  Click any marker for details
-                </span>
-                <span className="flex items-center gap-3">
-                  <span className="flex items-center gap-1">
-                    <span className="w-3 h-0.5 bg-[oklch(0.70_0.14_225)]" /> Yamuna
-                  </span>
-                  <span>+ 72 more sites</span>
-                </span>
               </div>
 
-              {/* Selected site detail card with image */}
+              {/* Open in larger map link */}
+              <div className="px-4 py-2 bg-muted/40 border-t border-border flex items-center justify-between text-xs">
+                <span className="text-muted-foreground">Real map of Braj region</span>
+                <a
+                  href="https://www.openstreetmap.org/?mlat=27.4924&mlon=77.6737#map=11/27.52/77.60"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary font-medium flex items-center gap-1 hover:underline"
+                >
+                  Open full map <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+
+              {/* Sacred site selector grid */}
+              <div className="p-4">
+                <p className="text-xs text-muted-foreground mb-3">
+                  Click a sacred site to view details and get directions:
+                </p>
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                  {brajSites.map((site) => (
+                    <button
+                      key={site.name}
+                      onClick={() => handleSiteClick(site)}
+                      className={`relative rounded-lg overflow-hidden border-2 transition-all ${
+                        selectedSite?.name === site.name
+                          ? "border-primary ring-2 ring-primary/20"
+                          : "border-transparent hover:border-primary/30"
+                      }`}
+                    >
+                      {site.image ? (
+                        <img
+                          src={site.image}
+                          alt={site.name}
+                          className="w-full h-16 object-cover"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-full h-16 bg-muted flex items-center justify-center">
+                          <MapPin className="w-5 h-5 text-muted-foreground" />
+                        </div>
+                      )}
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-1">
+                        <p className="text-white text-[10px] font-semibold leading-tight truncate">
+                          {site.name}
+                        </p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Selected site detail card */}
               {selectedSite && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mt-3 bg-white/10 backdrop-blur rounded-lg p-4 flex gap-4"
+                  className="mx-4 mb-4 bg-muted/50 rounded-lg p-4 border border-border"
                 >
-                  {selectedSite.image && (
-                    <img
-                      src={selectedSite.image}
-                      alt={selectedSite.name}
-                      className="w-24 h-24 sm:w-28 sm:h-28 rounded-lg object-cover shrink-0"
-                    />
-                  )}
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <p className="font-bold text-white text-base">{selectedSite.name}</p>
-                      {selectedSite.sanskrit && (
-                        <span className="text-gold text-sm">{selectedSite.sanskrit}</span>
-                      )}
+                  <div className="flex gap-4">
+                    {selectedSite.image && (
+                      <img
+                        src={selectedSite.image}
+                        alt={selectedSite.name}
+                        className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover shrink-0"
+                      />
+                    )}
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <p className="font-bold text-foreground text-base">{selectedSite.name}</p>
+                        {selectedSite.sanskrit && (
+                          <span className="text-saffron text-sm font-medium">{selectedSite.sanskrit}</span>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-0.5">{selectedSite.location}</p>
+                      <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{selectedSite.significance}</p>
+                      <button
+                        onClick={() => openInGoogleMaps(selectedSite)}
+                        className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
+                      >
+                        <Navigation className="w-3.5 h-3.5" /> Get directions in Google Maps
+                      </button>
                     </div>
-                    <p className="text-xs text-white/60 mt-0.5">{selectedSite.location}</p>
-                    <p className="text-sm text-white/85 mt-2 leading-relaxed">{selectedSite.significance}</p>
+                    <button
+                      onClick={() => setSelectedSite(null)}
+                      className="text-muted-foreground hover:text-foreground text-sm shrink-0 self-start"
+                      aria-label="Close site detail"
+                    >
+                      ✕
+                    </button>
                   </div>
-                  <button
-                    onClick={() => setSelectedSite(null)}
-                    className="text-white/50 hover:text-white text-sm ml-auto shrink-0 self-start"
-                    aria-label="Close site detail"
-                  >
-                    ✕
-                  </button>
                 </motion.div>
               )}
             </div>

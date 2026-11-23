@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { Header } from "@/components/site/header";
 import { Footer } from "@/components/site/footer";
 import { WhatsAppFloat } from "@/components/site/whatsapp-float";
@@ -15,6 +16,16 @@ import { usePageStore } from "@/lib/page-store";
 
 export default function Home() {
   const currentPage = usePageStore((s) => s.currentPage);
+  const setPageFromUrl = usePageStore((s) => s.setPageFromUrl);
+
+  // Listen to browser back/forward (popstate) so URL changes update the page
+  useEffect(() => {
+    const handlePopState = () => {
+      setPageFromUrl();
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [setPageFromUrl]);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
