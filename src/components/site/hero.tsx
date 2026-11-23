@@ -48,7 +48,7 @@ export function Hero() {
         <img
           src="/sites/prem-mandir.jpg"
           alt=""
-          className="w-full h-full object-cover opacity-25"
+          className="block w-full h-full object-cover opacity-25"
         />
         {/* Dark blue overlay for text contrast */}
         <div className="absolute inset-0 bg-braj-gradient opacity-85" />

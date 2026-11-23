@@ -39,3 +39,32 @@ model Enquiry {
   @@index([status])
   @@index([createdAt])
 }
+
+// Blog posts managed by the owner/admin via the admin panel
+model BlogPost {
+  id        String   @id @default(cuid())
+  title     String
+  excerpt   String
+  content   String?
+  category  String   @default("General")
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([published])
+  @@index([createdAt])
+}
+
+// Special offers managed by the owner/admin
+model Offer {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  discount    String?
+  validTill   String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([active])
+}

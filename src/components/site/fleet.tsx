@@ -127,7 +127,7 @@ export function Fleet() {
                   <img
                     src={`/fleet/${v.id}.jpg`}
                     alt={`${v.name} — ${v.example}`}
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                    className="block w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                     loading="lazy"
                   />
                   {v.popular && (

@@ -2,7 +2,7 @@
 
 import { create } from "zustand";
 
-export type PageName = "home" | "package" | "services" | "blogs" | "contact" | "about" | "privacy" | "terms";
+export type PageName = "home" | "package" | "services" | "blogs" | "contact" | "about" | "privacy" | "terms" | "admin";
 
 export type ContactPrefill = {
   pickup?: string;
@@ -18,7 +18,7 @@ export type ContactPrefill = {
 function getPageFromUrl(): PageName {
   if (typeof window === "undefined") return "home";
   const path = window.location.pathname.replace(/^\//, "").replace(/\/$/, "");
-  const validPages: PageName[] = ["home", "package", "services", "blogs", "contact", "about", "privacy", "terms"];
+  const validPages: PageName[] = ["home", "package", "services", "blogs", "contact", "about", "privacy", "terms", "admin"];
   return validPages.includes(path as PageName) ? (path as PageName) : "home";
 }
 

@@ -156,7 +156,7 @@ export function SacredSites() {
                       <img
                         src={site.image}
                         alt={`${site.name} — ${site.location}`}
-                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                        className="block w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                         loading="lazy"
                       />
                       {/* Location badge overlay */}

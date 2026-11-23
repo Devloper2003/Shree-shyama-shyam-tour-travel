@@ -12,6 +12,7 @@ import { ContactPage } from "@/components/site/pages/contact-page";
 import { AboutPage } from "@/components/site/pages/about-page";
 import { PrivacyPage } from "@/components/site/pages/privacy-page";
 import { TermsPage } from "@/components/site/pages/terms-page";
+import { AdminPage } from "@/components/site/pages/admin-page";
 import { usePageStore } from "@/lib/page-store";
 
 export default function Home() {
@@ -39,6 +40,7 @@ export default function Home() {
         {currentPage === "about" && <AboutPage />}
         {currentPage === "privacy" && <PrivacyPage />}
         {currentPage === "terms" && <TermsPage />}
+        {currentPage === "admin" && <AdminPage />}
       </main>
       <Footer />
       <WhatsAppFloat />

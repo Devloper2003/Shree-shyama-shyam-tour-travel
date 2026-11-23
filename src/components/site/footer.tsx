@@ -24,10 +24,11 @@ const serviceLinks: { label: string }[] = [
   { label: "Pilgrimage Fleet" },
 ];
 
-// Legal links
+// Legal links + admin
 const legalLinks: { label: string; page: PageName }[] = [
   { label: "Privacy Policy", page: "privacy" },
   { label: "Terms & Conditions", page: "terms" },
+  { label: "Admin", page: "admin" },
 ];
 
 export function Footer() {
