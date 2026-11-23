@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
-// Default password — used if no password is set in the database
-const DEFAULT_PASSWORD = "vithika2026";
+// Default password — used only if no password is set in the database.
+// Set this via environment variable ADMIN_DEFAULT_PASSWORD in production.
+// Never hardcode actual passwords in source code.
+const DEFAULT_PASSWORD = process.env.ADMIN_DEFAULT_PASSWORD || "change-me";
 
 /**
  * POST /api/admin/login

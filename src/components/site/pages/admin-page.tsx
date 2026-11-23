@@ -11,7 +11,9 @@ import { usePageStore } from "@/lib/page-store";
 import { staticBlogPosts } from "@/lib/blog-data";
 import { Lock, Plus, Trash2, Edit, Eye, EyeOff, Tag, FileText, LogOut, LockKeyhole, Upload, ImageIcon, X, KeyRound, Check } from "lucide-react";
 
-const ADMIN_PASSWORD = "vithika2026";
+// Note: The default password is stored in the database (Setting table).
+// Login is verified via POST /api/admin/login API endpoint.
+// The client-side code never contains or checks the password directly.
 
 type ApiBlogPost = {
   id: string;

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { siteConfig, buildWhatsAppLink, buildTelLink, buildMailtoLink } from "@/lib/site-config";
+import { sendEnquiryEmail } from "@/lib/email";
 
 /**
  * POST /api/enquiries
@@ -76,6 +77,28 @@ export async function POST(req: NextRequest) {
     ].filter(Boolean) as string[];
 
     const messageText = lines.join("\n");
+
+    // Send email notification via Resend (non-blocking — enquiry is already saved)
+    // Email is skipped gracefully if RESEND_API_KEY is not set
+    sendEnquiryEmail({
+      enquiryId: enquiry.id,
+      name: enquiry.name,
+      phone: enquiry.phone,
+      email: enquiry.email,
+      pickup: enquiry.pickup,
+      drop: enquiry.drop,
+      yatraPackage: enquiry.yatraPackage,
+      vehicleType: enquiry.vehicleType,
+      tripType: enquiry.tripType,
+      pickupDate: enquiry.pickupDate,
+      pickupTime: enquiry.pickupTime,
+      passengers: enquiry.passengers,
+      notes: enquiry.notes,
+      source: enquiry.source,
+    }).catch((err) => {
+      // Email failure should not affect the API response
+      console.error("[/api/enquiries] email send error:", err);
+    });
 
     return NextResponse.json({
       ok: true,
