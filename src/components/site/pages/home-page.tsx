@@ -51,7 +51,7 @@ export function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             {popularPackages.map((p, i) => (
               <motion.div
                 key={p.id}
@@ -69,32 +69,46 @@ export function HomePage() {
                   {p.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
                       <Badge className="bg-gold text-accent-foreground hover:bg-gold gap-1">
-                        <Star className="w-3 h-3 fill-current" /> Popular
+                        <Star className="w-3.5 h-3.5 fill-current" /> Popular
                       </Badge>
                     </div>
                   )}
-                  <CardContent className="p-5 flex flex-col h-full">
-                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <CardContent className="p-6 flex flex-col h-full">
+                    <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
                       {p.category}
                     </p>
-                    <h3 className="text-base font-bold text-foreground mt-1 mb-2 leading-tight">{p.name}</h3>
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3 text-primary" /> {p.duration}
+                    <h3 className="text-xl font-bold text-foreground mt-2 mb-3 leading-tight">{p.name}</h3>
+                    <div className="flex items-center gap-3 text-sm text-muted-foreground mb-4">
+                      <span className="flex items-center gap-1.5">
+                        <Clock className="w-4 h-4 text-primary" /> {p.duration}
                       </span>
-                    </div>
-                    <p className="text-xs text-muted-foreground flex-1 mb-3 line-clamp-2">
-                      {p.temples.slice(0, 3).join(" • ")}
-                    </p>
-                    <div className="border-t border-border pt-3">
-                      {p.price > 0 ? (
-                        <p className="text-lg font-bold text-primary">
-                          ₹{p.price.toLocaleString("en-IN")}
-                          <span className="text-xs text-muted-foreground font-normal">/person</span>
-                        </p>
-                      ) : (
-                        <p className="text-sm text-primary font-medium">Custom quote</p>
+                      {p.days > 0 && (
+                        <span className="flex items-center gap-1.5">
+                          <Calendar className="w-4 h-4 text-primary" /> {p.days} day{p.days > 1 ? "s" : ""}
+                        </span>
                       )}
+                    </div>
+                    <p className="text-sm text-muted-foreground flex-1 mb-4">
+                      {p.temples.slice(0, 3).join(" • ")}
+                      {p.temples.length > 3 && ` +${p.temples.length - 3} more`}
+                    </p>
+                    <div className="flex items-center justify-between border-t border-border pt-4">
+                      <div>
+                        {p.price > 0 ? (
+                          <>
+                            <p className="text-xs text-muted-foreground">Starting from</p>
+                            <p className="text-2xl font-bold text-primary">
+                              ₹{p.price.toLocaleString("en-IN")}
+                              <span className="text-sm text-muted-foreground font-normal">/person</span>
+                            </p>
+                          </>
+                        ) : (
+                          <p className="text-base text-primary font-medium">Custom quote</p>
+                        )}
+                      </div>
+                      <Button size="sm" className="gap-1.5">
+                        Book <ArrowRight className="w-3.5 h-3.5" />
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -125,7 +139,7 @@ export function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-5">
             {previewSites.map((site, i) => (
               <motion.div
                 key={site.id}
@@ -136,18 +150,24 @@ export function HomePage() {
                 className="cursor-pointer"
                 onClick={() => navigate("services")}
               >
-                <Card className="overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all">
-                  <div className="relative h-24 sm:h-28 overflow-hidden bg-muted">
+                <Card className="overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all">
+                  <div className="relative h-40 sm:h-44 overflow-hidden bg-muted">
                     <img
                       src={site.image}
                       alt={site.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" aria-hidden="true" />
-                    <p className="absolute bottom-1 left-2 right-2 text-white text-[10px] sm:text-xs font-semibold leading-tight drop-shadow-lg">
-                      {site.name}
-                    </p>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" aria-hidden="true" />
+                    <div className="absolute bottom-0 left-0 right-0 p-3">
+                      {site.sanskritName && (
+                        <p className="text-gold text-xs font-medium mb-0.5 drop-shadow-lg">{site.sanskritName}</p>
+                      )}
+                      <p className="text-white text-sm font-bold leading-tight drop-shadow-lg">
+                        {site.name}
+                      </p>
+                      <p className="text-white/70 text-[11px] mt-0.5">{site.location}</p>
+                    </div>
                   </div>
                 </Card>
               </motion.div>
