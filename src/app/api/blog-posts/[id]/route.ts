@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     const body = await req.json();
-    const { title, excerpt, content, category, published } = body;
+    const { title, excerpt, content, category, published, image } = body;
 
     const post = await db.blogPost.update({
       where: { id: params.id },
@@ -15,6 +15,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
         ...(content !== undefined && { content: content ? String(content).slice(0, 10000) : null }),
         ...(category !== undefined && { category: String(category).slice(0, 50) }),
         ...(published !== undefined && { published: Boolean(published) }),
+        ...(image !== undefined && { image: image ? String(image).slice(0, 200) : null }),
       },
     });
 

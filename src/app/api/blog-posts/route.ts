@@ -18,7 +18,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { title, excerpt, content, category } = body;
+    const { title, excerpt, content, category, image } = body;
 
     if (!title || !excerpt) {
       return NextResponse.json({ ok: false, error: "Title and excerpt are required" }, { status: 400 });
@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
         excerpt: String(excerpt).slice(0, 500),
         content: content ? String(content).slice(0, 10000) : null,
         category: category ? String(category).slice(0, 50) : "General",
+        image: image ? String(image).slice(0, 200) : null,
       },
     });
 

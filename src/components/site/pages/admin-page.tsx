@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,29 +8,19 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { usePageStore } from "@/lib/page-store";
-import { Lock, Plus, Trash2, Edit, Eye, EyeOff, Tag, FileText, LogOut, LockKeyhole } from "lucide-react";
+import { staticBlogPosts } from "@/lib/blog-data";
+import { Lock, Plus, Trash2, Edit, Eye, EyeOff, Tag, FileText, LogOut, LockKeyhole, Upload, ImageIcon, X } from "lucide-react";
 
-// Simple password — client should change this to a strong password
-// In production, use proper auth (NextAuth.js or server-side session)
 const ADMIN_PASSWORD = "vithika2026";
 
-type BlogPost = {
+type ApiBlogPost = {
   id: string;
   title: string;
   excerpt: string;
   content?: string | null;
   category: string;
+  image?: string | null;
   published: boolean;
-  createdAt: string;
-};
-
-type Offer = {
-  id: string;
-  title: string;
-  description: string;
-  discount?: string | null;
-  validTill?: string | null;
-  active: boolean;
   createdAt: string;
 };
 
@@ -42,25 +32,19 @@ export function AdminPage() {
   const [tab, setTab] = useState<"blog" | "offers">("blog");
 
   // Blog state
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
-  const [postForm, setPostForm] = useState({ title: "", excerpt: "", content: "", category: "General" });
+  const [apiPosts, setApiPosts] = useState<ApiBlogPost[]>([]);
+  const [editingPost, setEditingPost] = useState<ApiBlogPost | null>(null);
+  const [postForm, setPostForm] = useState({ title: "", excerpt: "", content: "", category: "General", image: "" });
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Offer state
-  const [offers, setOffers] = useState<Offer[]>([]);
-  const [editingOffer, setEditingOffer] = useState<Offer | null>(null);
+  const [offers, setOffers] = useState<any[]>([]);
+  const [editingOffer, setEditingOffer] = useState<any | null>(null);
   const [offerForm, setOfferForm] = useState({ title: "", description: "", discount: "", validTill: "" });
 
-  const handleLogin = () => {
-    if (password === ADMIN_PASSWORD) {
-      setAuthed(true);
-      setError("");
-    } else {
-      setError("Incorrect password. Please try again.");
-    }
-  };
-
-  // Refresh trigger — increment to re-fetch data from the API
+  // Refresh trigger
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const refresh = () => setRefreshTrigger((t) => t + 1);
 
@@ -76,7 +60,7 @@ export function AdminPage() {
         const postsData = await postsRes.json();
         const offersData = await offersRes.json();
         if (cancelled) return;
-        if (postsData.ok) setPosts(postsData.posts);
+        if (postsData.ok) setApiPosts(postsData.posts);
         if (offersData.ok) setOffers(offersData.offers);
       } catch (e) {
         console.error("Failed to fetch admin data:", e);
@@ -85,6 +69,51 @@ export function AdminPage() {
     fetchData();
     return () => { cancelled = true; };
   }, [authed, refreshTrigger]);
+
+  const handleLogin = () => {
+    if (password === ADMIN_PASSWORD) {
+      setAuthed(true);
+      setError("");
+    } else {
+      setError("Incorrect password. Please try again.");
+    }
+  };
+
+  // Image upload handler
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+
+      if (data.ok) {
+        setPostForm((prev) => ({ ...prev, image: data.url }));
+        setImagePreview(data.url);
+      } else {
+        alert(data.error || "Upload failed");
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert("Failed to upload image. Please try again.");
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const clearImage = () => {
+    setPostForm((prev) => ({ ...prev, image: "" }));
+    setImagePreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
 
   const savePost = async () => {
     if (!postForm.title || !postForm.excerpt) return;
@@ -102,8 +131,10 @@ export function AdminPage() {
           body: JSON.stringify(postForm),
         });
       }
-      setPostForm({ title: "", excerpt: "", content: "", category: "General" });
+      setPostForm({ title: "", excerpt: "", content: "", category: "General", image: "" });
+      setImagePreview(null);
       setEditingPost(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
       refresh();
     } catch (e) {
       console.error("Failed to save post:", e);
@@ -120,7 +151,7 @@ export function AdminPage() {
     }
   };
 
-  const togglePostPublished = async (post: BlogPost) => {
+  const togglePostPublished = async (post: ApiBlogPost) => {
     try {
       await fetch(`/api/blog-posts/${post.id}`, {
         method: "PUT",
@@ -131,6 +162,25 @@ export function AdminPage() {
     } catch (e) {
       console.error("Failed to toggle:", e);
     }
+  };
+
+  const editPost = (post: ApiBlogPost) => {
+    setEditingPost(post);
+    setPostForm({
+      title: post.title,
+      excerpt: post.excerpt,
+      content: post.content || "",
+      category: post.category,
+      image: post.image || "",
+    });
+    setImagePreview(post.image || null);
+  };
+
+  const cancelEdit = () => {
+    setEditingPost(null);
+    setPostForm({ title: "", excerpt: "", content: "", category: "General", image: "" });
+    setImagePreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const saveOffer = async () => {
@@ -199,8 +249,6 @@ export function AdminPage() {
             </Button>
             <p className="text-xs text-muted-foreground text-center">
               Default password: <code className="bg-muted px-1.5 py-0.5 rounded">vithika2026</code>
-              <br />
-              (Change this in <code>src/components/site/pages/admin-page.tsx</code>)
             </p>
             <Button variant="ghost" className="w-full" onClick={() => navigate("home")}>
               Back to Home
@@ -236,7 +284,7 @@ export function AdminPage() {
             onClick={() => setTab("blog")}
             className="gap-2"
           >
-            <FileText className="w-4 h-4" /> Blog Posts ({posts.length})
+            <FileText className="w-4 h-4" /> Blog Posts ({apiPosts.length + staticBlogPosts.length})
           </Button>
           <Button
             variant={tab === "offers" ? "default" : "outline"}
@@ -260,6 +308,45 @@ export function AdminPage() {
                 </h2>
               </CardHeader>
               <CardContent className="space-y-4">
+                {/* Image upload */}
+                <div className="space-y-2">
+                  <Label>Blog Image</Label>
+                  {imagePreview || postForm.image ? (
+                    <div className="relative w-full h-40 rounded-lg overflow-hidden border border-border">
+                      <img src={imagePreview || postForm.image} alt="Preview" className="block w-full h-full object-cover" />
+                      <button
+                        onClick={clearImage}
+                        className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80"
+                        aria-label="Remove image"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => fileInputRef.current?.click()}
+                      className="w-full h-40 rounded-lg border-2 border-dashed border-border flex flex-col items-center justify-center cursor-pointer hover:border-primary hover:bg-muted/40 transition-colors"
+                    >
+                      {uploadingImage ? (
+                        <p className="text-sm text-muted-foreground">Uploading...</p>
+                      ) : (
+                        <>
+                          <Upload className="w-8 h-8 text-muted-foreground mb-2" />
+                          <p className="text-sm text-muted-foreground">Click to upload image</p>
+                          <p className="text-xs text-muted-foreground mt-1">JPEG, PNG, WebP (max 5MB)</p>
+                        </>
+                      )}
+                    </div>
+                  )}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
+                </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="post-title">Title *</Label>
                   <Input
@@ -286,7 +373,7 @@ export function AdminPage() {
                     rows={6}
                     value={postForm.content}
                     onChange={(e) => setPostForm({ ...postForm, content: e.target.value })}
-                    placeholder="Full blog post content..."
+                    placeholder="Full blog post content. Use ## for headings, - for bullet points."
                   />
                 </div>
                 <div className="space-y-2">
@@ -299,17 +386,11 @@ export function AdminPage() {
                   />
                 </div>
                 <div className="flex gap-2">
-                  <Button onClick={savePost} className="gap-2">
+                  <Button onClick={savePost} className="gap-2" disabled={uploadingImage}>
                     {editingPost ? "Update" : "Publish"} Post
                   </Button>
                   {editingPost && (
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        setEditingPost(null);
-                        setPostForm({ title: "", excerpt: "", content: "", category: "General" });
-                      }}
-                    >
+                    <Button variant="outline" onClick={cancelEdit}>
                       Cancel
                     </Button>
                   )}
@@ -317,78 +398,92 @@ export function AdminPage() {
               </CardContent>
             </Card>
 
-            {/* Posts list */}
+            {/* Posts list — shows ALL posts (API + static) */}
             <div className="space-y-3">
               <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                Published Posts
+                All Blog Posts ({apiPosts.length + staticBlogPosts.length})
               </h3>
-              {posts.length === 0 ? (
+
+              {/* API-created posts (editable) */}
+              {apiPosts.length > 0 && (
+                <>
+                  <p className="text-xs font-medium text-primary">Your Posts (editable)</p>
+                  {apiPosts.map((post) => (
+                    <Card key={post.id} className="hover:shadow-md transition-shadow">
+                      <CardContent className="p-4">
+                        <div className="flex items-start gap-3">
+                          {post.image && (
+                            <img src={post.image} alt="" className="w-16 h-16 rounded-lg object-cover shrink-0" />
+                          )}
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <p className="font-semibold text-foreground text-sm truncate">{post.title}</p>
+                              {post.published ? (
+                                <Badge variant="secondary" className="text-[10px] gap-0.5 shrink-0">
+                                  <Eye className="w-2.5 h-2.5" /> Live
+                                </Badge>
+                              ) : (
+                                <Badge variant="outline" className="text-[10px] gap-0.5 shrink-0">
+                                  <EyeOff className="w-2.5 h-2.5" /> Hidden
+                                </Badge>
+                              )}
+                            </div>
+                            <p className="text-xs text-muted-foreground line-clamp-2">{post.excerpt}</p>
+                            <p className="text-[10px] text-muted-foreground mt-1">
+                              {post.category} • {new Date(post.createdAt).toLocaleDateString("en-IN")}
+                            </p>
+                          </div>
+                          <div className="flex flex-col gap-1 shrink-0">
+                            <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => editPost(post)}>
+                              <Edit className="w-3.5 h-3.5" />
+                            </Button>
+                            <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => togglePostPublished(post)}>
+                              {post.published ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                            </Button>
+                            <Button size="icon" variant="ghost" className="h-7 w-7 text-destructive" onClick={() => deletePost(post.id)}>
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </>
+              )}
+
+              {/* Static built-in posts (read-only) */}
+              <p className="text-xs font-medium text-muted-foreground pt-2">Built-in Posts (read-only)</p>
+              {staticBlogPosts.map((post) => (
+                <Card key={post.id} className="opacity-75">
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3">
+                      <img src={post.image} alt="" className="w-16 h-16 rounded-lg object-cover shrink-0" />
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <p className="font-semibold text-foreground text-sm truncate">{post.title}</p>
+                          <Badge variant="outline" className="text-[10px] shrink-0">Built-in</Badge>
+                        </div>
+                        <p className="text-xs text-muted-foreground line-clamp-2">{post.excerpt}</p>
+                        <p className="text-[10px] text-muted-foreground mt-1">
+                          {post.category} • {post.date} • {post.readTime}
+                        </p>
+                      </div>
+                      <div className="shrink-0">
+                        <Button size="icon" variant="ghost" className="h-7 w-7 opacity-50" disabled title="Built-in posts cannot be edited">
+                          <ImageIcon className="w-3.5 h-3.5" />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+
+              {apiPosts.length === 0 && staticBlogPosts.length === 0 && (
                 <Card>
                   <CardContent className="p-8 text-center text-muted-foreground">
                     No blog posts yet. Create your first post!
                   </CardContent>
                 </Card>
-              ) : (
-                posts.map((post) => (
-                  <Card key={post.id} className="hover:shadow-md transition-shadow">
-                    <CardContent className="p-4">
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <p className="font-semibold text-foreground text-sm truncate">{post.title}</p>
-                            {post.published ? (
-                              <Badge variant="secondary" className="text-[10px] gap-0.5 shrink-0">
-                                <Eye className="w-2.5 h-2.5" /> Live
-                              </Badge>
-                            ) : (
-                              <Badge variant="outline" className="text-[10px] gap-0.5 shrink-0">
-                                <EyeOff className="w-2.5 h-2.5" /> Hidden
-                              </Badge>
-                            )}
-                          </div>
-                          <p className="text-xs text-muted-foreground line-clamp-2">{post.excerpt}</p>
-                          <p className="text-[10px] text-muted-foreground mt-1">
-                            {post.category} • {new Date(post.createdAt).toLocaleDateString("en-IN")}
-                          </p>
-                        </div>
-                        <div className="flex flex-col gap-1 shrink-0">
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            className="h-7 w-7"
-                            onClick={() => {
-                              setEditingPost(post);
-                              setPostForm({
-                                title: post.title,
-                                excerpt: post.excerpt,
-                                content: post.content || "",
-                                category: post.category,
-                              });
-                            }}
-                          >
-                            <Edit className="w-3.5 h-3.5" />
-                          </Button>
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            className="h-7 w-7"
-                            onClick={() => togglePostPublished(post)}
-                          >
-                            {post.published ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                          </Button>
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            className="h-7 w-7 text-destructive"
-                            onClick={() => deletePost(post.id)}
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))
               )}
             </div>
           </div>
@@ -397,7 +492,6 @@ export function AdminPage() {
         {/* Offers Tab */}
         {tab === "offers" && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Add/Edit form */}
             <Card>
               <CardHeader>
                 <h2 className="text-lg font-bold flex items-center gap-2">
@@ -450,13 +544,7 @@ export function AdminPage() {
                     {editingOffer ? "Update" : "Add"} Offer
                   </Button>
                   {editingOffer && (
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        setEditingOffer(null);
-                        setOfferForm({ title: "", description: "", discount: "", validTill: "" });
-                      }}
-                    >
+                    <Button variant="outline" onClick={() => { setEditingOffer(null); setOfferForm({ title: "", description: "", discount: "", validTill: "" }); }}>
                       Cancel
                     </Button>
                   )}
@@ -464,10 +552,9 @@ export function AdminPage() {
               </CardContent>
             </Card>
 
-            {/* Offers list */}
             <div className="space-y-3">
               <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                Active Offers
+                Active Offers ({offers.length})
               </h3>
               {offers.length === 0 ? (
                 <Card>
@@ -498,9 +585,7 @@ export function AdminPage() {
                         </div>
                         <div className="flex flex-col gap-1 shrink-0">
                           <Button
-                            size="icon"
-                            variant="ghost"
-                            className="h-7 w-7"
+                            size="icon" variant="ghost" className="h-7 w-7"
                             onClick={() => {
                               setEditingOffer(offer);
                               setOfferForm({
@@ -513,12 +598,7 @@ export function AdminPage() {
                           >
                             <Edit className="w-3.5 h-3.5" />
                           </Button>
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            className="h-7 w-7 text-destructive"
-                            onClick={() => deleteOffer(offer.id)}
-                          >
+                          <Button size="icon" variant="ghost" className="h-7 w-7 text-destructive" onClick={() => deleteOffer(offer.id)}>
                             <Trash2 className="w-3.5 h-3.5" />
                           </Button>
                         </div>
@@ -534,13 +614,9 @@ export function AdminPage() {
         {/* Info note */}
         <div className="mt-8 p-4 bg-muted/40 rounded-lg border border-border">
           <p className="text-xs text-muted-foreground">
-            <strong className="text-foreground">How to use:</strong> Use this panel to add blog posts
-            and special offers. Blog posts appear on the Blogs page, and offers can be displayed
-            anywhere on the site. Content is stored in the database and persists across sessions.
-            <br />
-            <strong className="text-foreground">Security note:</strong> This is a simple password
-            protection. For production, upgrade to NextAuth.js for proper authentication. Change the
-            default password in <code className="bg-muted px-1 rounded">admin-page.tsx</code>.
+            <strong className="text-foreground">How to use:</strong> Upload an image, fill in the blog
+            details, and click Publish. Your posts appear alongside the built-in posts on the Blogs page.
+            Built-in posts are read-only. To edit pricing or contact details, see the deployment guide.
           </p>
         </div>
       </div>
