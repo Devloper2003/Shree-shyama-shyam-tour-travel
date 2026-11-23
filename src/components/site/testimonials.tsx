@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Star, Quote } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { ScrollableTabs } from "@/components/site/scrollable-tabs";
 import { testimonials, type Testimonial } from "@/lib/site-data";
 
 type FilterKey = "all" | "complete" | "day-tour" | "airport" | "custom";
@@ -59,33 +60,13 @@ export function Testimonials() {
           </p>
         </div>
 
-        {/* Animated filter tabs */}
-        <LayoutGroup>
-          <div className="flex flex-wrap justify-center gap-2 mb-10">
-            {filters.map((f) => {
-              const isActive = active === f.key;
-              return (
-                <button
-                  key={f.key}
-                  onClick={() => setActive(f.key)}
-                  aria-pressed={isActive}
-                  className={`relative px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    isActive ? "text-primary-foreground" : "text-foreground hover:bg-muted"
-                  }`}
-                >
-                  {isActive && (
-                    <motion.span
-                      layoutId="testimonials-tab-pill"
-                      className="absolute inset-0 rounded-full bg-primary z-0"
-                      transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                    />
-                  )}
-                  <span className="relative z-10">{f.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </LayoutGroup>
+        {/* Scrollable uniform-width tabs with left/right navigation */}
+        <ScrollableTabs
+          tabs={filters}
+          active={active}
+          onChange={(k) => setActive(k as FilterKey)}
+          layoutId="testimonials-tab"
+        />
 
         {/* Testimonials grid */}
         <AnimatePresence mode="wait">

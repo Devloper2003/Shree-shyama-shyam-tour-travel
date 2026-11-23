@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Check, Star, Clock, MapPin, Users, ArrowRight, Calendar, Route, Crown, Sparkles, MapPinned } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { ScrollableTabs } from "@/components/site/scrollable-tabs";
 import { yatraPackages, type YatraPackageCategory } from "@/lib/site-data";
 
 type TabKey = "all" | YatraPackageCategory;
@@ -44,37 +45,13 @@ export function Services() {
           </p>
         </div>
 
-        {/* Animated tabs */}
-        <LayoutGroup>
-          <div className="flex flex-wrap justify-center gap-2 mb-10">
-            {tabs.map((t) => {
-              const isActive = active === t.key;
-              const Icon = t.icon;
-              return (
-                <button
-                  key={t.key}
-                  onClick={() => setActive(t.key)}
-                  aria-pressed={isActive}
-                  className={`relative px-4 sm:px-5 py-2.5 rounded-full text-sm font-semibold transition-colors flex items-center gap-2 ${
-                    isActive
-                      ? "text-primary-foreground"
-                      : "text-foreground hover:bg-muted"
-                  }`}
-                >
-                  {isActive && (
-                    <motion.span
-                      layoutId="services-tab-pill"
-                      className="absolute inset-0 rounded-full bg-primary z-0"
-                      transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                    />
-                  )}
-                  <Icon className="w-4 h-4 relative z-10" />
-                  <span className="relative z-10">{t.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </LayoutGroup>
+        {/* Scrollable uniform-width tabs with left/right navigation */}
+        <ScrollableTabs
+          tabs={tabs}
+          active={active}
+          onChange={(k) => setActive(k as TabKey)}
+          layoutId="services-tab"
+        />
 
         {/* Tab description */}
         <AnimatePresence mode="wait">

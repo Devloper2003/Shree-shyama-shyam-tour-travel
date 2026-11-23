@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Clock, Star, Sparkles, Crown, Baby, Heart, Mountain, Waves } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { ScrollableTabs } from "@/components/site/scrollable-tabs";
 import { sacredSites, type SacredSiteCategory } from "@/lib/site-data";
 
 type TabKey = "all" | SacredSiteCategory;
@@ -15,7 +16,7 @@ const tabs: { key: TabKey; label: string; icon: typeof MapPin }[] = [
   { key: "childhood", label: "Childhood Leelas", icon: Baby },
   { key: "ras-lila", label: "Ras Lila Sites", icon: Heart },
   { key: "govardhan", label: "Govardhan & Kunds", icon: Mountain },
-  { key: "radha", label: "Radha&apos;s Abode", icon: Sparkles },
+  { key: "radha", label: "Radha's Abode", icon: Sparkles },
   { key: "ghat", label: "Yamuna Ghats", icon: Waves },
 ];
 
@@ -46,35 +47,14 @@ export function SacredSites() {
           </p>
         </div>
 
-        {/* Animated category tabs */}
-        <LayoutGroup>
-          <div className="flex flex-wrap justify-center gap-2 mb-10">
-            {tabs.map((t) => {
-              const isActive = active === t.key;
-              const Icon = t.icon;
-              return (
-                <button
-                  key={t.key}
-                  onClick={() => setActive(t.key)}
-                  aria-pressed={isActive}
-                  className={`relative px-4 py-2 rounded-full text-sm font-medium transition-colors flex items-center gap-1.5 ${
-                    isActive ? "text-primary-foreground" : "text-foreground hover:bg-muted"
-                  }`}
-                >
-                  {isActive && (
-                    <motion.span
-                      layoutId="sites-tab-pill"
-                      className="absolute inset-0 rounded-full bg-primary z-0"
-                      transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                    />
-                  )}
-                  <Icon className="w-3.5 h-3.5 relative z-10" />
-                  <span className="relative z-10" dangerouslySetInnerHTML={{ __html: t.label }} />
-                </button>
-              );
-            })}
-          </div>
-        </LayoutGroup>
+        {/* Scrollable uniform-width tabs with left/right navigation */}
+        <ScrollableTabs
+          tabs={tabs}
+          active={active}
+          onChange={(k) => setActive(k as TabKey)}
+          layoutId="sites-tab"
+          tabWidth={170}
+        />
 
         {/* Sites grid */}
         <AnimatePresence mode="wait">

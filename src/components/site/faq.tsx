@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Accordion,
   AccordionContent,
@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { HelpCircle } from "lucide-react";
+import { ScrollableTabs } from "@/components/site/scrollable-tabs";
 import { faqs, faqCategories, type FaqCategory } from "@/lib/site-data";
 
 type TabKey = "all" | FaqCategory;
@@ -41,33 +42,14 @@ export function Faq() {
           </p>
         </div>
 
-        {/* Animated category tabs */}
-        <LayoutGroup>
-          <div className="flex flex-wrap justify-center gap-2 mb-8">
-            {faqCategories.map((c) => {
-              const isActive = active === c.key;
-              return (
-                <button
-                  key={c.key}
-                  onClick={() => setActive(c.key)}
-                  aria-pressed={isActive}
-                  className={`relative px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    isActive ? "text-primary-foreground" : "text-foreground hover:bg-muted"
-                  }`}
-                >
-                  {isActive && (
-                    <motion.span
-                      layoutId="faq-tab-pill"
-                      className="absolute inset-0 rounded-full bg-primary z-0"
-                      transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                    />
-                  )}
-                  <span className="relative z-10">{c.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </LayoutGroup>
+        {/* Scrollable uniform-width tabs with left/right navigation */}
+        <ScrollableTabs
+          tabs={faqCategories}
+          active={active}
+          onChange={(k) => setActive(k as TabKey)}
+          layoutId="faq-tab"
+          tabWidth={175}
+        />
 
         {/* FAQ accordion with animated transition */}
         <AnimatePresence mode="wait">
