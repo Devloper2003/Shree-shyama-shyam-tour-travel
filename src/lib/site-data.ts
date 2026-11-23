@@ -357,6 +357,7 @@ export type SacredSite = {
   bestTime: string;
   mustSee: string;
   category: SacredSiteCategory;
+  image: string;
 };
 
 export const sacredSites: SacredSite[] = [
@@ -369,6 +370,7 @@ export const sacredSites: SacredSite[] = [
     bestTime: "Year-round; Janmashtami is most auspicious",
     mustSee: "Garbha Griha (birthplace), Bhagavata Bhavan",
     category: "birthplace",
+    image: "/sites/janmabhoomi.jpg",
   },
   {
     id: "banke-bihari",
@@ -379,6 +381,7 @@ export const sacredSites: SacredSite[] = [
     bestTime: "Year-round; avoid afternoon (temple closed 12-5:30 PM)",
     mustSee: "Shringar darshan in morning, evening aarti",
     category: "ras-lila",
+    image: "/sites/banke-bihari.jpg",
   },
   {
     id: "prem-mandir",
@@ -389,6 +392,7 @@ export const sacredSites: SacredSite[] = [
     bestTime: "Evening for light & sound show (7 PM)",
     mustSee: "Evening illumination, life-sized Krishna leela scenes",
     category: "ras-lila",
+    image: "/sites/prem-mandir.jpg",
   },
   {
     id: "iskcon",
@@ -399,6 +403,7 @@ export const sacredSites: SacredSite[] = [
     bestTime: "Mangala aarti (4:30 AM) or Sandhya aarti (7 PM)",
     mustSee: "Krishna-Balaram deities, samadhi of Srila Prabhupada",
     category: "ras-lila",
+    image: "/sites/iskcon.jpg",
   },
   {
     id: "radha-rani",
@@ -409,6 +414,7 @@ export const sacredSites: SacredSite[] = [
     bestTime: "Radhashtami (Sept), Holi (March)",
     mustSee: "Radha-Krishna idols, Maan Mandir nearby",
     category: "radha",
+    image: "/sites/radha-rani.jpg",
   },
   {
     id: "govardhan",
@@ -419,6 +425,7 @@ export const sacredSites: SacredSite[] = [
     bestTime: "Kartik month (Oct-Nov), Govardhan Puja",
     mustSee: "21-km parikrama, Daan Ghati, Haridev Temple",
     category: "govardhan",
+    image: "/sites/govardhan.jpg",
   },
   {
     id: "radha-kund",
@@ -429,6 +436,7 @@ export const sacredSites: SacredSite[] = [
     bestTime: "Kartik month, Ahoi Ashtami",
     mustSee: "Both kunds, evening deep-daan",
     category: "govardhan",
+    image: "/sites/radha-kund.jpg",
   },
   {
     id: "nand-bhavan",
@@ -439,6 +447,7 @@ export const sacredSites: SacredSite[] = [
     bestTime: "Year-round; Bhado month special",
     mustSee: "Nand Bhavan, Pan Sarovar, Charan Pahadi",
     category: "childhood",
+    image: "/sites/nand-bhavan.jpg",
   },
   {
     id: "gokulnath",
@@ -449,6 +458,7 @@ export const sacredSites: SacredSite[] = [
     bestTime: "Gokul Ashtami (Janmashtami)",
     mustSee: "Raman Reti (sacred sand where Krishna played), Brahmand Ghat",
     category: "childhood",
+    image: "/sites/gokulnath.jpg",
   },
   {
     id: "vishram-ghat",
@@ -459,6 +469,7 @@ export const sacredSites: SacredSite[] = [
     bestTime: "Dawn (5-7 AM) for boat ride & morning aarti",
     mustSee: "Yamuna aarti at sunrise, boat ride past all 25 ghats",
     category: "ghat",
+    image: "/sites/vishram-ghat.jpg",
   },
   {
     id: "seva-kunj",
@@ -469,6 +480,7 @@ export const sacredSites: SacredSite[] = [
     bestTime: "Daytime visits; evening aarti at entrance",
     mustSee: "Seva Kunj temple, Lakshmi's visit legend",
     category: "ras-lila",
+    image: "/sites/seva-kunj.jpg",
   },
   {
     id: "barsana-maan",
@@ -479,6 +491,7 @@ export const sacredSites: SacredSite[] = [
     bestTime: "Sunset for panoramic views",
     mustSee: "Sunset point, Bhajan kutir of Hit Harivansh",
     category: "radha",
+    image: "/sites/maan-mandir.jpg",
   },
 ];
 

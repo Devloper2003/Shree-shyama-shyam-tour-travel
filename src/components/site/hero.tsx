@@ -42,6 +42,17 @@ export function Hero() {
       className="relative bg-braj-gradient text-white overflow-hidden"
       aria-labelledby="hero-heading"
     >
+      {/* Real temple background image with overlay for text readability */}
+      <div className="absolute inset-0" aria-hidden="true">
+        <img
+          src="/sites/prem-mandir.jpg"
+          alt=""
+          className="w-full h-full object-cover opacity-25"
+        />
+        {/* Dark blue overlay for text contrast */}
+        <div className="absolute inset-0 bg-braj-gradient opacity-85" />
+      </div>
+
       {/* Decorative gradient blobs */}
       <div className="absolute inset-0 opacity-30 pointer-events-none" aria-hidden="true">
         <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-gold/20 blur-3xl" />

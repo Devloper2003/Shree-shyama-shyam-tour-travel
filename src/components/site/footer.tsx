@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { Phone, Mail, MessageCircle, MapPin, Clock, Facebook, Instagram, Youtube, Twitter } from "lucide-react";
-import { OmIcon } from "@/components/site/om-icon";
 import { siteConfig, buildTelLink, buildWhatsAppLink } from "@/lib/site-config";
 
 const quickLinks = [
@@ -25,15 +24,11 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-md bg-white/10 flex items-center justify-center text-gold animate-sacred-glow">
-                <OmIcon className="w-6 h-6" />
-              </div>
-              <div>
-                <p className="text-sm font-bold leading-tight">Shri Shyama Shyam</p>
-                <p className="text-xs text-white/60 leading-tight">Tour & Travels • Mathura Vrindavan</p>
-              </div>
-            </div>
+            <img
+              src="/logo.png"
+              alt="Shri Shyama Shyam Tour & Travels logo"
+              className="h-24 w-auto object-contain mb-4 rounded-lg bg-white/95 p-1.5"
+            />
             <p className="text-sm text-white/70 leading-relaxed">
               Mathura-Vrindavan&apos;s trusted Braj Yatra pilgrimage partner since {siteConfig.establishedYear}.
               Braj-born guides, verified vegetarian drivers, local pandit arrangements — across

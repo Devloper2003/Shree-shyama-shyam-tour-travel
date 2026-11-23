@@ -94,22 +94,30 @@ export function SacredSites() {
                 transition={{ duration: 0.4, delay: i * 0.06 }}
               >
                 <Card className="h-full hover:shadow-lg hover:border-gold/50 transition-all overflow-hidden">
-                  {/* Decorative Om/tilak strip */}
-                  <div className="braj-pattern-border" aria-hidden="true" />
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between gap-2 mb-3">
-                      <div>
-                        <h3 className="text-lg font-bold text-foreground leading-tight">{site.name}</h3>
-                        {site.sanskritName && (
-                          <p className="text-sm text-primary mt-0.5 font-medium">
-                            {site.sanskritName}
-                          </p>
-                        )}
-                      </div>
-                      <Badge variant="outline" className="gap-1 shrink-0 mt-1">
+                  {/* Real temple image */}
+                  <div className="relative h-48 overflow-hidden bg-muted">
+                    <img
+                      src={site.image}
+                      alt={`${site.name} — ${site.location}`}
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                      loading="lazy"
+                    />
+                    {/* Location badge overlay */}
+                    <div className="absolute top-2 right-2">
+                      <Badge variant="secondary" className="gap-1 bg-background/90 backdrop-blur-sm">
                         <MapPin className="w-3 h-3 text-primary" /> {site.location}
                       </Badge>
                     </div>
+                    {/* Gradient overlay for text readability at bottom */}
+                    <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/60 to-transparent" aria-hidden="true" />
+                    {site.sanskritName && (
+                      <p className="absolute bottom-2 left-3 text-white text-sm font-medium drop-shadow-lg">
+                        {site.sanskritName}
+                      </p>
+                    )}
+                  </div>
+                  <CardContent className="p-5">
+                    <h3 className="text-lg font-bold text-foreground leading-tight mb-3">{site.name}</h3>
 
                     <p className="text-sm text-muted-foreground leading-relaxed mb-4">
                       {site.significance}

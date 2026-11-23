@@ -34,7 +34,8 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Shri Shyama Shyam Tour & Travels" }],
   icons: {
-    icon: "/logo.svg",
+    icon: "/logo.png",
+    apple: "/logo.png",
   },
   openGraph: {
     title: "Shri Shyama Shyam Tour & Travels | Mathura Vrindavan Braj Yatra",
