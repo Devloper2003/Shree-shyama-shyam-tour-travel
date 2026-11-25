@@ -142,6 +142,27 @@
     @apply bg-background text-foreground;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Prevent text size adjustment on orientation change */
+    -webkit-text-size-adjust: 100%;
+    /* Better tap highlight on mobile */
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* Ensure all interactive elements have minimum touch target on mobile */
+  @media (max-width: 640px) {
+    button,
+    a[role="button"],
+    input[type="submit"],
+    input[type="button"] {
+      min-height: 44px;
+    }
+  }
+  /* Smooth scrolling for carousels on iOS */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+  .overflow-x-auto > * {
+    scroll-snap-align: start;
   }
 }
 

@@ -48,32 +48,32 @@ export function Header() {
           : "bg-background/90 backdrop-blur-sm border-b border-transparent"
       }`}
     >
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 sm:h-20 items-center justify-between gap-4">
+      <div className="container mx-auto max-w-7xl px-3 sm:px-4 lg:px-8">
+        <div className="flex h-16 sm:h-20 items-center justify-between gap-2">
           {/* Logo */}
           <button
             onClick={() => handleNav("home")}
-            className="flex items-center gap-3 shrink-0"
+            className="flex items-center gap-2 sm:gap-3 shrink-0 min-w-0"
             aria-label={siteConfig.name}
           >
             <img
               src="/logo.png"
               alt="Shri Shyama Shyam Tour & Travels logo"
-              className="h-12 sm:h-14 w-auto object-contain"
-              width={48}
-              height={56}
+              className="h-10 sm:h-12 w-auto object-contain shrink-0"
+              width={40}
+              height={40}
             />
-            <div className="hidden md:block">
-              <p className="text-sm sm:text-base font-bold leading-tight text-foreground">
+            <div className="hidden sm:block min-w-0">
+              <p className="text-sm font-bold leading-tight text-foreground truncate">
                 Shri Shyama Shyam
               </p>
-              <p className="text-[10px] sm:text-xs text-muted-foreground leading-tight">
-                Tour & Travels • Mathura Vrindavan
+              <p className="text-[10px] text-muted-foreground leading-tight">
+                Tour & Travels • Mathura
               </p>
             </div>
           </button>
 
-          {/* Desktop nav — only 6 tabs */}
+          {/* Desktop nav — only show on large screens */}
           <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
             {navItems.map((item) => {
               const isActive = currentPage === item.page;
@@ -93,27 +93,33 @@ export function Header() {
             })}
           </nav>
 
-          {/* Right actions */}
-          <div className="flex items-center gap-2">
-            <a href={buildTelLink()} aria-label="Call us" className="hidden sm:flex">
-              <Button variant="outline" size="sm" className="gap-2">
+          {/* Right actions — optimized for mobile touch targets */}
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {/* Call button — show icon only on mobile, icon+text on larger */}
+            <a href={buildTelLink()} aria-label="Call us" className="flex">
+              <Button variant="outline" size="icon" className="h-11 w-11 sm:hidden">
+                <Phone className="w-5 h-5" />
+              </Button>
+              <Button variant="outline" size="sm" className="hidden sm:flex gap-2">
                 <Phone className="w-4 h-4" />
                 <span className="hidden md:inline">Call Now</span>
               </Button>
             </a>
+            {/* Book Yatra button */}
             <Button
               size="sm"
-              className="gap-2"
+              className="h-11 px-3 sm:px-4 sm:h-9"
               onClick={() => handleNav("contact")}
             >
-              Book Yatra
+              <span className="hidden sm:inline">Book Yatra</span>
+              <span className="sm:hidden">Book</span>
             </Button>
 
-            {/* Mobile menu button */}
+            {/* Mobile menu button — larger touch target (44px) */}
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden"
+              className="h-11 w-11 lg:hidden"
               aria-label="Open menu"
               aria-expanded={open}
               onClick={() => setOpen(true)}
@@ -124,7 +130,7 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer — full screen overlay */}
       {open && (
         <div className="fixed inset-0 z-[60] lg:hidden" role="dialog" aria-modal="true">
           <div
@@ -132,21 +138,35 @@ export function Header() {
             onClick={() => setOpen(false)}
             aria-hidden="true"
           />
-          <div className="absolute right-0 top-0 bottom-0 w-[280px] max-w-[85vw] bg-background shadow-xl flex flex-col animate-fade-up">
+          <div className="absolute right-0 top-0 bottom-0 w-[300px] max-w-[85vw] bg-background shadow-xl flex flex-col">
+            {/* Drawer header */}
             <div className="flex items-center justify-between p-4 border-b border-border">
-              <span className="font-bold text-foreground">Menu</span>
-              <Button variant="ghost" size="icon" aria-label="Close menu" onClick={() => setOpen(false)}>
+              <img
+                src="/logo.png"
+                alt="Logo"
+                className="h-10 w-auto"
+                width={40}
+                height={40}
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-11 w-11"
+                aria-label="Close menu"
+                onClick={() => setOpen(false)}
+              >
                 <X className="w-6 h-6" />
               </Button>
             </div>
-            <nav className="flex flex-col p-2 overflow-y-auto" aria-label="Mobile navigation">
+            {/* Nav items — large touch targets */}
+            <nav className="flex flex-col p-2 overflow-y-auto flex-1" aria-label="Mobile navigation">
               {navItems.map((item) => {
                 const isActive = currentPage === item.page;
                 return (
                   <button
                     key={item.page}
                     onClick={() => handleNav(item.page)}
-                    className={`px-4 py-3 text-sm font-medium rounded-md transition-colors text-left ${
+                    className={`px-4 py-4 text-base font-medium rounded-md transition-colors text-left min-h-[52px] flex items-center ${
                       isActive
                         ? "text-primary bg-primary/10 font-semibold"
                         : "text-foreground/90 hover:bg-muted hover:text-primary"
@@ -157,13 +177,17 @@ export function Header() {
                 );
               })}
             </nav>
-            <div className="mt-auto p-4 border-t border-border flex flex-col gap-2">
+            {/* Bottom actions */}
+            <div className="p-4 border-t border-border flex flex-col gap-2">
               <a href={buildTelLink()}>
-                <Button variant="outline" className="w-full gap-2">
-                  <Phone className="w-4 h-4" /> Call {siteConfig.phoneDisplay}
+                <Button variant="outline" className="w-full h-12 gap-2 text-base">
+                  <Phone className="w-5 h-5" /> {siteConfig.phoneDisplay}
                 </Button>
               </a>
-              <Button className="w-full" onClick={() => handleNav("contact")}>
+              <Button
+                className="w-full h-12 text-base"
+                onClick={() => handleNav("contact")}
+              >
                 Book Your Yatra
               </Button>
             </div>
