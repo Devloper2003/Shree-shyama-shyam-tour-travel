@@ -169,6 +169,36 @@ export function Contact() {
     setSubmitting(true);
     setResult(null);
 
+    // Generate WhatsApp/Call/Email links locally (works even if API/DB fails on edge)
+    const generateLocalLinks = () => {
+      const msgLines = [
+        `*Radhe Radhe! New Yatra Enquiry — Shri Shyama Shyam Tour & Travels*`,
+        ``,
+        `Name: ${form.name}`,
+        `Phone: ${form.phone}`,
+        form.email ? `Email: ${form.email}` : null,
+        ``,
+        `Pickup: ${form.pickup}`,
+        `Drop: ${form.drop}`,
+        form.yatraPackage ? `Yatra Package: ${form.yatraPackage}` : null,
+        form.vehicleType ? `Vehicle: ${form.vehicleType}` : null,
+        form.tripType ? `Yatra Type: ${form.tripType}` : null,
+        form.pickupDate ? `Date: ${form.pickupDate}` : null,
+        form.pickupTime ? `Time: ${form.pickupTime}` : null,
+        form.passengers ? `Pilgrims: ${form.passengers}` : null,
+        form.notes ? `Sankalp/Notes: ${form.notes}` : null,
+      ].filter(Boolean) as string[];
+      const messageText = msgLines.join("\n");
+      return {
+        ok: true as const,
+        enquiryId: "local-" + Date.now(),
+        whatsapp: buildWhatsAppLink(messageText),
+        phone: buildTelLink(),
+        email: buildMailtoLink(`New Braj Yatra Enquiry — ${form.name}`, messageText),
+        messagePreview: messageText,
+      };
+    };
+
     try {
       const res = await fetch("/api/enquiries", {
         method: "POST",
@@ -184,15 +214,17 @@ export function Contact() {
         title: "Enquiry submitted!",
         description: "We have received your details. Use WhatsApp or Call below for instant confirmation.",
       });
-      setSource("contact-form");
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Something went wrong";
+      // Fallback: generate links locally (for Cloudflare edge where Prisma might not work)
+      // The enquiry won't be saved to database, but the user can still book via WhatsApp/Call/Email
+      const localResult = generateLocalLinks();
+      setResult(localResult);
       toast({
-        title: "Could not submit",
-        description: message,
-        variant: "destructive",
+        title: "Enquiry ready!",
+        description: "Use WhatsApp or Call below to send your details directly.",
       });
     } finally {
+      setSource("contact-form");
       setSubmitting(false);
     }
   };

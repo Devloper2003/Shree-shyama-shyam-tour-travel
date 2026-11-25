@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { siteConfig, buildWhatsAppLink, buildTelLink, buildMailtoLink } from "@/lib/site-config";
