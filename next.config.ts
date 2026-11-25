@@ -1,10 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
-  // Rewrite all non-API, non-static paths to '/' so client-side routing
-  // handles URLs like /services, /package, /admin, /contact, etc.
-  // This allows direct URL access and page refresh without 404 errors.
+  // No output: "standalone" — Cloudflare uses @cloudflare/next-on-pages adapter
+  // Vercel handles output automatically without this setting
   async rewrites() {
     return [
       {
