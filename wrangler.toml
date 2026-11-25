@@ -1,0 +1,17 @@
+# Cloudflare Pages Configuration
+# This file configures Cloudflare Pages Functions compatibility
+
+name = "shri-shyama-shyam-travels"
+compatibility_date = "2024-09-01"
+compatibility_flags = ["nodejs_compat"]
+
+# D1 Database binding (if using Cloudflare D1)
+# Uncomment and replace with your D1 database ID after creating it
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "braj-yatra-db"
+# database_id = "your-d1-database-id-here"
+
+# Environment variables (set in Cloudflare dashboard, not here for secrets)
+# [vars]
+# ADMIN_DEFAULT_PASSWORD = "your-password"
