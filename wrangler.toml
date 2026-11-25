@@ -1,7 +1,7 @@
 # Cloudflare Pages Configuration
-# This file configures Cloudflare Pages Functions compatibility
+# This file must match your Cloudflare Pages project name exactly
 
-name = "shri-shyama-shyam-travels"
+name = "shree-shyama-shyam-tour-travel"
 compatibility_date = "2024-09-01"
 compatibility_flags = ["nodejs_compat"]
 
