@@ -43,11 +43,12 @@ export function HomePage() {
               <MapPin className="w-3 h-3 mr-1" /> Yatra Packages
             </Badge>
             <h2 id="home-packages-heading" className="text-3xl sm:text-4xl font-bold text-foreground">
-              Popular Braj Yatra Packages
+              Customized Braj Yatra Packages
             </h2>
             <p className="mt-4 text-muted-foreground text-base sm:text-lg">
-              From same-day darshan to 7-day grand spiritual tours — explore our most booked
-              pilgrimage packages.
+              2N/3D, 3N/4D with Agra, 84 Kos Yatra, or 6N/7D fully customized.
+              All packages are customizable as per your demand.{" "}
+              <strong className="text-primary">Pickup from Delhi and Agra also available.</strong>
             </p>
           </div>
 
