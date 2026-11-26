@@ -50,7 +50,7 @@ export async function sendEnquiryEmail(data: EnquiryEmailData): Promise<boolean>
   }
 
   const notifyEmail = process.env.ENQUIRY_NOTIFY_EMAIL || "bookings@shrishyamashyamtravels.in";
-  const fromEmail = process.env.RESEND_FROM_EMAIL || "Shri Shyama Shyam Travels <onboarding@resend.dev>";
+  const fromEmail = process.env.RESEND_FROM_EMAIL || "Sri Shyama Travels <onboarding@resend.dev>";
 
   try {
     const resend = new Resend(apiKey);
@@ -100,7 +100,7 @@ export async function sendEnquiryEmail(data: EnquiryEmailData): Promise<boolean>
             </div>
           </div>
           <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 16px;">
-            This is an automated notification from Shri Shyama Shyam Tour & Travels website.
+            This is an automated notification from Sri Shyama Tour & Travels website.
           </p>
         </div>
       `,

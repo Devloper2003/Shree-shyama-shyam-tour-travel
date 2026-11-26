@@ -9,7 +9,7 @@
 //  YATRA PACKAGES — replaces the old cab "services" data
 // ============================================================================
 
-export type YatraPackageCategory = "day-tour" | "short" | "complete" | "multicity" | "custom";
+export type YatraPackageCategory = "short" | "agra" | "complete" | "custom";
 
 export type YatraItineraryDay = {
   day: number;
@@ -23,168 +23,30 @@ export type YatraPackage = {
   category: string;
   duration: string;
   days: number;
-  price: number; // starting price per person (INR)
+  price: number; // 0 means "Price on Request"
+  startingFrom: number; // 0 means "Price on Request"
   temples: string[];
   inclusions: string[];
   bestFor: string[];
   popular?: boolean;
   tab: YatraPackageCategory;
   itinerary: YatraItineraryDay[];
-  startingFrom: number; // alias used by some UI components
 };
 
 export const yatraPackages: YatraPackage[] = [
   {
-    id: "same-day-braj",
-    name: "Same Day Braj Yatra",
-    category: "1-Day Pilgrimage",
-    duration: "1 Day",
-    days: 1,
-    price: 3500,
-    startingFrom: 3500,
-    temples: ["Krishna Janmabhoomi", "Banke Bihari", "Prem Mandir", "ISKCON", "Vishram Ghat"],
-    inclusions: ["AC Cab", "Driver-cum-guide", "All temple visits", "Pickup from Mathura/Vrindavan"],
-    bestFor: ["Time-short devotees", "First-time visitors", "Quick darshan"],
-    popular: true,
-    tab: "day-tour",
-    itinerary: [
-      {
-        day: 1,
-        title: "Mathura & Vrindavan Circuit",
-        sites: ["Krishna Janmabhoomi (Mathura)", "Vishram Ghat", "Banke Bihari Temple", "Prem Mandir", "ISKCON Temple", "Seva Kunj"],
-      },
-    ],
-  },
-  {
-    id: "govardhan-parikrama",
-    name: "Govardhan Parikrama Special",
-    category: "1-Day Sacred Walk",
-    duration: "1 Day",
-    days: 1,
-    price: 4500,
-    startingFrom: 4500,
-    temples: ["Govardhan Hill", "Radha Kund", "Shyam Kund", "Kusum Sarovar", "Mansi Ganga", "Daan Ghati"],
-    inclusions: ["AC Cab to Govardhan", "Local guide for parikrama route", "Packed prasad", "All kund visits"],
-    bestFor: ["Spiritual seekers", "Auspicious Kartik month", "Completing sankalp"],
-    popular: true,
-    tab: "day-tour",
-    itinerary: [
-      {
-        day: 1,
-        title: "21-km Govardhan Parikrama",
-        sites: ["Mansi Ganga (start)", "Daan Ghati", "Radha Kund", "Shyam Kund", "Kusum Sarovar", "Haridev Temple", "Back to Mansi Ganga"],
-      },
-    ],
-  },
-  {
-    id: "2-day-braj",
-    name: "2-Day Braj Circuit",
-    category: "2 Days / 1 Night",
-    duration: "2 Days, 1 Night",
-    days: 2,
-    price: 7500,
-    startingFrom: 7500,
-    temples: ["Mathura temples", "Vrindavan temples", "Gokul", "Mahavan", "Govardhan"],
-    inclusions: ["AC Cab for 2 days", "Driver-cum-guide", "1-night stay at Dharamshala/Hotel", "All temple visits", "Morning boat ride at Vishram Ghat"],
-    bestFor: ["Comfortable pace", "Family groups", "Comprehensive darshan"],
-    tab: "short",
-    itinerary: [
-      {
-        day: 1,
-        title: "Mathura & Gokul — Krishna's Birthplace & Childhood",
-        sites: ["Krishna Janmabhoomi", "Potra Kund", "Vishram Ghat", "Gokulnath Temple", "Raman Reti", "Mahavan (Nand Yamuna Ghat)"],
-      },
-      {
-        day: 2,
-        title: "Vrindavan & Govardhan",
-        sites: ["Banke Bihari", "Prem Mandir", "ISKCON", "Seva Kunj & Nidhuban", "Govardhan Parikrama", "Radha Kund"],
-      },
-    ],
-  },
-  {
-    id: "3-day-complete",
-    name: "3-Day Complete Braj Mandala",
-    category: "3 Days / 2 Nights — Complete",
+    id: "2n3d-braj",
+    name: "2N / 3D Customized Braj Yatra",
+    category: "2 Nights / 3 Days — Customized",
     duration: "3 Days, 2 Nights",
     days: 3,
-    price: 12500,
-    startingFrom: 12500,
-    temples: ["All 12 main Braj sites", "84-kosa Braj circuit", "Radha's Barsana", "Nandgaon", "Uncha Gaon"],
-    inclusions: ["AC Innova/SUV for 3 days", "Dedicated Braj-guide", "2-night stay at premium Dharamshala", "All temple visits", "Govardhan Parikrama support", "Evening aartis"],
-    bestFor: ["Complete Braj experience", "Devotee groups", "Once-in-a-lifetime yatra"],
-    popular: true,
-    tab: "complete",
-    itinerary: [
-      {
-        day: 1,
-        title: "Mathura & Gokul",
-        sites: ["Krishna Janmabhoomi", "Vishram Ghat (morning boat)", "Gokulnath Temple", "Raman Reti", "Mahavan"],
-      },
-      {
-        day: 2,
-        title: "Vrindavan — The Forest of Tulsi",
-        sites: ["Banke Bihari", "Prem Mandir", "ISKCON", "Seva Kunj", "Radha Vallabh Temple", "Kesi Ghat (evening aarti)"],
-      },
-      {
-        day: 3,
-        title: "Barsana, Nandgaon & Govardhan",
-        sites: ["Radha Rani Temple (Barsana)", "Maan Mandir", "Nand Bhavan (Nandgaon)", "Govardhan Parikrama", "Radha Kund"],
-      },
-    ],
-  },
-  {
-    id: "barsana-special",
-    name: "Barsana & Nandgaon Yatra",
-    category: "1-Day Radha-Krishna Special",
-    duration: "1 Day",
-    days: 1,
-    price: 4000,
-    startingFrom: 4000,
-    temples: ["Radha Rani Temple (Shriji)", "Maan Mandir", "Mor Kuti", "Nand Bhavan", "Pan Sarovar"],
-    inclusions: ["AC Cab", "Local guide", "All temple visits", "Sankalp at Radha Rani temple"],
-    bestFor: ["Radha bhaktas", "Holi season", "Radhashtami"],
-    tab: "day-tour",
-    itinerary: [
-      {
-        day: 1,
-        title: "Radha's Abode — Barsana & Nanda's Village",
-        sites: ["Radha Rani Temple (Barsana)", "Maan Mandir", "Mor Kuti", "Nand Bhavan (Nandgaon)", "Pan Sarovar", "Bhadon Sarovar"],
-      },
-    ],
-  },
-  {
-    id: "custom-braj",
-    name: "Custom Braj Itinerary",
-    category: "Tailored Pilgrimage",
-    duration: "Flexible (1-7 days)",
-    days: 0,
     price: 0,
-    startingFrom: 2500,
-    temples: ["As per your sankalp"],
-    inclusions: ["Custom route", "Choice of vehicle", "Pandit arrangement", "Special darshan support"],
-    bestFor: ["Specific sankalp", "Group size 10+", "Festival dates", "Elderly devotees"],
-    tab: "custom",
-    itinerary: [
-      {
-        day: 0,
-        title: "Tell us your sankalp",
-        sites: ["Share your preferred sites, dates, and group size — we craft your perfect yatra"],
-      },
-    ],
-  },
-  {
-    id: "2n3d-braj-extended",
-    name: "2N / 3D Braj Extended Yatra",
-    category: "2 Nights / 3 Days — Extended",
-    duration: "3 Days, 2 Nights",
-    days: 3,
-    price: 14500,
-    startingFrom: 14500,
+    startingFrom: 0,
     temples: ["Mathura", "Vrindavan", "Gokul", "Mahavan", "Govardhan", "Barsana", "Nandgaon", "Radha Kund"],
-    inclusions: ["AC Innova/SUV for 3 days", "Dedicated Braj guide", "2-night stay at premium Dharamshala", "All temple visits", "Govardhan Parikrama support", "Evening aartis", "Morning boat ride at Vishram Ghat"],
+    inclusions: ["AC Cab for 3 days", "Dedicated Braj guide", "2-night stay at Dharamshala/Hotel", "All temple visits", "Govardhan Parikrama support", "Evening aartis", "Morning boat ride at Vishram Ghat"],
     bestFor: ["Comprehensive Braj experience", "Family groups", "First-time Braj visitors"],
     popular: true,
-    tab: "multicity",
+    tab: "short",
     itinerary: [
       { day: 1, title: "Mathura & Gokul", sites: ["Krishna Janmabhoomi", "Vishram Ghat (boat ride)", "Gokulnath Temple", "Raman Reti", "Mahavan"] },
       { day: 2, title: "Vrindavan Deep Darshan", sites: ["Banke Bihari", "Prem Mandir", "ISKCON", "Seva Kunj", "Kesi Ghat aarti"] },
@@ -192,47 +54,61 @@ export const yatraPackages: YatraPackage[] = [
     ],
   },
   {
-    id: "4n5d-braj-agra",
-    name: "4N / 5D Braj + Agra Package",
-    category: "4 Nights / 5 Days — Braj + Agra",
-    duration: "5 Days, 4 Nights",
-    days: 5,
-    price: 24500,
-    startingFrom: 24500,
+    id: "3n4d-braj-agra",
+    name: "3N / 4D Customized Braj + Agra Package",
+    category: "3 Nights / 4 Days — with Agra",
+    duration: "4 Days, 3 Nights",
+    days: 4,
+    price: 0,
+    startingFrom: 0,
     temples: ["Complete Braj Mandala", "Agra (Taj Mahal)", "Fatehpur Sikri"],
-    inclusions: ["AC Innova for 5 days", "Dedicated guide", "4-night stay at hotels", "All temple visits", "Taj Mahal visit", "Fatehpur Sikri excursion", "Govardhan Parikrama", "Boat ride at Yamuna"],
+    inclusions: ["AC Innova/SUV for 4 days", "Dedicated guide", "3-night stay at hotels", "All temple visits", "Taj Mahal visit", "Fatehpur Sikri excursion", "Govardhan Parikrama", "Boat ride at Yamuna"],
     bestFor: ["Braj + heritage combo", "International tourists", "Family with elders"],
     popular: true,
-    tab: "multicity",
+    tab: "agra",
     itinerary: [
       { day: 1, title: "Arrival & Mathura", sites: ["Krishna Janmabhoomi", "Vishram Ghat", "Gokul"] },
       { day: 2, title: "Vrindavan Full Day", sites: ["Banke Bihari", "Prem Mandir", "ISKCON", "Seva Kunj"] },
-      { day: 3, title: "Govardhan & Barsana", sites: ["Govardhan Parikrama", "Radha Kund", "Barsana", "Nandgaon"] },
-      { day: 4, title: "Agra Excursion", sites: ["Taj Mahal", "Agra Fort", "Fatehpur Sikri"] },
-      { day: 5, title: "Final Darshan & Departure", sites: ["Morning aarti", "Local Braj markets", "Drop"] },
+      { day: 3, title: "Govardhan, Barsana & Agra", sites: ["Govardhan Parikrama", "Radha Kund", "Barsana", "Nandgaon", "Taj Mahal sunset"] },
+      { day: 4, title: "Agra Fort & Departure", sites: ["Agra Fort", "Fatehpur Sikri", "Drop"] },
     ],
   },
   {
-    id: "6n7d-braj-jaipur-khajuraho",
-    name: "6N / 7D Braj + Jaipur + Khajuraho",
-    category: "6 Nights / 7 Days — Grand Spiritual Tour",
+    id: "84-kos-yatra",
+    name: "84 Kos Braj Yatra",
+    category: "Complete 84 Kos Parikrama",
+    duration: "Flexible (3-7 days)",
+    days: 5,
+    price: 0,
+    startingFrom: 0,
+    temples: ["All 84 kos Braj circuit", "12 main sacred sites", "72 additional sites", "Govardhan Parikrama", "Radha Kund", "Kusum Sarovar"],
+    inclusions: ["AC vehicle for full circuit", "Dedicated Braj guide", "Accommodation at multiple stops", "All temple visits", "Govardhan Parikrama support", "Local pandit arrangements", "Evening aartis at all major temples"],
+    bestFor: ["Complete spiritual journey", "Serious devotees", "Once-in-a-lifetime yatra"],
+    popular: true,
+    tab: "complete",
+    itinerary: [
+      { day: 1, title: "Mathura & Vrindavan", sites: ["Krishna Janmabhoomi", "Banke Bihari", "Prem Mandir", "ISKCON", "Seva Kunj", "Vishram Ghat"] },
+      { day: 2, title: "Gokul, Mahavan & Govardhan", sites: ["Gokulnath Temple", "Raman Reti", "Mahavan", "Govardhan Parikrama", "Radha Kund", "Kusum Sarovar"] },
+      { day: 3, title: "Barsana, Nandgaon & Surrounding", sites: ["Radha Rani Temple", "Maan Mandir", "Nand Bhavan", "Kokilavan", "Bhandiravan"] },
+      { day: 4, title: "Remaining 84 Kos Sites", sites: ["Uncha Gaon", "Baheli", "Chatikara", "Bathain", "Asoy"] },
+      { day: 5, title: "Final Darshan & Departure", sites: ["Morning aarti at Vishram Ghat", "Final temple visits", "Drop"] },
+    ],
+  },
+  {
+    id: "6n7d-custom",
+    name: "6N / 7D Customized Package (As Per Your Demand)",
+    category: "6 Nights / 7 Days — Fully Customized",
     duration: "7 Days, 6 Nights",
     days: 7,
-    price: 38500,
-    startingFrom: 38500,
-    temples: ["Complete Braj Mandala", "Jaipur temples", "Khajuraho temples"],
-    inclusions: ["AC SUV/Tempo for 7 days", "Dedicated guide", "6-night stay at premium hotels", "All temple visits", "Govardhan Parikrama", "Jaipur sightseeing", "Khajuraho temple tour", "All tolls & parking"],
-    bestFor: ["Grand spiritual circuit", "NRIs & international groups", "Once-in-a-lifetime yatra"],
+    price: 0,
+    startingFrom: 0,
+    temples: ["Complete Braj Mandala", "Agra", "Jaipur", "Khajuraho", "Or any combination you desire"],
+    inclusions: ["AC SUV/Tempo for 7 days", "Dedicated guide", "6-night stay at premium hotels", "All temple visits", "Govardhan Parikrama", "Sightseeing as per your plan", "All tolls & parking", "Local pandit arrangements"],
+    bestFor: ["Grand spiritual circuit", "NRIs & international groups", "Customized itinerary", "Group size 10+"],
     popular: true,
-    tab: "multicity",
+    tab: "custom",
     itinerary: [
-      { day: 1, title: "Mathura Arrival", sites: ["Krishna Janmabhoomi", "Vishram Ghat"] },
-      { day: 2, title: "Vrindavan & Gokul", sites: ["Banke Bihari", "Prem Mandir", "ISKCON", "Gokul"] },
-      { day: 3, title: "Govardhan & Barsana", sites: ["Govardhan Parikrama", "Radha Kund", "Barsana", "Nandgaon"] },
-      { day: 4, title: "Drive to Jaipur", sites: ["Jaipur arrival", "Govind Dev Ji Temple", "Birla Mandir"] },
-      { day: 5, title: "Jaipur Temples & Sights", sites: ["Amber Fort", "City Palace", "Galta Ji (Monkey Temple)", "Hawa Mahal"] },
-      { day: 6, title: "Drive to Khajuraho", sites: ["Khajuraho arrival", "Light & sound show"] },
-      { day: 7, title: "Khajuraho Temples & Departure", sites: ["Western group of temples", "Eastern group", "Drop"] },
+      { day: 0, title: "Tell us your plan", sites: ["Share your preferred sites, dates, and group size — we craft your perfect 7-day yatra"] },
     ],
   },
 ];
@@ -775,7 +651,7 @@ export const aboutPoints = [
   {
     heading: "Our Story",
     body:
-      "Shree Shyama Shyam Tour and Travels was founded in 2015 in Mathura — the heart of Braj — with a single sedan and a devotee's love for sharing the sacred land of Krishna. Our founder, born and raised in Vrindavan, saw that pilgrims often struggled with unreliable transport and guides who didn't understand the spiritual significance of each site. Over 10 years, we have served 25,000+ devotees and grown into Braj's most trusted yatra partner.",
+      "Sri Shyama Tour & Travels was founded in 2015 in Mathura — the heart of Braj — with a single sedan and a devotee's love for sharing the sacred land of Krishna. Our founder, born and raised in Vrindavan, saw that pilgrims often struggled with unreliable transport and guides who didn't understand the spiritual significance of each site. Over 10 years, we have served 25,000+ devotees and grown into Braj's most trusted yatra partner.",
   },
   {
     heading: "Our Mission",

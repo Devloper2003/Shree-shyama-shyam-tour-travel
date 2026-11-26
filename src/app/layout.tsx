@@ -14,14 +14,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Shri Shyama Shyam Tour & Travels | Mathura Vrindavan Braj Yatra & Pilgrimage Tours",
+  title: "Sri Shyama Tour & Travels | Mathura Vrindavan Braj Yatra & Pilgrimage Tours",
   description:
-    "Shri Shyama Shyam Tour & Travels in Mathura Vrindavan offers sacred Braj Yatra pilgrimage tours covering Mathura, Vrindavan, Gokul, Barsana, Nandgaon, Govardhan and the complete 84-kosa Braj Mandala. Same-day, 2N/3D, 4N/5D with Agra, 6N/7D with Jaipur & Khajuraho packages. Contact: 8319710872 (Vithika).",
+    "Sri Shyama Tour & Travels in Mathura Vrindavan offers sacred Braj Yatra pilgrimage tours covering Mathura, Vrindavan, Gokul, Barsana, Nandgaon, Govardhan and the complete 84-kosa Braj Mandala. Same-day, 2N/3D, 4N/5D with Agra, 6N/7D with Jaipur & Khajuraho packages. Contact: 8319710872 (Vithika).",
   keywords: [
     "Braj Yatra",
     "Brij Yatra",
     "Mathura Vrindavan tour",
-    "Shri Shyama Shyam Tour Travels",
+    "Sri Shyama Tour Travels",
     "Krishna Janmabhoomi darshan",
     "Banke Bihari temple",
     "Govardhan Parikrama",
@@ -32,21 +32,21 @@ export const metadata: Metadata = {
     "Jaipur Khajuraho tour",
     "Radha Krishna pilgrimage",
   ],
-  authors: [{ name: "Shri Shyama Shyam Tour & Travels" }],
+  authors: [{ name: "Sri Shyama Tour & Travels" }],
   icons: {
     icon: "/logo.png",
     apple: "/logo.png",
   },
   openGraph: {
-    title: "Shri Shyama Shyam Tour & Travels | Mathura Vrindavan Braj Yatra",
+    title: "Sri Shyama Tour & Travels | Mathura Vrindavan Braj Yatra",
     description:
       "Sacred Braj Yatra pilgrimage tours — Mathura, Vrindavan, Gokul, Barsana, Nandgaon, Govardhan. Same-day to 7-day packages with verified drivers and local guides. Call 8319710872.",
-    siteName: "Shri Shyama Shyam Tour & Travels",
+    siteName: "Sri Shyama Tour & Travels",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Shri Shyama Shyam Tour & Travels",
+    title: "Sri Shyama Tour & Travels",
     description: "Mathura Vrindavan Braj Yatra pilgrimage tours across the holy Braj Mandala.",
   },
 };

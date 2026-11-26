@@ -52,7 +52,7 @@ Devotees traditionally complete the 84-kosa Braj parikrama over 40 days on foot.
 
 Completing the Braj Yatra is said to cleanse one's heart of material desires, awaken pure love of God (prema bhakti), and grant darshan of Radha-Krishna in one's heart.
 
-At Shri Shyama Shyam Tour & Travels, we facilitate this sacred journey with experienced Braj-born guides who know every site's significance and history.`,
+At Sri Shyama Tour & Travels, we facilitate this sacred journey with experienced Braj-born guides who know every site's significance and history.`,
   },
   {
     id: "static-2",
@@ -83,7 +83,7 @@ The parikrama starts and ends at Mansi Ganga. Key stops include Daan Ghati, Hari
 
 Walking the full 21 km takes about 6-8 hours at a moderate pace. For elderly devotees, vehicle parikrama is also available.
 
-At Shri Shyama Shyam Tour & Travels, we provide experienced guides for the parikrama route.`,
+At Sri Shyama Tour & Travels, we provide experienced guides for the parikrama route.`,
   },
   {
     id: "static-3",

@@ -58,17 +58,17 @@ export function Header() {
           >
             <img
               src="/logo.png"
-              alt="Shri Shyama Shyam Tour & Travels logo"
+              alt="Sri Shyama Tour & Travels logo"
               className="h-10 sm:h-12 w-auto object-contain shrink-0"
               width={40}
               height={40}
             />
             <div className="hidden sm:block min-w-0">
               <p className="text-sm font-bold leading-tight text-foreground truncate">
-                Shri Shyama Shyam
+                Sri Shyama Travels
               </p>
               <p className="text-[10px] text-muted-foreground leading-tight">
-                Tour & Travels • Mathura
+                Tour & Travels • Mathura Vrindavan
               </p>
             </div>
           </button>

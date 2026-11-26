@@ -172,7 +172,7 @@ export function Contact() {
     // Generate WhatsApp/Call/Email links locally (works even if API/DB fails on edge)
     const generateLocalLinks = () => {
       const msgLines = [
-        `*Radhe Radhe! New Yatra Enquiry — Shri Shyama Shyam Tour & Travels*`,
+        `*Radhe Radhe! New Yatra Enquiry — Sri Shyama Tour & Travels*`,
         ``,
         `Name: ${form.name}`,
         `Phone: ${form.phone}`,

@@ -103,7 +103,7 @@ export function HomePage() {
                             </p>
                           </>
                         ) : (
-                          <p className="text-base text-primary font-medium">Custom quote</p>
+                          <p className="text-base text-primary font-bold">Price on Request</p>
                         )}
                       </div>
                       <Button size="sm" className="gap-1.5">

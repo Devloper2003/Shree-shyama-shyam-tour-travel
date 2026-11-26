@@ -41,11 +41,11 @@ export function Footer() {
           <div className="lg:col-span-1">
             <img
               src="/logo.png"
-              alt="Shri Shyama Shyam Tour & Travels logo"
+              alt="Sri Shyama Tour & Travels logo"
               className="h-24 w-auto object-contain mb-4 rounded-lg bg-white/95 p-2"
             />
             <p className="text-sm text-white/70 leading-relaxed">
-              Mathura-Vrindavan&apos;s trusted Braj Yatra pilgrimage partner since {siteConfig.establishedYear}.
+              {siteConfig.legalName} — trusted Braj Yatra pilgrimage partner since {siteConfig.establishedYear}.
               Braj-born guides, verified vegetarian drivers, local pandit arrangements.
               Coordinated by {siteConfig.contactPerson}.
             </p>
