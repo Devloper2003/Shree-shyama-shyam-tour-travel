@@ -759,19 +759,12 @@ export function AdminPage() {
               </CardContent>
             </Card>
 
-            {/* Password management info */}
-            <div className="mt-6 p-4 bg-muted/40 rounded-lg border border-border space-y-3">
-              <p className="text-sm font-semibold text-foreground">Password Management Guide</p>
-              <ul className="text-xs text-muted-foreground space-y-2">
-                <li><strong className="text-foreground">Change password:</strong> Use the form above. Enter your current password, then set a new one (minimum 6 characters). Passwords are stored as bcrypt hashes — never as plaintext.</li>
-                <li><strong className="text-foreground">Forgot password:</strong> If you forget the password, you can reset it by:
-                  <ol className="list-decimal pl-4 mt-1 space-y-0.5">
-                    <li>Run <code className="bg-muted px-1 rounded">bun run scripts/init-admin-password.ts</code> on your server</li>
-                    <li>Or set <code className="bg-muted px-1 rounded">ADMIN_INITIAL_PASSWORD</code> env var and redeploy</li>
-                  </ol>
-                </li>
-                <li><strong className="text-foreground">Security:</strong> Passwords are hashed with bcrypt (12 salt rounds). The plaintext password is never stored or logged.</li>
-              </ul>
+            {/* Password management info — compact */}
+            <div className="mt-4 p-3 bg-muted/40 rounded-lg border border-border">
+              <p className="text-xs text-muted-foreground">
+                <strong className="text-foreground">Password:</strong> Min 6 characters. Stored as bcrypt hash.
+                Forgot password? Set <code className="bg-muted px-1 rounded">ADMIN_INITIAL_PASSWORD</code> env var and redeploy.
+              </p>
             </div>
           </div>
         )}
