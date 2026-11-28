@@ -763,16 +763,14 @@ export function AdminPage() {
             <div className="mt-6 p-4 bg-muted/40 rounded-lg border border-border space-y-3">
               <p className="text-sm font-semibold text-foreground">Password Management Guide</p>
               <ul className="text-xs text-muted-foreground space-y-2">
-                <li><strong className="text-foreground">Change password:</strong> Use the form above. Enter your current password, then set a new one (minimum 6 characters). The new password is stored securely in the database.</li>
+                <li><strong className="text-foreground">Change password:</strong> Use the form above. Enter your current password, then set a new one (minimum 6 characters). Passwords are stored as bcrypt hashes — never as plaintext.</li>
                 <li><strong className="text-foreground">Forgot password:</strong> If you forget the password, you can reset it by:
                   <ol className="list-decimal pl-4 mt-1 space-y-0.5">
-                    <li>Accessing the database directly (via Prisma Studio or database tool)</li>
-                    <li>Deleting the <code className="bg-muted px-1 rounded">Setting</code> row with key <code className="bg-muted px-1 rounded">admin_password</code></li>
-                    <li>The system will then fall back to the default password</li>
+                    <li>Run <code className="bg-muted px-1 rounded">bun run scripts/init-admin-password.ts</code> on your server</li>
+                    <li>Or set <code className="bg-muted px-1 rounded">ADMIN_INITIAL_PASSWORD</code> env var and redeploy</li>
                   </ol>
                 </li>
-                <li><strong className="text-foreground">Default password:</strong> If no custom password is set in the database, the system uses the default password defined in the code.</li>
-                <li><strong className="text-foreground">For production:</strong> Consider upgrading to NextAuth.js for proper authentication with hashed passwords and session management.</li>
+                <li><strong className="text-foreground">Security:</strong> Passwords are hashed with bcrypt (12 salt rounds). The plaintext password is never stored or logged.</li>
               </ul>
             </div>
           </div>
