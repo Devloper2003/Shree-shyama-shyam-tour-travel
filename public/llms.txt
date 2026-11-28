@@ -1,0 +1,65 @@
+# Sri Shyama Tour & Travels — LLMs/AI Context File
+# Reference: https://llmstxt.org/
+# Purpose: Help AI crawlers (ChatGPT, Perplexity, Claude, Gemini) understand
+#          the business, services, and content for AEO/GEO optimization.
+
+# Title: Sri Shyama Tour & Travels
+# Tagline: Mathura Vrindavan Braj Yatra & Pilgrimage Tours
+
+## About
+Sri Shyama Tour & Travels is a pilgrimage tour operator based in Vrindavan,
+Mathura district, Uttar Pradesh, India. Founded in 2015, we specialize in
+sacred Braj Yatra (Braj Mandala) pilgrimage tours covering all 84 sacred
+sites associated with Lord Krishna — including Mathura (birthplace),
+Vrindavan, Gokul, Barsana, Nandgaon, Govardhan, and Radha Kund.
+
+## Services
+- Braj Yatra packages (2N/3D, 3N/4D with Agra, 84 Kos complete, 6N/7D custom)
+- Govardhan Parikrama (21 km sacred circumambulation)
+- Pickup from Delhi and Agra (cab service available)
+- Local Braj-born guides fluent in Hindi, English, Bengali
+- Vegetarian drivers and local pandit arrangements
+- Same-day Mathura Vrindavan darshan tours
+
+## Contact
+- Phone/WhatsApp: +91 83197 10872 (Vithika, Yatra Coordinator)
+- Email: bookings@shrishyamashyamtravels.in
+- Address: Near Banke Bihari Temple, Krishna Nagar, Vrindavan, UP — 281121
+- Hours: Open 24x7
+- Price Range: ₹₹ (mid-range)
+
+## Service Area
+Mathura, Vrindavan, Gokul, Govardhan, Barsana, Nandgaon, Agra, Delhi, Jaipur
+
+## Key Stats
+- 25,000+ pilgrims served
+- 10+ years of experience
+- 84 sacred sites covered
+- 99% yatra completion rate
+
+## FAQ
+Q: What is Braj Yatra?
+A: Braj Yatra is a sacred pilgrimage across the Braj Mandala — the 84-kosa
+(about 300 km) region where Lord Krishna performed His pastimes. It covers
+Mathura (birthplace), Vrindavan (ras-lila), Gokul (childhood), Barsana
+(Radha's home), Nandgaon, and Govardhan Hill.
+
+Q: How long is the complete 84 Kos Yatra?
+A: The complete 84 Kos Braj Yatra takes 3-7 days depending on the pace and
+depth of darshan at each site. We offer flexible durations.
+
+Q: Do you provide pickup from Delhi or Agra?
+A: Yes, we provide AC cab pickup from Delhi and Agra to Mathura Vrindavan,
+with optional return drop.
+
+Q: Are guides available?
+A: Yes, all packages include dedicated Braj-born guides who understand the
+spiritual significance of each site and speak Hindi, English, and Bengali.
+
+Q: Can packages be customized?
+A: Yes, all our packages are fully customizable — routes, duration,
+accommodation, and group size. Share your sankalp and we craft the perfect
+itinerary.
+
+## Sitemap
+- /sitemap.xml

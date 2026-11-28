@@ -53,6 +53,45 @@ export const siteConfig = {
     twitter: "",
   },
 
+  // ---- SEO & analytics ----
+  seo: {
+    // Set this to your production domain (NO trailing slash)
+    siteUrl: "https://shrishyamashyamtravels.in",
+    // Google Analytics 4 Measurement ID (leave "" to disable)
+    ga4Id: "",
+    // Google Search Console verification token (leave "" to disable)
+    gscVerification: "",
+    // Bing Webmaster verification token
+    bingVerification: "",
+    // Default social share image (1200x630, place in /public/)
+    ogImage: "/logo.png",
+    // Twitter handle (e.g. @yourhandle) — leave "" if none
+    twitterHandle: "",
+  },
+
+  // ---- Local SEO (Google Business Profile data) ----
+  localSeo: {
+    // GeoCoordinates for Vrindavan
+    geoLatitude: 27.5863,
+    geoLongitude: 77.6900,
+    // Google Maps Place ID (optional — for embedded maps / reviews)
+    googlePlaceId: "",
+    // Service area (cities/regions you serve)
+    serviceArea: [
+      "Mathura",
+      "Vrindavan",
+      "Gokul",
+      "Govardhan",
+      "Barsana",
+      "Nandgaon",
+      "Agra",
+      "Delhi",
+      "Jaipur",
+    ],
+    // Price range indicator
+    priceRange: "₹₹",
+  },
+
   // ---- Quick stats shown on hero / about ----
   stats: {
     happyPilgrims: "25,000+",
