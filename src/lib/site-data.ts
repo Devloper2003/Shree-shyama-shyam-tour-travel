@@ -301,7 +301,7 @@ export const sacredSites: SacredSite[] = [
     bestTime: "Kartik month (Oct-Nov), Govardhan Puja",
     mustSee: "21-km parikrama, Daan Ghati, Haridev Temple",
     category: "govardhan",
-    image: "/sites/govardhan.jpg",
+    image: "/sites/govardhan.webp",
   },
   {
     id: "radha-kund",

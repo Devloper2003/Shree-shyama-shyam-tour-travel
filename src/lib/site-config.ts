@@ -35,10 +35,10 @@ export const siteConfig = {
   // Office address — Mathura/Vrindavan (heart of Braj)
   address: {
     line1: "Sri Shyama Tour & Travels",
-    line2: "Near Krishna Janmabhoomi, Krishna Nagar",
-    city: "Mathura",
+    line2: "Near Banke Bihari Temple, Krishna Nagar",
+    city: "Vrindavan",
     state: "Uttar Pradesh",
-    pincode: "281001",
+    pincode: "281121",
     country: "India",
   },
 
