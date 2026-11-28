@@ -53,8 +53,10 @@ export async function verifyPassword(
 
 /**
  * Check if a stored value looks like a bcrypt hash.
- * Bcrypt hashes start with "$2a$", "$2b$", or "$2y$".
+ * Bcrypt hashes start with "$2a$", "$2b$", or "$2y$" and are exactly 60 chars.
  */
 export function isBcryptHash(value: string): boolean {
-  return /^\$2[aby]\$\d{2}\$.{53}$/.test(value);
+  if (typeof value !== "string") return false;
+  // Bcrypt hash format: $2[aby]$<cost>$<53 chars> = 60 chars total
+  return /^\$2[aby]\$\d{2}\$/.test(value) && value.length === 60;
 }
